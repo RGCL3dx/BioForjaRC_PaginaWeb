@@ -327,3 +327,62 @@ tfoot th {
     font-size: 0.85rem;
     font-weight: 600;
 }
+
+/* ---------------------------------------------------------
+   Interacción de la tienda (js/main.js)
+   --------------------------------------------------------- */
+/* Contador de productos en el header */
+.contador-carrito {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    margin-left: 6px;
+    border-radius: 999px;
+    background-color: var(--color-acento);
+    color: var(--color-primario-oscuro);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Notificación al agregar/quitar productos */
+.aviso-carrito {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 999;
+    max-width: 320px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    background-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: var(--sombra-fuerte);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--transicion), transform var(--transicion);
+}
+
+.aviso-carrito-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mensaje de carrito vacío */
+.carrito-vacio {
+    text-align: center;
+    padding: 48px 20px;
+    background-color: var(--color-blanco);
+    border: 2px dashed var(--color-gris-claro);
+    border-radius: var(--radio-borde);
+}
+
+.carrito-vacio a {
+    display: inline-block;
+    margin-left: 8px;
+    font-weight: 700;
+    color: var(--color-oliva);
+}
