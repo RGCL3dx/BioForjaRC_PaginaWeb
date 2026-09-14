@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Revisa los productos que has agregado a tu carrito de compras en BioForjaRC.">
+    <meta name="author" content="BioForjaRC">
+    <title>BioForjaRC | Carrito</title>
+</head>
+<body>
+
+    <header>
+        <a href="index.html">
+            <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+            <span>BioForjaRC</span>
+        </a>
+
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="cotizacion.html">Cotización</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="login.html">Ingresar</a></li>
+                <li><a href="registro.html">Registro</a></li>
+                <li><a href="carrito.html">Carrito</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section>
+            <h1>Tu carrito de compras</h1>
+            <p>Revisa los productos que has seleccionado antes de continuar con el pago.</p>
+        </section>
+
+        <section>
+            <h2>Productos seleccionados</h2>
+
+            <article>
+                <img src="../assets/imagenes/macetero-1.webp" alt="Macetero clásico">
+                <h3>Macetero clásico</h3>
+                <p>Precio unitario: $8.990</p>
+                <p>
+                    <label for="cantidad-1">Cantidad</label>
+                    <input type="number" id="cantidad-1" name="cantidad" min="1" value="1">
+                </p>
+                <p>Subtotal: $8.990</p>
+                <a href="carrito.html">Eliminar</a>
+            </article>
+
+            <article>
+                <img src="../assets/imagenes/articulado-perro.jpg" alt="Perro articulado">
+                <h3>Perro articulado</h3>
+                <p>Precio unitario: $9.990</p>
+                <p>
+                    <label for="cantidad-2">Cantidad</label>
+                    <input type="number" id="cantidad-2" name="cantidad" min="1" value="1">
+                </p>
+                <p>Subtotal: $9.990</p>
+                <a href="carrito.html">Eliminar</a>
+            </article>
+
+            <article>
+                <img src="../assets/imagenes/sensorial-star.webp" alt="Estrella sensorial">
+                <h3>Estrella sensorial</h3>
+                <p>Precio unitario: $6.990</p>
+                <p>
+                    <label for="cantidad-3">Cantidad</label>
+                    <input type="number" id="cantidad-3" name="cantidad" min="1" value="2">
+                </p>
+                <p>Subtotal: $13.980</p>
+                <a href="carrito.html">Eliminar</a>
+            </article>
+        </section>
+
+        <section>
+            <h2>Resumen de la compra</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Macetero clásico</td>
+                        <td>1</td>
+                        <td>$8.990</td>
+                    </tr>
+                    <tr>
+                        <td>Perro articulado</td>
+                        <td>1</td>
+                        <td>$9.990</td>
+                    </tr>
+                    <tr>
+                        <td>Estrella sensorial</td>
+                        <td>2</td>
+                        <td>$13.980</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2">Total a pagar</th>
+                        <th>$32.960</th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <p>
+                <a href="checkout.html">Continuar compra</a>
+                <a href="productos.html">Seguir comprando</a>
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+
+        <div>
+            <a href="index.html">
+                <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+                <span>BioForjaRC</span>
+            </a>
+            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+        </div>
+
+        <nav aria-label="Enlaces del sitio">
+            <h3>Enlaces</h3>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="cotizacion.html">Cotización</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="mi-cuenta.html">Mi cuenta</a></li>
+            </ul>
+        </nav>
+
+        <div>
+            <h3>Contacto</h3>
+            <ul>
+                <li>
+                    <img src="../assets/imagenes/gps.png" alt="Ubicación">
+                    <span>Santiago, Chile</span>
+                </li>
+                <li>
+                    <img src="../assets/imagenes/telefono.png" alt="Teléfono">
+                    <span>+56 9 1234 5678</span>
+                </li>
+                <li>
+                    <img src="../assets/imagenes/gmail.webp" alt="Correo">
+                    <span>contacto@bioforjarc.cl</span>
+                </li>
+            </ul>
+            <div>
+                <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
+                <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
+                <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"></a>
+            </div>
+        </div>
+
+        <div>
+            <h3>Administración</h3>
+            <ul>
+                <li><a href="admin/index.html">Panel de administración</a></li>
+            </ul>
+        </div>
+
+        <p>&copy; 2026 BioForjaRC.</p>
+
+    </footer>
+
+</body>
+</html>
