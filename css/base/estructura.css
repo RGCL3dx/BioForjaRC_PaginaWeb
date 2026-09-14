@@ -126,13 +126,14 @@ main > section > p {
 .hero {
     background-image: linear-gradient(
         to right,
-        rgba(27, 94, 32, 0.92),
-        rgba(46, 125, 50, 0.82)
+        rgba(17, 55, 24, 0.55),
+        rgba(27, 94, 32, 0.35)
     ), url('../assets/imagenes/fondo.webp');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
     color: var(--color-blanco);
-    padding: 120px 0;
+    padding: 140px 0;
     text-align: center;
 }
 

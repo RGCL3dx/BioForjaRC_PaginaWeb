@@ -1,0 +1,57 @@
+/* =========================================================
+   BioForjaRC - checkout.css
+   Pago: resumen del pedido y formulario de envío/pago
+   ========================================================= */
+
+/* Resumen del pedido */
+main section:nth-of-type(2) {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+main section:nth-of-type(2) h2 {
+    text-align: center;
+    position: relative;
+    padding-bottom: 14px;
+}
+
+main section:nth-of-type(2) h2::after {
+    content: '';
+    display: block;
+    width: 72px;
+    height: 4px;
+    margin: 12px auto 0;
+    background: var(--color-acento);
+    border-radius: 2px;
+}
+
+main section:nth-of-type(2) table {
+    margin: 20px 0;
+}
+
+/* Formulario de envío y pago dentro de tarjeta */
+main form {
+    margin: 24px auto;
+    max-width: 720px;
+}
+
+main form > p:last-of-type {
+    text-align: center;
+}
+
+/* Datos de pago destacados */
+main fieldset:last-of-type {
+    border: 2px solid rgba(255, 179, 0, 0.45);
+    background-color: rgba(255, 179, 0, 0.06);
+}
+
+main button[type="submit"] {
+    background: linear-gradient(135deg, var(--color-acento), #e6a800);
+    color: var(--color-primario-oscuro);
+}
+
+main button[type="submit"]:hover {
+    background: linear-gradient(135deg, #e6a800, var(--color-acento));
+    color: var(--color-primario-oscuro);
+    box-shadow: 0 6px 18px rgba(255, 179, 0, 0.45);
+}

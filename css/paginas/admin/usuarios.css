@@ -1,0 +1,68 @@
+/* =========================================================
+   BioForjaRC - admin/usuarios.css
+   Administración de cuentas de usuario
+   ========================================================= */
+
+/* Buscador como tarjeta */
+main form {
+    max-width: 520px;
+    margin: 0 auto;
+    background-color: var(--color-blanco);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+}
+
+main form p {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 12px;
+}
+
+main form button {
+    grid-column: 1 / -1;
+    justify-self: center;
+}
+
+/* Listado de usuarios */
+main section:nth-of-type(3) {
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+main section:nth-of-type(2) h2,
+main section:nth-of-type(3) h2 {
+    text-align: center;
+    position: relative;
+    padding-bottom: 14px;
+}
+
+main section:nth-of-type(2) h2::after,
+main section:nth-of-type(3) h2::after {
+    content: '';
+    display: block;
+    width: 72px;
+    height: 4px;
+    margin: 12px auto 0;
+    background: var(--color-acento);
+    border-radius: 2px;
+}
+
+main table {
+    margin: 20px 0;
+}
+
+main td:last-child a {
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+main td:last-child a:hover {
+    color: var(--color-primario-oscuro);
+}
+
+@media (max-width: 640px) {
+    main form p {
+        grid-template-columns: 1fr;
+    }
+}

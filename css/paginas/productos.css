@@ -1,0 +1,155 @@
+/* =========================================================
+   BioForjaRC - productos.css
+   Catálogo de productos: filtros, tarjetas y precio
+   ========================================================= */
+
+/* Menú de filtros por categoría */
+main section:first-of-type nav ul {
+    justify-content: center;
+    margin: 24px 0 8px;
+}
+
+main section:first-of-type nav ul a {
+    background-color: var(--color-blanco);
+    border: 2px solid var(--color-gris-claro);
+    border-radius: var(--radio-boton);
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    box-shadow: var(--sombra);
+}
+
+main section:first-of-type nav ul a:hover {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+/* Cada categoría de producto: grid de tarjetas */
+main section[id] {
+    max-width: var(--ancho-maximo);
+    margin: 0 auto;
+    padding: 48px 20px;
+}
+
+main section[id] > h2 {
+    text-align: center;
+    position: relative;
+    padding-bottom: 14px;
+    margin-bottom: 32px;
+}
+
+main section[id] > h2::after {
+    content: '';
+    display: block;
+    width: 72px;
+    height: 4px;
+    margin: 12px auto 0;
+    background: var(--color-acento);
+    border-radius: 2px;
+}
+
+/* Secciones de categoría como grid */
+main section[id] {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+/* Tarjetas de producto */
+main section[id] article {
+    background-color: var(--color-blanco);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 20px;
+    transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+main section[id] article:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-fuerte);
+}
+
+main section[id] article img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+main section[id] article h3 {
+    margin: 16px 16px 6px;
+    color: var(--color-primario-oscuro);
+}
+
+main section[id] article p {
+    margin: 0 16px 8px;
+    color: var(--color-gris);
+    font-size: 0.95rem;
+}
+
+main section[id] article p strong {
+    display: inline-block;
+    font-size: 1.3rem;
+    color: var(--color-primario);
+    background: linear-gradient(135deg, rgba(46,125,50,0.10), rgba(76,175,80,0.10));
+    padding: 6px 18px;
+    border-radius: var(--radio-boton);
+    margin-top: 4px;
+}
+
+/* Botones dentro de cada tarjeta */
+main section[id] article a {
+    display: inline-block;
+    margin: 6px 6px 0;
+    padding: 10px 20px;
+    border-radius: var(--radio-boton);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+main section[id] article a[href="carrito.html"] {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+main section[id] article a[href="carrito.html"]:hover {
+    background-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+}
+
+main section[id] article a[href="cotizacion.html"] {
+    background-color: var(--color-blanco);
+    border: 2px solid var(--color-acento);
+    color: var(--color-primario-oscuro);
+}
+
+main section[id] article a[href="cotizacion.html"]:hover {
+    background-color: var(--color-acento);
+    color: var(--color-primario-oscuro);
+}
+
+/* Última sección (llamado a cotización) */
+main section:last-of-type {
+    text-align: center;
+    background-color: var(--color-gris-claro);
+}
+
+main section:last-of-type a {
+    display: inline-block;
+    margin-top: 12px;
+}
+
+/* Responsive: grid de tarjetas */
+@media (min-width: 641px) {
+    main section[id] {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (min-width: 1000px) {
+    main section[id] {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
