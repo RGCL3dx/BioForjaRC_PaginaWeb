@@ -1,0 +1,311 @@
+/* =========================================================
+   BioForjaRC - global.css
+   Variables, reseteo, tipografías y estilos generales
+   ========================================================= */
+
+/* Fuentes: se cargan aquí para que toda página que enlace
+   global.css tenga la tipografía de marca */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap');
+
+/* ---------------------------------------------------------
+   Paleta de colores deducida del logo (reciclaje + tecnología)
+   --------------------------------------------------------- */
+:root {
+    /* Verdes ecológicos (marca principal) */
+    --color-primario:        #2E7D32;
+    --color-primario-oscuro: #1B5E20;
+    --color-primario-claro:  #4CAF50;
+
+    /* Verde oliva de reciclaje */
+    --color-oliva:           #6B8F3B;
+
+    /* Color de acento (llamados a la acción) */
+    --color-acento:          #FFB300;
+
+    /* Neutros y contrastes */
+    --color-tinta:           #1B241B;
+    --color-gris:            #5B6B79;
+    --color-gris-claro:      #E8EEE8;
+    --color-fondo:           #F6F9F6;
+    --color-blanco:          #FFFFFF;
+
+    /* Tipografías */
+    --fuente-principal: 'Montserrat', 'Segoe UI', sans-serif;
+    --fuente-texto: 'Open Sans', 'Segoe UI', sans-serif;
+
+    /* Métricas reutilizables */
+    --radio-borde:    12px;
+    --radio-boton:    50px;
+    --sombra:         0 4px 14px rgba(27, 36, 27, 0.10);
+    --sombra-fuerte:  0 10px 26px rgba(27, 36, 27, 0.18);
+    --transicion:     0.3s ease;
+    --ancho-maximo:   1200px;
+}
+
+/* ---------------------------------------------------------
+   Reseteo básico
+   --------------------------------------------------------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--fuente-texto);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-tinta);
+    background-color: var(--color-fondo);
+    min-height: 100vh;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+a {
+    color: var(--color-primario);
+    text-decoration: none;
+    transition: color var(--transicion);
+}
+
+a:hover {
+    color: var(--color-primario-oscuro);
+}
+
+/* ---------------------------------------------------------
+   Títulos
+   --------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--fuente-principal);
+    line-height: 1.25;
+    color: var(--color-primario-oscuro);
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 16px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+p {
+    margin-bottom: 12px;
+}
+
+/* ---------------------------------------------------------
+   Contenedor y utilidades
+   --------------------------------------------------------- */
+.contenedor {
+    width: 100%;
+    max-width: var(--ancho-maximo);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.texto-centrado {
+    text-align: center;
+}
+
+.titulo-seccion {
+    text-align: center;
+    margin-bottom: 36px;
+    position: relative;
+}
+
+.titulo-seccion::after {
+    content: '';
+    display: block;
+    width: 72px;
+    height: 4px;
+    margin: 12px auto 0;
+    background: var(--color-acento);
+    border-radius: 2px;
+}
+
+/* ---------------------------------------------------------
+   Botones (clases) y botones semánticos
+   --------------------------------------------------------- */
+.boton,
+button {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 2px solid transparent;
+    border-radius: var(--radio-boton);
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all var(--transicion);
+}
+
+.boton:hover,
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+    color: var(--color-blanco);
+}
+
+.boton-primario {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.boton-primario:hover {
+    background-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+}
+
+.boton-secundario {
+    background-color: transparent;
+    border-color: var(--color-blanco);
+    color: var(--color-blanco);
+}
+
+.boton-secundario:hover {
+    background-color: var(--color-blanco);
+    color: var(--color-primario-oscuro);
+}
+
+.enlace {
+    font-weight: 700;
+    color: var(--color-acento);
+}
+
+/* ---------------------------------------------------------
+   Formularios (páginas semánticas: cotización, contacto, etc.)
+   --------------------------------------------------------- */
+form {
+    background-color: var(--color-blanco);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    padding: 32px;
+    max-width: 640px;
+}
+
+fieldset {
+    border: 1px solid var(--color-gris-claro);
+    border-radius: var(--radio-borde);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+}
+
+legend {
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    color: var(--color-primario-oscuro);
+    padding: 0 8px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-primario-oscuro);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--color-gris-claro);
+    border-radius: 8px;
+    font-family: var(--fuente-texto);
+    font-size: 1rem;
+    background-color: var(--color-blanco);
+    color: var(--color-tinta);
+    transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    width: auto;
+    margin-right: 8px;
+    accent-color: var(--color-primario);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* ---------------------------------------------------------
+   Tablas (carrito, checkout, admin, mi-cuenta)
+   --------------------------------------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--color-blanco);
+    border-radius: var(--radio-borde);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+}
+
+thead {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+th,
+td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-gris-claro);
+}
+
+thead th {
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+}
+
+tbody tr:hover {
+    background-color: rgba(107, 143, 59, 0.08);
+}
+
+tfoot th {
+    background-color: var(--color-primario-claro);
+    color: var(--color-blanco);
+}

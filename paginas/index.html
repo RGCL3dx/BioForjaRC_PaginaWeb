@@ -6,9 +6,6 @@
     <meta name="description" content="BioForjaRC - Tienda online de impresión 3D y productos ecológicos creados a partir del reciclaje de plástico PET.">
     <meta name="author" content="BioForjaRC">
     <title>BioForjaRC | Inicio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/base/global.css">
     <link rel="stylesheet" href="../css/base/estructura.css">
 </head>
@@ -16,7 +13,8 @@
 
     <header class="cabecera">
         <div class="contenedor cabecera-contenido">
-            <a href="index.html" class="cabecera-logo">
+
+            <a href="index.html" class="cabecera-logo" aria-label="Ir al inicio de BioForjaRC">
                 <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
                 <span class="cabecera-marca">BioForja<span>RC</span></span>
             </a>
@@ -24,17 +22,19 @@
             <nav class="navegacion" aria-label="Navegación principal">
                 <ul class="navegacion-lista">
                     <li><a href="index.html" class="activo">Inicio</a></li>
-                    <li><a href="nosotros.html">Nosotros</a></li>
                     <li><a href="productos.html">Productos</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
                     <li><a href="cotizacion.html">Cotización</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
                     <li><a href="login.html">Ingresar</a></li>
+                    <li><a href="registro.html">Registrarse</a></li>
                 </ul>
             </nav>
 
             <a href="carrito.html" class="cabecera-carrito" aria-label="Ir al carrito de compras">
-                <img src="../assets/imagenes/carrito.png" alt="Carrito de compras">
+                <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras">
             </a>
+
         </div>
     </header>
 
@@ -52,6 +52,7 @@
         <section class="seccion">
             <div class="contenedor">
                 <h2 class="titulo-seccion">Nuestras líneas de productos</h2>
+
                 <div class="grid-categorias">
 
                     <article class="tarjeta-categoria">
@@ -89,21 +90,32 @@
         <section class="seccion seccion-fondo">
             <div class="contenedor">
                 <h2 class="titulo-seccion">De la botella al producto</h2>
+
                 <ol class="lista-proceso">
                     <li>Recolectamos botellas PET en puntos de acopio.</li>
                     <li>Limpiamos, cortamos y trituramos el plástico.</li>
                     <li>Convertimos el material en filamento para impresión 3D.</li>
                     <li>Fabricamos productos duraderos con diseño propio.</li>
                 </ol>
+
                 <p class="texto-centrado">
                     <a href="nosotros.html" class="boton boton-primario">Conoce nuestro proceso</a>
                 </p>
             </div>
         </section>
 
+        <section class="seccion">
+            <div class="contenedor texto-centrado">
+                <h2 class="titulo-seccion">¿Tienes un diseño en mente?</h2>
+                <p>Envíanos tu idea y recibirás una cotización a medida para piezas fuera del catálogo.</p>
+                <a href="cotizacion.html" class="boton boton-primario">Cotizar ahora</a>
+            </div>
+        </section>
+
     </main>
 
     <footer class="pie-pagina">
+
         <div class="contenedor pie-contenido">
 
             <div class="pie-columna">
@@ -118,10 +130,12 @@
                 <h3>Enlaces</h3>
                 <ul class="pie-lista">
                     <li><a href="index.html">Inicio</a></li>
-                    <li><a href="nosotros.html">Nosotros</a></li>
                     <li><a href="productos.html">Productos</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
                     <li><a href="cotizacion.html">Cotización</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="mi-cuenta.html">Mi cuenta</a></li>
+                    <li><a href="admin/index.html">Panel de administración</a></li>
                 </ul>
             </div>
 
@@ -129,18 +143,19 @@
                 <h3>Contacto</h3>
                 <ul class="pie-lista">
                     <li>
-                        <img src="../assets/imagenes/gps.png" alt="">
+                        <img src="../assets/imagenes/gps.png" alt="Ubicación">
                         <span>Santiago, Chile</span>
                     </li>
                     <li>
-                        <img src="../assets/imagenes/telefono.png" alt="">
+                        <img src="../assets/imagenes/telefono.png" alt="Teléfono">
                         <span>+56 9 1234 5678</span>
                     </li>
                     <li>
-                        <img src="../assets/imagenes/gmail.webp" alt="">
+                        <img src="../assets/imagenes/gmail.webp" alt="Correo">
                         <span>contacto@bioforjarc.cl</span>
                     </li>
                 </ul>
+
                 <div class="pie-redes">
                     <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
                     <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
@@ -152,9 +167,10 @@
 
         <div class="pie-legal">
             <div class="contenedor">
-                <p>&copy; 2026 BioForjaRC.</p>
+                <p>&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
             </div>
         </div>
+
     </footer>
 
 </body>
