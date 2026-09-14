@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestión de productos y stock del catálogo BioForjaRC: agrega, edita y controla existencias.">
+    <meta name="author" content="BioForjaRC">
+    <title>BioForjaRC | Inventario</title>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html">
+            <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+            <span>BioForjaRC</span>
+        </a>
+
+        <nav aria-label="Navegación de administración">
+            <ul>
+                <li><a href="../index.html">Volver a la tienda</a></li>
+                <li><a href="index.html">Panel</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="pedidos.html">Pedidos</a></li>
+                <li><a href="usuarios.html">Usuarios</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section>
+            <h1>Inventario de productos</h1>
+            <p>Supervisa las existencias del catálogo y mantén actualizados precios y stock.</p>
+        </section>
+
+        <section>
+            <h2>Buscador interno</h2>
+            <form action="#" method="get">
+                <p>
+                    <label for="buscar">Buscar producto</label>
+                    <input type="search" id="buscar" name="buscar" placeholder="Ej: macetero">
+                </p>
+                <button type="submit">Buscar</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Acción rápida</h2>
+            <a href="inventario.html">Agregar nuevo producto</a>
+        </section>
+
+        <section>
+            <h2>Listado de productos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Macetero clásico</td>
+                        <td>$8.990</td>
+                        <td>12</td>
+                        <td>Activo</td>
+                        <td>
+                            <a href="inventario.html">Editar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Macetero moderno</td>
+                        <td>$8.990</td>
+                        <td>8</td>
+                        <td>Activo</td>
+                        <td>
+                            <a href="inventario.html">Editar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Macetero orgánico</td>
+                        <td>$9.990</td>
+                        <td>4</td>
+                        <td>Poco stock</td>
+                        <td>
+                            <a href="inventario.html">Editar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Ballena articulada</td>
+                        <td>$12.990</td>
+                        <td>3</td>
+                        <td>Poco stock</td>
+                        <td>
+                            <a href="inventario.html">Editar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Estrella sensorial</td>
+                        <td>$6.990</td>
+                        <td>20</td>
+                        <td>Activo</td>
+                        <td>
+                            <a href="inventario.html">Editar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <footer>
+
+        <div>
+            <a href="../index.html">
+                <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+                <span>BioForjaRC</span>
+            </a>
+            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+        </div>
+
+        <nav aria-label="Enlaces del sitio">
+            <h3>Enlaces</h3>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../productos.html">Productos</a></li>
+                <li><a href="../cotizacion.html">Cotización</a></li>
+                <li><a href="../contacto.html">Contacto</a></li>
+                <li><a href="index.html">Panel de administración</a></li>
+            </ul>
+        </nav>
+
+        <div>
+            <h3>Contacto</h3>
+            <ul>
+                <li>
+                    <img src="../../assets/imagenes/gps.png" alt="Ubicación">
+                    <span>Santiago, Chile</span>
+                </li>
+                <li>
+                    <img src="../../assets/imagenes/telefono.png" alt="Teléfono">
+                    <span>+56 9 1234 5678</span>
+                </li>
+                <li>
+                    <img src="../../assets/imagenes/gmail.webp" alt="Correo">
+                    <span>contacto@bioforjarc.cl</span>
+                </li>
+            </ul>
+        </div>
+
+        <p>&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
+
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Finaliza tu compra en BioForjaRC: ingresa tus datos de facturación, método de envío y pago.">
+    <meta name="author" content="BioForjaRC">
+    <title>BioForjaRC | Finalizar compra</title>
+</head>
+<body>
+
+    <header>
+        <a href="index.html">
+            <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+            <span>BioForjaRC</span>
+        </a>
+
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="cotizacion.html">Cotización</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="login.html">Ingresar</a></li>
+                <li><a href="registro.html">Registro</a></li>
+                <li><a href="carrito.html">Carrito</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section>
+            <h1>Finalizar compra</h1>
+            <p>Completa tus datos para generar la orden y el comprobante de compra.</p>
+        </section>
+
+        <section>
+            <h2>Resumen del pedido</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Macetero clásico</td>
+                        <td>1</td>
+                        <td>$8.990</td>
+                    </tr>
+                    <tr>
+                        <td>Perro articulado</td>
+                        <td>1</td>
+                        <td>$9.990</td>
+                    </tr>
+                    <tr>
+                        <td>Estrella sensorial</td>
+                        <td>2</td>
+                        <td>$13.980</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2">Subtotal productos</th>
+                        <th>$32.960</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Costo de envío</th>
+                        <th>$3.500</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Total a pagar</th>
+                        <th>$36.460</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+
+        <section>
+            <h2>Datos de facturación</h2>
+
+            <form action="#" method="post">
+
+                <fieldset>
+                    <legend>Dirección de despacho</legend>
+
+                    <p>
+                        <label for="nombre">Nombre completo *</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
+                    </p>
+
+                    <p>
+                        <label for="direccion">Dirección *</label>
+                        <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Siempre Viva 123" required>
+                    </p>
+
+                    <p>
+                        <label for="comuna">Comuna *</label>
+                        <input type="text" id="comuna" name="comuna" placeholder="Ej: Santiago Centro" required>
+                    </p>
+
+                    <p>
+                        <label for="region">Región *</label>
+                        <select id="region" name="region" required>
+                            <option value="">-- Selecciona una región --</option>
+                            <option value="metropolitana">Región Metropolitana</option>
+                            <option value="valparaiso">Región de Valparaíso</option>
+                            <option value="libgral">Región del Libertador General Bernardo O'Higgins</option>
+                            <option value="maule">Región del Maule</option>
+                            <option value="bio">Región del Biobío</option>
+                            <option value="araycan">Región de La Araucanía</option>
+                        </select>
+                    </p>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Tipo de documento</legend>
+                    <p>
+                        <label for="boleta">
+                            <input type="radio" id="boleta" name="documento" value="boleta" checked>
+                            Boleta
+                        </label>
+                    </p>
+                    <p>
+                        <label for="factura">
+                            <input type="radio" id="factura" name="documento" value="factura">
+                            Factura
+                        </label>
+                    </p>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Método de despacho</legend>
+                    <p>
+                        <label for="estandar">
+                            <input type="radio" id="estandar" name="despacho" value="estandar" checked>
+                            Envío estándar ($3.500)
+                        </label>
+                    </p>
+                    <p>
+                        <label for="express">
+                            <input type="radio" id="express" name="despacho" value="express">
+                            Envío express ($6.500)
+                        </label>
+                    </p>
+                    <p>
+                        <label for="retiro">
+                            <input type="radio" id="retiro" name="despacho" value="retiro">
+                            Retiro en tienda (sin costo)
+                        </label>
+                    </p>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Método de pago</legend>
+                    <p>
+                        <label for="tarjeta">
+                            <input type="radio" id="tarjeta" name="pago" value="tarjeta" checked>
+                            Tarjeta de crédito o débito
+                        </label>
+                    </p>
+                    <p>
+                        <label for="transferencia">
+                            <input type="radio" id="transferencia" name="pago" value="transferencia">
+                            Transferencia bancaria
+                        </label>
+                    </p>
+                </fieldset>
+
+                <p>
+                    <button type="submit">Confirmar compra y generar comprobante</button>
+                </p>
+
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+
+        <div>
+            <a href="index.html">
+                <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+                <span>BioForjaRC</span>
+            </a>
+            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+        </div>
+
+        <nav aria-label="Enlaces del sitio">
+            <h3>Enlaces</h3>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="cotizacion.html">Cotización</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="mi-cuenta.html">Mi cuenta</a></li>
+            </ul>
+        </nav>
+
+        <div>
+            <h3>Contacto</h3>
+            <ul>
+                <li>
+                    <img src="../assets/imagenes/gps.png" alt="Ubicación">
+                    <span>Santiago, Chile</span>
+                </li>
+                <li>
+                    <img src="../assets/imagenes/telefono.png" alt="Teléfono">
+                    <span>+56 9 1234 5678</span>
+                </li>
+                <li>
+                    <img src="../assets/imagenes/gmail.webp" alt="Correo">
+                    <span>contacto@bioforjarc.cl</span>
+                </li>
+            </ul>
+            <div>
+                <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
+                <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
+                <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"></a>
+            </div>
+        </div>
+
+        <div>
+            <h3>Administración</h3>
+            <ul>
+                <li><a href="admin/index.html">Panel de administración</a></li>
+            </ul>
+        </div>
+
+        <p>&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
+
+    </footer>
+
+</body>
+</html>
