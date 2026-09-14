@@ -309,3 +309,21 @@ tfoot th {
     background-color: var(--color-primario-claro);
     color: var(--color-blanco);
 }
+
+/* ---------------------------------------------------------
+   Mensajes de validación (js/validaciones.js)
+   --------------------------------------------------------- */
+.campo-error input,
+.campo-error select,
+.campo-error textarea {
+    border-color: #c62828 !important;
+    background-color: rgba(198, 40, 40, 0.05);
+}
+
+.mensaje-error {
+    display: block;
+    margin-top: 6px;
+    color: #c62828;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
