@@ -35,16 +35,16 @@
 
         <section>
             <h1>Mi cuenta</h1>
-            <p>Hola, Juan Pérez. Estos son tus datos y el historial de tus compras.</p>
+            <p id="saludo-cuenta">Hola, [usuario]. Estos son tus datos y el historial de tus compras.</p>
         </section>
 
         <section>
             <h2>Datos personales</h2>
-            <ul>
-                <li>Nombre: Juan Pérez</li>
-                <li>RUT: 12.345.678-9</li>
-                <li>Correo: juan@correo.cl</li>
-                <li>Teléfono: +56 9 1234 5678</li>
+            <ul id="lista-datos">
+                <li>Nombre: <span id="cuenta-nombre">—</span></li>
+                <li>RUT: <span id="cuenta-rut">—</span></li>
+                <li>Correo: <span id="cuenta-correo">—</span></li>
+                <li>Teléfono: <span id="cuenta-telefono">—</span></li>
             </ul>
             <p>
                 <a href="mi-cuenta.html">Editar mis datos</a>
@@ -53,8 +53,8 @@
 
         <section>
             <h2>Direcciones guardadas</h2>
-            <ul>
-                <li>Av. Siempre Viva 123, Santiago Centro, Región Metropolitana</li>
+            <ul id="lista-direcciones">
+                <li>Cargando direcciones...</li>
             </ul>
             <p>
                 <a href="mi-cuenta.html">Agregar nueva dirección</a>
@@ -73,33 +73,9 @@
                         <th>Comprobante</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="cuerpo-historial">
                     <tr>
-                        <td>10034</td>
-                        <td>2026-09-10</td>
-                        <td>$32.960</td>
-                        <td>En preparación</td>
-                        <td>
-                            <a href="mi-cuenta.html">Ver boleta</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10021</td>
-                        <td>2026-08-15</td>
-                        <td>$18.980</td>
-                        <td>Entregado</td>
-                        <td>
-                            <a href="mi-cuenta.html">Ver boleta</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10009</td>
-                        <td>2026-07-02</td>
-                        <td>$24.970</td>
-                        <td>Entregado</td>
-                        <td>
-                            <a href="mi-cuenta.html">Ver boleta</a>
-                        </td>
+                        <td colspan="5">Cargando pedidos...</td>
                     </tr>
                 </tbody>
             </table>
@@ -163,5 +139,7 @@
 
     </footer>
 
+<script src="../js/auth.js" defer></script>
+<script src="../js/main.js" defer></script>
 </body>
 </html>

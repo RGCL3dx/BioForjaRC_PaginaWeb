@@ -363,17 +363,37 @@
         var carrito = leerCarrito();
         var numeroOrden = 'BF-' + Date.now().toString().slice(-8);
         var filas = [];
+        var items = [];
+        var subtotal = 0;
 
         for (var i = 0; i < carrito.length; i++) {
             var producto = carrito[i];
-            filas.push(producto.titulo + ' x' + producto.cantidad + ' = ' + formatearPrecio(producto.precio * producto.cantidad));
+            var subtotalFila = producto.precio * producto.cantidad;
+            subtotal += subtotalFila;
+            filas.push(producto.titulo + ' x' + producto.cantidad + ' = ' + formatearPrecio(subtotalFila));
+            items.push({
+                titulo: producto.titulo,
+                cantidad: parseInt(producto.cantidad, 10),
+                precio: producto.precio,
+                subtotal: subtotalFila
+            });
         }
+
+        var despachoActivo = document.querySelector('input[name="despacho"]:checked');
+        var pagoActivo = document.querySelector('input[name="pago"]:checked');
+        var costoEnvio = despachoActivo ? COSTOS_ENVIO[despachoActivo.value] : COSTOS_ENVIO.estandar;
 
         return {
             orden: numeroOrden,
             detalle: filas.join('\n'),
+            items: items,
             fecha: new Date().toLocaleDateString('es-CL'),
-            envio: 'Confirmado'
+            subtotal: subtotal,
+            costoEnvio: costoEnvio,
+            total: subtotal + costoEnvio,
+            despacho: despachoActivo ? despachoActivo.value : 'estandar',
+            pago: pagoActivo ? pagoActivo.value : 'tarjeta',
+            estado: 'En preparación'
         };
     }
 
@@ -406,10 +426,19 @@
             var formCheckout = document.querySelector('.formulario-checkout') || checkout.closest('main').querySelector('form');
             if (formCheckout) {
                 formCheckout.addEventListener('submit', function (evento) {
+                    if (!window.BioForjaAuth || !BioForjaAuth.estaLogueado()) {
+                        evento.preventDefault();
+                        alert('Debes iniciar sesión para completar tu compra.');
+                        window.location.href = 'login.html';
+                        return;
+                    }
                     var orden = construirComprobante();
+                    BioForjaAuth.guardarPedido(orden);
                     guardarCarrito([]);
                     actualizarBadge();
-                    alert('¡Compra confirmada!\nN° de orden: ' + orden.orden + '\n\n' + orden.detalle + '\n\nGracias por reciclar con BioForjaRC.');
+                    alert('¡Compra confirmada!\nN° de orden: ' + orden.orden + '\n\n' + orden.detalle +
+                        '\n\nTotal: ' + formatearPrecio(orden.total) +
+                        '\n\nGracias por reciclar con BioForjaRC.');
                 });
             }
         }

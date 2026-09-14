@@ -29,13 +29,9 @@ main table {
     margin: 20px 0;
 }
 
-main td:last-child a {
-    font-weight: 700;
-    color: var(--color-primario);
-}
-
-main td:last-child a:hover {
-    color: var(--color-primario-oscuro);
+#tabla-pedidos button {
+    font-size: 0.85rem;
+    padding: 8px 14px;
 }
 
 /* Detalle de un pedido */
@@ -62,4 +58,18 @@ main section:nth-of-type(3) article ul {
 
 main section:nth-of-type(3) article p:last-of-type {
     font-weight: 700;
+}
+
+#detalle-pedido p > label {
+    margin-bottom: 0;
+}
+
+#estado-pedido {
+    width: auto;
+    padding: 8px 12px;
+}
+
+#detalle-pedido button {
+    font-size: 0.85rem;
+    padding: 8px 14px;
 }

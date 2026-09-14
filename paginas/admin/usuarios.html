@@ -33,18 +33,15 @@
 
         <section>
             <h1>Administración de usuarios</h1>
-            <p>Consulta el listado de cuentas registradas y gestiona el estado de cada perfil.</p>
+            <p>Consulta el listado de cuentas registradas, edita sus datos y gestiona el estado de cada perfil.</p>
         </section>
 
         <section>
-            <h2>Buscador por correo</h2>
-            <form action="#" method="get">
-                <p>
-                    <label for="buscar">Buscar usuario por correo</label>
-                    <input type="search" id="buscar" name="buscar" placeholder="Ej: juan@correo.cl">
-                </p>
-                <button type="submit">Buscar</button>
-            </form>
+            <h2>Buscador</h2>
+            <p>
+                <label for="buscar-usuario">Buscar por nombre o correo</label>
+                <input type="search" id="buscar-usuario" placeholder="Ej: juan@correo.cl">
+            </p>
         </section>
 
         <section>
@@ -60,49 +57,62 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tabla-usuarios">
                     <tr>
-                        <td>1</td>
-                        <td>Juan Pérez</td>
-                        <td>juan@correo.cl</td>
-                        <td>Cliente</td>
-                        <td>Activo</td>
-                        <td>
-                            <a href="usuarios.html">Desactivar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>María Soto</td>
-                        <td>maria@correo.cl</td>
-                        <td>Cliente</td>
-                        <td>Activo</td>
-                        <td>
-                            <a href="usuarios.html">Desactivar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Pedro Díaz</td>
-                        <td>pedro@correo.cl</td>
-                        <td>Cliente</td>
-                        <td>Inactivo</td>
-                        <td>
-                            <a href="usuarios.html">Activar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Ronald Cerda</td>
-                        <td>admin@bioforjarc.cl</td>
-                        <td>Administrador</td>
-                        <td>Activo</td>
-                        <td>
-                            <a href="usuarios.html">Editar</a>
-                        </td>
+                        <td colspan="6">Cargando usuarios...</td>
                     </tr>
                 </tbody>
             </table>
+        </section>
+
+        <section id="seccion-editar-usuario">
+            <h2>Editar usuario</h2>
+
+            <form id="form-editar-usuario" action="#">
+
+                <input type="hidden" id="edit-id" name="edit-id" value="">
+
+                <p class="aviso-sesion" style="display:none;">
+                    Estás editando tu propia cuenta: el rol y el estado no se pueden modificar mientras estés conectado.
+                </p>
+
+                <p>
+                    <label for="edit-nombre">Nombre completo *</label>
+                    <input type="text" id="edit-nombre" name="edit-nombre" required>
+                </p>
+
+                <p>
+                    <label for="edit-correo">Correo electrónico *</label>
+                    <input type="email" id="edit-correo" name="edit-correo" required>
+                </p>
+
+                <p>
+                    <label for="edit-telefono">Teléfono</label>
+                    <input type="tel" id="edit-telefono" name="edit-telefono">
+                </p>
+
+                <p>
+                    <label for="edit-rol">Rol</label>
+                    <select id="edit-rol" name="edit-rol">
+                        <option value="cliente">Cliente</option>
+                        <option value="administrador">Administrador</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="edit-estado">Estado</label>
+                    <select id="edit-estado" name="edit-estado">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </p>
+
+                <p>
+                    <button type="submit">Guardar cambios</button>
+                    <button type="reset">Limpiar</button>
+                </p>
+
+            </form>
         </section>
 
     </main>
@@ -150,5 +160,8 @@
 
     </footer>
 
+<script src="../../js/auth.js" defer></script>
+<script src="../../js/productos.js" defer></script>
+<script src="../../js/admin.js" defer></script>
 </body>
 </html>

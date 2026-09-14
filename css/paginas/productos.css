@@ -48,10 +48,35 @@ main section[id] > h2::after {
     border-radius: 2px;
 }
 
-/* Secciones de categoría como grid */
-main section[id] {
+/* Secciones de categoría: grid de tarjetas (render dinámico) */
+.grid-productos {
     display: grid;
     grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+/* Disponibilidad de stock */
+main section[id] article .stock-producto {
+    margin: 0 16px 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+main section[id] article .stock-producto.agotado {
+    color: #c62828;
+}
+
+.etiqueta-agotado {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: var(--radio-boton);
+    background-color: var(--color-gris-claro);
+    color: var(--color-gris);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    font-size: 0.9rem;
 }
 
 /* Tarjetas de producto */
@@ -142,14 +167,13 @@ main section:last-of-type a {
 
 /* Responsive: grid de tarjetas */
 @media (min-width: 641px) {
-    main section[id] {
+    .grid-productos {
         grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
     }
 }
 
 @media (min-width: 1000px) {
-    main section[id] {
+    .grid-productos {
         grid-template-columns: repeat(3, 1fr);
     }
 }

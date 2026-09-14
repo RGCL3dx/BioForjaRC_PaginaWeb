@@ -329,6 +329,37 @@ tfoot th {
 }
 
 /* ---------------------------------------------------------
+   Autenticación (js/auth.js)
+   --------------------------------------------------------- */
+/* Saludo de usuario en la navegación */
+.saludo-usuario {
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-gris);
+    padding: 8px 2px;
+    white-space: nowrap;
+}
+
+.saludo-usuario strong {
+    color: var(--color-primario-oscuro);
+}
+
+/* Aviso de credenciales / sesión en formularios */
+.aviso-auth {
+    max-width: 640px;
+    margin: 20px auto 0;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background-color: rgba(255, 179, 0, 0.12);
+    border: 1px solid var(--color-acento);
+    color: var(--color-primario-oscuro);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* ---------------------------------------------------------
    Interacción de la tienda (js/main.js)
    --------------------------------------------------------- */
 /* Contador de productos en el header */

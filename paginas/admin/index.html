@@ -41,22 +41,22 @@
 
             <article>
                 <h3>Ventas del mes</h3>
-                <p><strong>$1.245.600</strong></p>
+                <p><strong id="m-ventas">—</strong></p>
             </article>
 
             <article>
                 <h3>Pedidos activos</h3>
-                <p><strong>18</strong></p>
+                <p><strong id="m-pedidos">—</strong></p>
             </article>
 
             <article>
                 <h3>Productos en stock</h3>
-                <p><strong>42</strong></p>
+                <p><strong id="m-productos">—</strong></p>
             </article>
 
             <article>
                 <h3>Usuarios registrados</h3>
-                <p><strong>156</strong></p>
+                <p><strong id="m-usuarios">—</strong></p>
             </article>
         </section>
 
@@ -70,7 +70,7 @@
         </section>
 
         <section>
-            <h2>Top 5 productos más vendidos</h2>
+            <h2>Top 5 productos más vendidos (según pedidos reales)</h2>
             <table>
                 <thead>
                     <tr>
@@ -79,31 +79,9 @@
                         <th>Ingresos</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="cuerpo-top">
                     <tr>
-                        <td>Macetero clásico</td>
-                        <td>32</td>
-                        <td>$287.680</td>
-                    </tr>
-                    <tr>
-                        <td>Perro articulado</td>
-                        <td>27</td>
-                        <td>$269.730</td>
-                    </tr>
-                    <tr>
-                        <td>Estrella sensorial</td>
-                        <td>24</td>
-                        <td>$167.760</td>
-                    </tr>
-                    <tr>
-                        <td>Conejo articulado</td>
-                        <td>19</td>
-                        <td>$189.810</td>
-                    </tr>
-                    <tr>
-                        <td>Cubo sensorial</td>
-                        <td>15</td>
-                        <td>$119.850</td>
+                        <td colspan="3">Cargando...</td>
                     </tr>
                 </tbody>
             </table>
@@ -154,5 +132,8 @@
 
     </footer>
 
+<script src="../../js/auth.js" defer></script>
+<script src="../../js/productos.js" defer></script>
+<script src="../../js/admin.js" defer></script>
 </body>
 </html>

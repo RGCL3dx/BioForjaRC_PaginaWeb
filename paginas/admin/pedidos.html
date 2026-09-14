@@ -33,7 +33,7 @@
 
         <section>
             <h1>Pedidos</h1>
-            <p>Revisa el estado de las compras y cotizaciones de tus clientes.</p>
+            <p>Revisa las compras reales que han hecho los clientes y actualiza su estado de despacho.</p>
         </section>
 
         <section>
@@ -49,46 +49,9 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tabla-pedidos">
                     <tr>
-                        <td>10034</td>
-                        <td>juan@correo.cl</td>
-                        <td>2026-09-10</td>
-                        <td>$32.960</td>
-                        <td>En preparación</td>
-                        <td>
-                            <a href="index.html">Ver detalle</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10033</td>
-                        <td>maria@correo.cl</td>
-                        <td>2026-09-09</td>
-                        <td>$45.980</td>
-                        <td>Despachado</td>
-                        <td>
-                            <a href="index.html">Ver detalle</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10032</td>
-                        <td>pedro@correo.cl</td>
-                        <td>2026-09-08</td>
-                        <td>$12.990</td>
-                        <td>Entregado</td>
-                        <td>
-                            <a href="index.html">Ver detalle</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10031</td>
-                        <td>ana@correo.cl</td>
-                        <td>2026-09-07</td>
-                        <td>$18.980</td>
-                        <td>Cancelado</td>
-                        <td>
-                            <a href="index.html">Ver detalle</a>
-                        </td>
+                        <td colspan="6">Cargando pedidos...</td>
                     </tr>
                 </tbody>
             </table>
@@ -96,19 +59,8 @@
 
         <section>
             <h2>Detalle del pedido</h2>
-
-            <article>
-                <h3>Orden N° 10034</h3>
-                <p>Cliente: juan@correo.cl</p>
-                <p>Fecha: 2026-09-10</p>
-                <ul>
-                    <li>1x Macetero clásico - $8.990</li>
-                    <li>1x Perro articulado - $9.990</li>
-                    <li>2x Estrella sensorial - $13.980</li>
-                </ul>
-                <p><strong>Total: $32.960</strong></p>
-                <p>Método de pago: Tarjeta de crédito</p>
-                <p>Despacho: Envío estándar</p>
+            <article id="detalle-pedido">
+                <p>Selecciona un pedido para ver su detalle.</p>
             </article>
         </section>
 
@@ -157,5 +109,8 @@
 
     </footer>
 
+<script src="../../js/auth.js" defer></script>
+<script src="../../js/productos.js" defer></script>
+<script src="../../js/admin.js" defer></script>
 </body>
 </html>
