@@ -1,19 +1,15 @@
 /* =========================================================
    BioForjaRC - carrito.css
    Carrito de compras: tarjetas de producto y resumen
-   (se apoya en Bootstrap; aquí los ajustes de marca y la
-    cuadrícula de las tarjetas que renderiza js/main.js)
    ========================================================= */
 
-/* Sección de productos seleccionados: la pinta js/main.js.
-   El contenedor actúa como grilla de cards. */
 .productos-carrito {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
+    gap: 1.5rem;
     max-width: var(--ancho-maximo);
     margin: 0 auto;
-    padding: 40px 16px;
+    padding: 2.5rem 1rem;
 }
 
 .productos-carrito h2 {
@@ -21,23 +17,20 @@
     text-align: center;
 }
 
-/* Imágenes de las cards del carrito */
 .productos-carrito article img.card-img-top {
-    height: 200px;
+    height: 12.5rem;
     object-fit: cover;
 }
 
-/* Precio unitario */
 .productos-carrito .card-text {
     color: var(--color-gris);
 }
 
-/* Subtotal de cada producto */
 .subtotal-item {
     color: var(--color-primario);
+    font-weight: 700;
 }
 
-/* Resumen de la compra */
 .resumen-carrito .table {
     margin-bottom: 0;
 }
@@ -45,4 +38,76 @@
 .resumen-carrito tfoot th {
     color: var(--color-primario-oscuro);
     font-size: 1.1rem;
+}
+
+/* Tabla del carrito con hover */
+.tabla-carrito tbody tr:hover {
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+/* Botones del carrito */
+.btn-carrito-agregar {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-carrito-agregar:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+.btn-carrito-agregar.btn-outline-success {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+}
+
+.btn-carrito-agregar.btn-outline-success:hover {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+/* Botón de eliminar en carrito */
+.btn-carrito-eliminar {
+    border-color: #c62828;
+    color: #c62828;
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-carrito-eliminar:hover {
+    background-color: #c62828;
+    color: var(--color-blanco);
+}
+
+/* Mensaje de carrito vacío mejorado */
+.carrito-vacio {
+    background-color: var(--color-blanco);
+    border: 2px dashed var(--color-gris-claro);
+    border-radius: var(--radius-borde);
+}
+
+.carrito-vacio a {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-weight: 700;
+    color: var(--color-oliva);
+}
+
+.carrito-vacio a:hover {
+    color: var(--color-primario);
+}
+
+/* Resumen de compra con shadow */
+.resumen-carrito .card {
+    box-shadow: var(--sombra);
+    border: none;
+    border-radius: var(--radius-borde);
 }

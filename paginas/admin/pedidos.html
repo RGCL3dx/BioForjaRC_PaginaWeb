@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="../../css/paginas/admin/pedidos.css">
 </head>
 <body>
-
+    
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" aria-label="Navegación de administración">
             <div class="container">
                 <a href="../index.html" class="navbar-brand d-flex align-items-center gap-2" aria-label="Ir al inicio de BioForjaRC">
-                    <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:40px;height:40px;object-fit:contain;border:2px solid #4CAF50;">
+                    <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                     <span class="fw-bold">BioForja<span class="text-warning">RC</span> <span class="badge text-bg-warning text-dark">Admin</span></span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navAdmin" aria-controls="navAdmin" aria-expanded="false" aria-label="Abrir menú de administración">
@@ -49,7 +49,7 @@
             <div class="container">
                 <h2 class="text-center mb-4">Listado de pedidos</h2>
                 <div class="table-responsive">
-                    <table class="table table-striped align-middle shadow-sm bg-white rounded">
+                    <table class="table table-striped align-middle shadow-sm bg-white rounded tabla-pedidos">
                         <thead class="table-success">
                             <tr>
                                 <th scope="col">Orden</th>
@@ -76,7 +76,7 @@
                     <div class="col-lg-8">
                         <div class="card card-body shadow-sm p-4">
                             <h2 class="text-center mb-4">Detalle del pedido</h2>
-                            <div id="detalle-pedido">
+                            <div id="detalle-pedido" class="detalle-pedido-container">
                                 <p>Selecciona un pedido de la tabla para ver su detalle.</p>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
 
                 <div class="col-lg-4">
                     <a href="../index.html" class="d-flex align-items-center gap-2 text-decoration-none mb-3">
-                        <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:44px;height:44px;object-fit:contain;border:2px solid rgba(255,255,255,0.5);">
+                        <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                         <span class="fw-bold text-white fs-5">BioForja<span class="text-warning">RC</span></span>
                     </a>
                     <p class="text-light">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
@@ -114,15 +114,15 @@
                     <h3 class="text-white mb-3">Contacto</h3>
                     <ul class="list-unstyled">
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../../assets/imagenes/gps.png" alt="Ubicación" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../../assets/imagenes/gps.png" alt="Ubicación" class="img-brand">
                             <span>Santiago, Chile</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../../assets/imagenes/telefono.png" alt="Teléfono" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../../assets/imagenes/telefono.png" alt="Teléfono" class="img-brand">
                             <span>+56 9 1234 5678</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../../assets/imagenes/gmail.webp" alt="Correo" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../../assets/imagenes/gmail.webp" alt="Correo" class="img-brand">
                             <span>contacto@bioforjarc.cl</span>
                         </li>
                     </ul>

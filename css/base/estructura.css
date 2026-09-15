@@ -1,24 +1,15 @@
 /* =========================================================
    BioForjaRC - estructura.css
    Maquetación de apoyo (se apoya en Bootstrap para navbar,
-   grid, cards y footer; aquí solo ajustes de marca)
+   grid, cards y footer)
    ========================================================= */
 
-/* ---------------------------------------------------------
-   MAIN (mínimo para empujar el footer al final)
-   --------------------------------------------------------- */
-main {
-    min-height: 60vh;
-}
-
-/* Compensa la navbar fija (56px) en páginas interiores */
+/* Main: compensa la navbar fija */
 main.pt-5 {
     padding-top: 76px;
 }
 
-/* ---------------------------------------------------------
-   HERO (portada)
-   --------------------------------------------------------- */
+/* Hero (portada) */
 .hero {
     background-image: linear-gradient(
         to right,
@@ -29,31 +20,44 @@ main.pt-5 {
     background-position: center;
     background-attachment: fixed;
     color: var(--color-blanco);
-    padding: 160px 0 140px;
+    padding: 10rem 0 8rem;
     text-align: center;
     margin-top: 56px;
 }
 
 .hero-contenido {
-    max-width: 760px;
+    max-width: 48rem;
     margin: 0 auto;
 }
 
 .hero h1 {
     color: var(--color-blanco);
     font-size: 2.6rem;
-    margin-bottom: 18px;
+    margin-bottom: 1.125rem;
 }
 
 .hero p {
     font-size: 1.15rem;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
     color: rgba(255, 255, 255, 0.92);
 }
 
-/* ---------------------------------------------------------
-   Tarjetas de categoría (portada): hover de marca sobre card
-   --------------------------------------------------------- */
+/* Secciones con fondo alterno */
+.seccion-fondo {
+    background-color: var(--color-gris-claro);
+}
+
+/* Responsive del hero */
+@media (max-width: 640px) {
+    .hero {
+        padding: 8rem 0 4rem;
+    }
+    .hero h1 {
+        font-size: 1.9rem;
+    }
+}
+
+/* Tarjetas de categoría: hover de marca sobre card */
 .tarjeta-categoria {
     transition: transform var(--transicion), box-shadow var(--transicion);
     overflow: hidden;
@@ -65,26 +69,26 @@ main.pt-5 {
 }
 
 .tarjeta-categoria .card-img-top {
-    height: 210px;
+    height: 14rem;
     object-fit: cover;
 }
 
-/* ---------------------------------------------------------
-   Secciones con fondo alterno
-   --------------------------------------------------------- */
-.seccion-fondo {
-    background-color: var(--color-gris-claro);
+/* Sección destacada */
+.seccion-destacada {
+    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-oscuro));
+    color: var(--color-blanco);
+    border-radius: var(--radius-borde);
+    padding: 2.5rem;
 }
 
-/* ---------------------------------------------------------
-   RESPONSIVE del hero
-   --------------------------------------------------------- */
-@media (max-width: 640px) {
-    .hero {
-        padding: 120px 0 72px;
-    }
+.seccion-destacada h2 {
+    color: var(--color-blanco);
+}
 
-    .hero h1 {
-        font-size: 1.9rem;
-    }
+.seccion-destacada h2::after {
+    background-color: var(--color-acento);
+}
+
+.seccion-destacada p {
+    color: rgba(255, 255, 255, 0.92);
 }

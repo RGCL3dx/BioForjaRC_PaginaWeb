@@ -1,6 +1,8 @@
-/* BioForjaRC - contacto.css — toques de marca sobre Bootstrap */
+/* =========================================================
+   BioForjaRC - contacto.css
+   Toques de marca sobre Bootstrap
+   ========================================================= */
 
-/* Tarjetas de info de contacto */
 main section:nth-of-type(2) .card {
     border-top: 4px solid var(--color-primario);
     transition: transform var(--transicion);
@@ -10,11 +12,16 @@ main section:nth-of-type(2) .card:hover {
     transform: translateY(-5px);
 }
 
-/* Redes sociales pills */
 main section:nth-of-type(4) .list-inline-item a {
     transition: all var(--transicion);
 }
 
 main section:nth-of-type(4) .list-inline-item a:hover {
     transform: translateY(-3px);
+}
+
+/* Formulario de contacto */
+.formulario-contacto .form-control:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
 }

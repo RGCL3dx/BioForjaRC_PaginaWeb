@@ -1,11 +1,64 @@
 /* =========================================================
    BioForjaRC - cotizacion.css
    Formulario de solicitud de cotización personalizada
-   (Bootstrap aporta forms y cards; aquí la marca)
    ========================================================= */
 
-/* Fieldsets del formulario */
 main fieldset {
     border: 2px solid rgba(46, 125, 50, 0.2) !important;
     background-color: rgba(246, 249, 246, 0.6);
+}
+
+/* Formulario de cotización con foco de marca */
+.formulario-cotizacion .form-control:focus,
+.formulario-cotizacion .form-select:focus,
+.formulario-cotizacion textarea:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+}
+
+/* Fieldsets de cotización con bordes redondeados */
+main fieldset {
+    border-radius: var(--radius-borde);
+}
+
+/* Select personalizado */
+.formulario-cotizacion .form-select {
+    border-radius: var(--radius-borde);
+}
+
+.formulario-cotizacion .form-select:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+}
+
+/* Botón de envío de cotización */
+.btn-cotizar-enviar {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-cotizar-enviar:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+.btn-cotizar-limpiar {
+    border-color: var(--color-gris);
+    color: var(--color-gris);
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-cotizar-limpiar:hover {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+    background-color: rgba(46, 125, 50, 0.05);
 }

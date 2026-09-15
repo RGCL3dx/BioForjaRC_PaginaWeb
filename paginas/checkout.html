@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="../css/paginas/checkout.css">
 </head>
 <body>
-
+    
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" aria-label="Navegación principal">
             <div class="container">
                 <a href="index.html" class="navbar-brand d-flex align-items-center gap-2" aria-label="Ir al inicio de BioForjaRC">
-                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:40px;height:40px;object-fit:contain;border:2px solid #4CAF50;">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                     <span class="fw-bold">BioForja<span class="text-warning">RC</span></span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPrincipal" aria-controls="navPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
@@ -33,8 +33,8 @@
                         <li class="nav-item"><a href="login.html" class="nav-link">Ingresar</a></li>
                         <li class="nav-item"><a href="registro.html" class="nav-link">Registrarse</a></li>
                     </ul>
-                    <a href="carrito.html" class="btn btn-outline-light ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
-                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" style="width:22px;height:22px;object-fit:contain;">
+                    <a href="carrito.html" class="btn btn-outline-brand ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
+                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" class="img-brand">
                     </a>
                 </div>
             </div>
@@ -97,25 +97,25 @@
                         <h2 class="text-center mb-4">Datos de facturación</h2>
 
                         <form action="#" method="post" class="formulario-checkout card card-body shadow-sm p-4">
-                            <fieldset class="border rounded p-3 mb-4">
+                            <fieldset class="border rounded rounded-brand p-3 mb-4">
                                 <legend class="fw-bold ps-2 pe-2 w-auto">Dirección de despacho</legend>
 
-                                <p class="mb-3">
+                                <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre completo *</label>
                                     <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: Juan Pérez" autocomplete="name" required>
-                                </p>
+                                </div>
 
-                                <p class="mb-3">
+                                <div class="mb-3">
                                     <label for="direccion" class="form-label">Dirección *</label>
                                     <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Ej: Av. Siempre Viva 123" autocomplete="street-address" required>
-                                </p>
+                                </div>
 
-                                <p class="mb-3">
+                                <div class="mb-3">
                                     <label for="comuna" class="form-label">Comuna *</label>
                                     <input type="text" id="comuna" name="comuna" class="form-control" placeholder="Ej: Santiago Centro" autocomplete="address-level2" required>
-                                </p>
+                                </div>
 
-                                <p class="mb-3">
+                                <div class="mb-3">
                                     <label for="region" class="form-label">Región *</label>
                                     <select id="region" name="region" class="form-select" autocomplete="address-level1" required>
                                         <option value="">-- Selecciona una región --</option>
@@ -126,51 +126,51 @@
                                         <option value="bio">Región del Biobío</option>
                                         <option value="araycan">Región de La Araucanía</option>
                                     </select>
-                                </p>
+                                </div>
                             </fieldset>
 
-                            <fieldset class="border rounded p-3 mb-4">
+                            <fieldset class="border rounded rounded-brand p-3 mb-4">
                                 <legend class="fw-bold ps-2 pe-2 w-auto">Tipo de documento</legend>
-                                <p class="form-check">
+                                <div class="form-check">
                                     <input class="form-check-input" type="radio" id="boleta" name="documento" value="boleta" checked>
                                     <label class="form-check-label" for="boleta">Boleta</label>
-                                </p>
-                                <p class="form-check">
+                                </div>
+                                <div class="form-check">
                                     <input class="form-check-input" type="radio" id="factura" name="documento" value="factura">
                                     <label class="form-check-label" for="factura">Factura</label>
-                                </p>
+                                </div>
                             </fieldset>
 
-                            <fieldset class="border rounded p-3 mb-4">
+                            <fieldset class="border rounded rounded-brand p-3 mb-4">
                                 <legend class="fw-bold ps-2 pe-2 w-auto">Método de despacho</legend>
-                                <p class="form-check">
+                                <div class="form-check">
                                     <input class="form-check-input" type="radio" id="estandar" name="despacho" value="estandar" checked>
                                     <label class="form-check-label" for="estandar">Envío estándar ($3.500)</label>
-                                </p>
-                                <p class="form-check">
+                                </div>
+                                <div class="form-check">
                                     <input class="form-check-input" type="radio" id="express" name="despacho" value="express">
                                     <label class="form-check-label" for="express">Envío express ($6.500)</label>
-                                </p>
-                                <p class="form-check">
+                                </div>
+                                <div class="form-check">
                                     <input class="form-check-input" type="radio" id="retiro" name="despacho" value="retiro">
                                     <label class="form-check-label" for="retiro">Retiro en tienda (sin costo)</label>
-                                </p>
+                                </div>
                             </fieldset>
 
-                            <fieldset class="border rounded p-3 mb-4">
+                            <fieldset class="border rounded rounded-brand p-3 mb-4">
                                 <legend class="fw-bold ps-2 pe-2 w-auto">Método de pago</legend>
-                                <p class="form-check">
+                                <div class="form-check">
                                     <input class="form-check-input" type="radio" id="tarjeta" name="pago" value="tarjeta" checked>
                                     <label class="form-check-label" for="tarjeta">Tarjeta de crédito o débito</label>
-                                </p>
-                                <p class="form-check">
+                                </div>
+                                <div class="form-check">
                                     <input class="form-check-input" type="radio" id="transferencia" name="pago" value="transferencia">
                                     <label class="form-check-label" for="transferencia">Transferencia bancaria</label>
-                                </p>
+                                </div>
                             </fieldset>
 
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-success btn-lg">Confirmar compra y generar comprobante</button>
+                                <button type="submit" class="btn btn-brand btn-lg">Confirmar compra y generar comprobante</button>
                             </div>
                         </form>
                     </div>
@@ -186,7 +186,7 @@
 
                 <div class="col-lg-4">
                     <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none mb-3">
-                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:44px;height:44px;object-fit:contain;border:2px solid rgba(255,255,255,0.5);">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                         <span class="fw-bold text-white fs-5">BioForja<span class="text-warning">RC</span></span>
                     </a>
                     <p class="text-light">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
@@ -208,22 +208,22 @@
                     <h3 class="text-white mb-3">Contacto</h3>
                     <ul class="list-unstyled">
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/gps.png" alt="Ubicación" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/gps.png" alt="Ubicación" class="img-brand">
                             <span>Santiago, Chile</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" class="img-brand">
                             <span>+56 9 1234 5678</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/gmail.webp" alt="Correo" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/gmail.webp" alt="Correo" class="img-brand">
                             <span>contacto@bioforjarc.cl</span>
                         </li>
                     </ul>
                     <div class="d-flex gap-3 mt-3">
-                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" style="width:36px;height:36px;object-fit:contain;"></a>
-                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" style="width:36px;height:36px;object-fit:contain;"></a>
-                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" style="width:36px;height:36px;object-fit:contain;"></a>
+                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" class="img-brand"></a>
+                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" class="img-brand"></a>
+                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" class="img-brand"></a>
                     </div>
                 </div>
 

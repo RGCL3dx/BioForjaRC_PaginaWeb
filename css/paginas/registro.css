@@ -1,1 +1,57 @@
-/* BioForjaRC - registro.css — toques de marca sobre Bootstrap */
+/* =========================================================
+   BioForjaRC - registro.css
+   Formulario de registro de usuario
+   ========================================================= */
+
+/* Formulario de registro con foco de marca */
+.formulario-registro .form-control:focus,
+.formulario-registro .form-select:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+}
+
+/* Checkbox de términos */
+.formulario-registro .form-check-input:checked {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+
+/* Fieldsets del formulario de registro */
+main fieldset {
+    border: 2px solid rgba(46, 125, 50, 0.2) !important;
+    background-color: rgba(246, 249, 246, 0.6);
+    border-radius: var(--radius-borde);
+}
+
+/* Botón de crear cuenta */
+.btn-registrar-enviar {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-registrar-enviar:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+/* Card de registro */
+.card-registro {
+    border-top: 4px solid var(--color-primario);
+}
+
+/* Enlace de redirección */
+.enlace-registro {
+    font-weight: 600;
+    color: var(--color-primario);
+}
+
+.enlace-registro:hover {
+    color: var(--color-primario-oscuro);
+}

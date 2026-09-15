@@ -3,21 +3,19 @@
    Estilos específicos de la página de inicio (index.html)
    ========================================================= */
 
-/* Refuerzo visual del hero */
 .hero-contenido {
     background-color: rgba(0, 0, 0, 0.25);
-    border-radius: var(--radio-borde);
-    padding: 40px;
+    border-radius: var(--radius-borde);
+    padding: 2.5rem;
     backdrop-filter: blur(2px);
 }
 
-/* Tarjetas de categoría: imagen con zoom al pasar el mouse */
-.tarjeta-categoria img {
+.tarjeta-categoria .card-img-top {
     transition: transform var(--transicion);
 }
 
-.tarjeta-categoria:hover img {
-    transform: scale(1.06);
+.tarjeta-categoria:hover .card-img-top {
+    transform: scale(1.05);
 }
 
 .tarjeta-categoria h3::after {
@@ -25,7 +23,48 @@
     display: block;
     width: 48px;
     height: 3px;
-    margin: 8px auto 0;
+    margin: 0.5rem auto 0;
     background-color: var(--color-acento);
     border-radius: 2px;
+}
+
+/* Sección de proceso con lista numerada */
+.proceso-lista .list-group-item {
+    border: none;
+    padding: 0.75rem 1rem;
+}
+
+.proceso-lista .list-group-item::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    margin-right: 0.75rem;
+    background: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* CTA destacado */
+.cta-destacada {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: var(--radius-borde);
+    padding: 2rem;
+}
+
+.cta-destacada h2 {
+    color: var(--color-blanco);
+}
+
+.cta-destacada h2::after {
+    background-color: var(--color-acento);
+}
+
+.cta-destacada p {
+    color: rgba(255, 255, 255, 0.92);
 }

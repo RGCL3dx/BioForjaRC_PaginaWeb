@@ -16,4 +16,73 @@ header .navbar-nav > li > a[data-logout]:hover {
     color: var(--bs-nav-link-hover-color, #FFFFFF);
 }
 
-/* Íconos de contacto en el footer heredan la clase list-unstyled */
+/* Card de estadísticas del panel */
+.card-estadistica {
+    border-top: 4px solid var(--color-primario);
+    transition: transform var(--transicion);
+}
+
+.card-estadistica:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-fuerte);
+}
+
+.card-estadistica h3 {
+    color: var(--color-primario-oscuro);
+}
+
+.card-estadistica .fs-3 {
+    color: var(--color-primario);
+}
+
+/* Tabla de administración */
+.tabla-admin thead th {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.tabla-admin tbody tr:hover {
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+/* Botones de acción en admin */
+.btn-accion-admin {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.btn-accion-admin.btn-success {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.btn-accion-admin.btn-success:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+}
+
+.btn-accion-admin.btn-outline-primary {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+}
+
+.btn-accion-admin.btn-outline-primary:hover {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+/* Enlaces de acceso rápido */
+.btn-acceso-rapido {
+    border-radius: var(--radius-borde);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all var(--transicion);
+}
+
+.btn-acceso-rapido:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra);
+}

@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="../css/paginas/mi-cuenta.css">
 </head>
 <body>
-
+    
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" aria-label="Navegación principal">
             <div class="container">
                 <a href="index.html" class="navbar-brand d-flex align-items-center gap-2" aria-label="Ir al inicio de BioForjaRC">
-                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:40px;height:40px;object-fit:contain;border:2px solid #4CAF50;">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                     <span class="fw-bold">BioForja<span class="text-warning">RC</span></span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPrincipal" aria-controls="navPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
@@ -33,8 +33,8 @@
                         <li class="nav-item"><a href="login.html" class="nav-link">Ingresar</a></li>
                         <li class="nav-item"><a href="registro.html" class="nav-link">Registrarse</a></li>
                     </ul>
-                    <a href="carrito.html" class="btn btn-outline-light ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
-                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" style="width:22px;height:22px;object-fit:contain;">
+                    <a href="carrito.html" class="btn btn-outline-brand ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
+                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" class="img-brand">
                     </a>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="row g-4 justify-content-center">
 
                     <div class="col-md-6 col-lg-5">
-                        <div class="card shadow-sm h-100">
+                        <div class="card card-cuenta shadow-sm h-100">
                             <div class="card-body">
                                 <h2 class="card-title">Datos personales</h2>
                                 <ul class="list-group list-group-flush" id="lista-datos">
@@ -64,19 +64,19 @@
                                     <li class="list-group-item">Correo: <span id="cuenta-correo">—</span></li>
                                     <li class="list-group-item">Teléfono: <span id="cuenta-telefono">—</span></li>
                                 </ul>
-                                <a href="mi-cuenta.html" class="btn btn-outline-success mt-3">Editar mis datos</a>
+                                <a href="mi-cuenta.html" class="btn btn-outline-brand mt-3">Editar mis datos</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-lg-5">
-                        <div class="card shadow-sm h-100">
+                        <div class="card card-cuenta shadow-sm h-100">
                             <div class="card-body">
                                 <h2 class="card-title">Direcciones guardadas</h2>
                                 <ul class="list-group list-group-flush" id="lista-direcciones">
                                     <li class="list-group-item">Cargando direcciones...</li>
                                 </ul>
-                                <a href="mi-cuenta.html" class="btn btn-outline-success mt-3">Agregar nueva dirección</a>
+                                <a href="mi-cuenta.html" class="btn btn-outline-brand mt-3">Agregar nueva dirección</a>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
             <div class="container">
                 <h2 class="text-center mb-4">Historial de pedidos</h2>
                 <div class="table-responsive">
-                    <table class="table table-striped align-middle shadow-sm bg-white rounded">
+                    <table class="tabla-historial table table-striped align-middle shadow-sm bg-white rounded">
                         <thead class="table-success">
                             <tr>
                                 <th scope="col">N° Orden</th>
@@ -117,7 +117,7 @@
 
                 <div class="col-lg-4">
                     <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none mb-3">
-                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:44px;height:44px;object-fit:contain;border:2px solid rgba(255,255,255,0.5);">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                         <span class="fw-bold text-white fs-5">BioForja<span class="text-warning">RC</span></span>
                     </a>
                     <p class="text-light">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
@@ -139,22 +139,22 @@
                     <h3 class="text-white mb-3">Contacto</h3>
                     <ul class="list-unstyled">
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/gps.png" alt="Ubicación" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/gps.png" alt="Ubicación" class="img-brand">
                             <span>Santiago, Chile</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" class="img-brand">
                             <span>+56 9 1234 5678</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/gmail.webp" alt="Correo" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/gmail.webp" alt="Correo" class="img-brand">
                             <span>contacto@bioforjarc.cl</span>
                         </li>
                     </ul>
                     <div class="d-flex gap-3 mt-3">
-                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" style="width:36px;height:36px;object-fit:contain;"></a>
-                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" style="width:36px;height:36px;object-fit:contain;"></a>
-                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" style="width:36px;height:36px;object-fit:contain;"></a>
+                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" class="img-brand"></a>
+                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" class="img-brand"></a>
+                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" class="img-brand"></a>
                     </div>
                 </div>
 

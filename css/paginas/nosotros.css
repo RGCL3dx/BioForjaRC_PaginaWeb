@@ -1,10 +1,8 @@
 /* =========================================================
    BioForjaRC - nosotros.css
    Misión, visión, video y proceso de reciclaje
-   (Bootstrap aporta cards y grid; aquí van toques de marca)
    ========================================================= */
 
-/* Tarjetas de misión y visión */
 main section:nth-of-type(2) .card {
     border-top: 4px solid var(--color-primario);
     transition: transform var(--transicion);
@@ -18,14 +16,12 @@ main section:nth-of-type(2) .card-title {
     color: var(--color-primario);
 }
 
-/* Video embebido del proceso */
 main section:nth-of-type(3) .ratio {
-    max-width: 860px;
-    border-radius: var(--radio-borde);
+    max-width: 54rem;
+    border-radius: var(--radius-borde);
     box-shadow: var(--sombra-fuerte);
 }
 
-/* Tarjetas del proceso de reciclaje */
 main section:nth-of-type(4) .card {
     transition: transform var(--transicion), box-shadow var(--transicion);
 }
@@ -36,10 +32,34 @@ main section:nth-of-type(4) .card:hover {
 }
 
 main section:nth-of-type(4) .card-img-top {
-    height: 180px;
+    height: 11.25rem;
     object-fit: cover;
 }
 
 main section:nth-of-type(4) .card-title {
     color: var(--color-primario);
+}
+
+/* Tarjetas de proceso numeradas */
+.paso-card {
+    border-top: 4px solid var(--color-primario);
+    transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+.paso-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-fuerte);
+}
+
+.numero-paso {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 1rem;
 }

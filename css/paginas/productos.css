@@ -1,11 +1,8 @@
 /* =========================================================
    BioForjaRC - productos.css
    Catálogo de productos: filtros y tarjetas
-   (se apoya en los componentes de Bootstrap: cards, grid,
-   buttons; aquí van los ajustes de marca)
    ========================================================= */
 
-/* Filtros por categoría (botones pills) */
 main section:first-of-type nav .btn {
     border-width: 2px;
     font-weight: 600;
@@ -18,7 +15,6 @@ main section:first-of-type nav .btn:hover {
     transform: translateY(-2px);
 }
 
-/* Disponibilidad de stock dentro de las cards */
 .stock-producto {
     font-size: 0.85rem;
     font-weight: 700;
@@ -29,30 +25,27 @@ main section:first-of-type nav .btn:hover {
     color: #c62828;
 }
 
-/* Imágenes de las cards */
 main section[id] article img.card-img-top {
-    height: 220px;
+    height: 14rem;
     object-fit: cover;
 }
 
-/* Precio dentro de la card */
 main section[id] article p strong {
     display: inline-block;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     color: var(--color-primario);
     background: linear-gradient(135deg, rgba(46,125,50,0.10), rgba(76,175,80,0.10));
-    padding: 6px 18px;
+    padding: 0.375rem 1.125rem;
     border-radius: var(--radio-boton);
-    margin-top: 4px;
+    margin-top: 0.25rem;
 }
 
-/* Botones de la card a la medida de la marca */
-main section[id] article .btn-success {
+main section[id] article .btn-brand {
     background-color: var(--color-primario);
     border-color: var(--color-primario);
 }
 
-main section[id] article .btn-success:hover {
+main section[id] article .btn-brand:hover {
     background-color: var(--color-primario-oscuro);
     border-color: var(--color-primario-oscuro);
 }

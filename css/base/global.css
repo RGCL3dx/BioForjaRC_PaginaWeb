@@ -1,41 +1,23 @@
 /* =========================================================
    BioForjaRC - global.css
    Variables, reseteo, tipografías y estilos generales
-   (la interfaz visual la aporta Bootstrap; aquí quedan la
-    marca, la tipografía y las clases que usa el JavaScript)
    ========================================================= */
 
-/* Fuentes: se cargan aquí para que toda página que enlace
-   global.css tenga la tipografía de marca */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap');
 
-/* ---------------------------------------------------------
-   Paleta de colores deducida del logo (reciclaje + tecnología)
-   --------------------------------------------------------- */
 :root {
-    /* Verdes ecológicos (marca principal) */
     --color-primario:        #2E7D32;
     --color-primario-oscuro: #1B5E20;
     --color-primario-claro:  #4CAF50;
-
-    /* Verde oliva de reciclaje */
     --color-oliva:           #6B8F3B;
-
-    /* Color de acento (llamados a la acción) */
     --color-acento:          #FFB300;
-
-    /* Neutros y contrastes */
     --color-tinta:           #1B241B;
     --color-gris:            #5B6B79;
     --color-gris-claro:      #E8EEE8;
     --color-fondo:           #F6F9F6;
     --color-blanco:          #FFFFFF;
-
-    /* Tipografías */
     --fuente-principal: 'Montserrat', 'Segoe UI', sans-serif;
     --fuente-texto: 'Open Sans', 'Segoe UI', sans-serif;
-
-    /* Métricas reutilizables */
     --radio-borde:    12px;
     --radio-boton:    50px;
     --sombra:         0 4px 14px rgba(27, 36, 27, 0.10);
@@ -44,9 +26,6 @@
     --ancho-maximo:   1200px;
 }
 
-/* ---------------------------------------------------------
-   Reseteo básico
-   --------------------------------------------------------- */
 *,
 *::before,
 *::after {
@@ -66,14 +45,52 @@ body {
     min-height: 100vh;
 }
 
-img {
+img,
+svg {
     max-width: 100%;
+    height: auto;
+}
+
+/* Logo general de la marca (máx. 160px) */
+.logo-bioforja {
+    max-width: 160px;
+    width: auto;
+    height: auto;
+}
+
+/* Logo compacto dentro de la navbar */
+.navbar-brand .logo-bioforja {
+    max-width: 48px;
+    max-height: 48px;
+    border: 2px solid var(--color-primario-claro);
+}
+
+/* Ícono del carrito en la navbar */
+.icono-carrito {
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    object-fit: contain;
+}
+
+/* Íconos de comunicación/redes del footer (30-35px) */
+.icono-contacto,
+.icono-redes {
+    width: 32px;
+    height: 32px;
+    max-width: 32px;
+    max-height: 32px;
+    object-fit: contain;
+    flex: 0 0 auto;
+}
+
+/* Imágenes de contenido no deben desbordar su contenedor */
+main img {
     display: block;
 }
 
 a {
-    color: var(--color-primario);
-    text-decoration: none;
     transition: color var(--transicion);
 }
 
@@ -81,46 +98,20 @@ a:hover {
     color: var(--color-primario-oscuro);
 }
 
-/* ---------------------------------------------------------
-   Títulos
-   --------------------------------------------------------- */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--fuente-principal);
     line-height: 1.25;
     color: var(--color-primario-oscuro);
 }
 
-h1 {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
-}
+h1 { font-size: 2.2rem; margin-bottom: 1rem; }
+h2 { font-size: 1.8rem; margin-bottom: 1.25rem; }
+h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+p  { margin-bottom: 0.75rem; }
 
-h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
-
-h3 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-}
-
-p {
-    margin-bottom: 12px;
-}
-
-/* ---------------------------------------------------------
-   Títulos de sección: subrayado de acento sobre Bootstrap
-   (se excluyen los títulos dentro de cards)
-   --------------------------------------------------------- */
 main section h2:not(.card-title) {
     position: relative;
-    padding-bottom: 14px;
+    padding-bottom: 0.875rem;
 }
 
 main section h2:not(.card-title)::after {
@@ -128,22 +119,15 @@ main section h2:not(.card-title)::after {
     display: block;
     width: 72px;
     height: 4px;
-    margin: 10px auto 0;
+    margin: 0.625rem auto 0;
     background: var(--color-acento);
     border-radius: 2px;
 }
 
-/* ---------------------------------------------------------
-   Utilidades
-   --------------------------------------------------------- */
-.texto-centrado {
-    text-align: center;
-}
+/* Utilidades */
+.texto-centrado { text-align: center; }
 
-/* ---------------------------------------------------------
-   Mensajes de validación (js/validaciones.js y js/auth.js)
-   Se apoyan en Bootstrap (.is-invalid, .invalid-feedback)
-   --------------------------------------------------------- */
+/* Mensajes de validación */
 .campo-error input,
 .campo-error select,
 .campo-error textarea {
@@ -153,30 +137,22 @@ main section h2:not(.card-title)::after {
 
 .mensaje-error {
     display: block;
-    margin-top: 6px;
+    margin-top: 0.375rem;
     color: #c62828;
     font-size: 0.85rem;
     font-weight: 600;
 }
 
-/* ---------------------------------------------------------
-   Autenticación (js/auth.js)
-   --------------------------------------------------------- */
-/* Saludo de usuario en la navegación */
+/* Autenticación */
 .saludo-usuario {
     font-family: var(--fuente-principal);
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--color-gris);
-    padding: 8px 2px;
+    padding: 0.5rem 0.25rem;
     white-space: nowrap;
 }
 
-.saludo-usuario strong {
-    color: var(--color-primario-oscuro);
-}
-
-/* Dentro de la navbar oscura de Bootstrap */
 .navbar .saludo-usuario {
     color: rgba(255, 255, 255, 0.85);
     display: flex;
@@ -185,10 +161,9 @@ main section h2:not(.card-title)::after {
 
 .navbar .saludo-usuario strong {
     color: var(--color-blanco);
-    margin-left: 4px;
+    margin-left: 0.25rem;
 }
 
-/* Enlace "Cerrar sesión" inyectado por js/auth.js en la navbar */
 .navbar-nav > li > a[data-logout] {
     display: block;
     padding: var(--bs-nav-link-padding-y, 0.5rem) var(--bs-nav-link-padding-x, 1rem);
@@ -202,12 +177,11 @@ main section h2:not(.card-title)::after {
     color: var(--color-blanco) !important;
 }
 
-/* Aviso de credenciales / sesión en formularios */
 .aviso-auth {
     max-width: 640px;
-    margin: 20px auto 0;
-    padding: 14px 18px;
-    border-radius: 10px;
+    margin: 1.25rem auto 0;
+    padding: 0.875rem 1.125rem;
+    border-radius: var(--radius, 10px);
     background-color: rgba(255, 179, 0, 0.12);
     border: 1px solid var(--color-acento);
     color: var(--color-primario-oscuro);
@@ -216,10 +190,7 @@ main section h2:not(.card-title)::after {
     text-align: center;
 }
 
-/* ---------------------------------------------------------
-   Interacción de la tienda (js/main.js)
-   --------------------------------------------------------- */
-/* Contador de productos en el header */
+/* Interacción de la tienda */
 .contador-carrito {
     display: inline-flex;
     align-items: center;
@@ -238,22 +209,21 @@ main section h2:not(.card-title)::after {
     right: -8px;
 }
 
-/* Notificación al agregar/quitar productos */
 .aviso-carrito {
     position: fixed;
-    right: 20px;
-    bottom: 20px;
+    right: 1.25rem;
+    bottom: 1.25rem;
     z-index: 999;
     max-width: 320px;
-    padding: 14px 20px;
-    border-radius: 10px;
+    padding: 0.875rem 1.25rem;
+    border-radius: var(--radius-borde, 10px);
     background-color: var(--color-primario-oscuro);
     color: var(--color-blanco);
     font-weight: 600;
     font-size: 0.9rem;
     box-shadow: var(--sombra-fuerte);
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(1rem);
     transition: opacity var(--transicion), transform var(--transicion);
 }
 
@@ -262,18 +232,159 @@ main section h2:not(.card-title)::after {
     transform: translateY(0);
 }
 
-/* Mensaje de carrito vacío */
 .carrito-vacio {
     text-align: center;
-    padding: 48px 20px;
+    padding: 3rem 1.25rem;
     background-color: var(--color-blanco);
     border: 2px dashed var(--color-gris-claro);
-    border-radius: var(--radio-borde);
+    border-radius: var(--radius-borde);
 }
 
 .carrito-vacio a {
     display: inline-block;
-    margin-left: 8px;
+    margin-left: 0.5rem;
     font-weight: 700;
     color: var(--color-oliva);
+}
+
+/* Botón de marca personalizado */
+.btn-brand {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-brand:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+.btn-outline-brand {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-outline-brand:hover {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+/* Imágenes de marca con object-fit */
+.img-brand {
+    object-fit: contain;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Logo - ancho máximo 160px */
+.img-logo {
+    max-width: 160px;
+    height: auto;
+}
+
+/* Íconos (carrito, redes, teléfono, ubicación) - máximo 30-35px */
+.img-icon {
+    max-width: 35px;
+    height: auto;
+}
+
+.img-icon-xs {
+    width: 22px;
+    height: 22px;
+}
+
+.img-icon-sm {
+    width: 28px;
+    height: 28px;
+}
+
+.img-icon-md {
+    width: 32px;
+    height: 32px;
+}
+
+.img-icon-lg {
+    width: 36px;
+    height: 36px;
+}
+
+.img-icon-xl {
+    width: 48px;
+    height: 48px;
+}
+
+/* SVG global */
+img, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Bordes de marca para logos */
+.rounded-circle.img-brand {
+    border: 2px solid var(--color-primario-claro);
+}
+
+/* Utilidades de borde de Bootstrap extendidas */
+.border-4 {
+    border-width: 4px !important;
+}
+
+/* Sombra y bordes de marca */
+.shadow-brand {
+    box-shadow: var(--sombra);
+}
+
+.shadow-brand:hover {
+    box-shadow: var(--sombra-fuerte);
+}
+
+.rounded-brand {
+    border-radius: var(--radius-borde);
+}
+
+/* Tarjetas con hover elevado */
+.card-hover-lift {
+    transition: transform var(--transicion), box-shadow var(--transicion);
+    overflow: hidden;
+}
+
+.card-hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-fuerte);
+}
+
+/* Imagen con zoom en card */
+.card-img-zoom {
+    transition: transform var(--transicion);
+}
+
+.card-hover-lift:hover .card-img-zoom {
+    transform: scale(1.05);
+}
+
+/* Línea de acento bajo título */
+.titulo-con-accento {
+    position: relative;
+    padding-bottom: 0.875rem;
+}
+
+.titulo-con-accento::after {
+    content: '';
+    display: block;
+    width: 72px;
+    height: 4px;
+    margin: 0.625rem auto 0;
+    background: var(--color-acento);
+    border-radius: 2px;
 }

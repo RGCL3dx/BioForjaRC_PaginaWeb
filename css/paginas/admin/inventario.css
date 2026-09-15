@@ -6,7 +6,7 @@
 /* Campos de edición generados por js/admin.js dentro de la tabla */
 .campo-precio,
 .campo-stock {
-    width: 110px;
+    width: 7.5rem;
 }
 
 /* Enlace "Cerrar sesión" inyectado por js/auth.js en la navbar */
@@ -20,4 +20,68 @@ header .navbar-nav > li > a[data-logout] {
 
 header .navbar-nav > li > a[data-logout]:hover {
     color: var(--bs-nav-link-hover-color, #FFFFFF);
+}
+
+/* Tabla de inventario */
+.tabla-inventario thead th {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.tabla-inventario tbody tr:hover {
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+/* Celdas de edición en tabla */
+.tabla-inventario .campo-precio,
+.tabla-inventario .campo-stock {
+    border-radius: 8px;
+    border-color: var(--color-primario);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Botón de stock bajo */
+.btn-stock-bajo {
+    background-color: rgba(198, 40, 40, 0.1);
+    color: #c62828;
+    border: 1px solid #c62828;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+/* Botón de stock disponible */
+.btn-stock-disponible {
+    background-color: rgba(46, 125, 50, 0.1);
+    color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+/* Badges de categoría */
+.badge-categoria {
+    background-color: rgba(46, 125, 50, 0.1);
+    color: var(--color-primario);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+}
+
+/* Botón de acción en inventario */
+.btn-accion-inventario {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    transition: all var(--transicion);
+}
+
+.btn-accion-inventario:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
 }

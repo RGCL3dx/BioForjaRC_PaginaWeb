@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="../css/paginas/contacto.css">
 </head>
 <body>
-
+    
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" aria-label="Navegación principal">
             <div class="container">
                 <a href="index.html" class="navbar-brand d-flex align-items-center gap-2" aria-label="Ir al inicio de BioForjaRC">
-                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:40px;height:40px;object-fit:contain;border:2px solid #4CAF50;">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                     <span class="fw-bold">BioForja<span class="text-warning">RC</span></span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPrincipal" aria-controls="navPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
@@ -33,8 +33,8 @@
                         <li class="nav-item"><a href="login.html" class="nav-link">Ingresar</a></li>
                         <li class="nav-item"><a href="registro.html" class="nav-link">Registrarse</a></li>
                     </ul>
-                    <a href="carrito.html" class="btn btn-outline-light ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
-                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" style="width:22px;height:22px;object-fit:contain;">
+                    <a href="carrito.html" class="btn btn-outline-brand ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
+                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" class="img-brand">
                     </a>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                     <article class="col-md-4">
                         <div class="card h-100 shadow-sm text-center">
                             <div class="card-body">
-                                <img src="../assets/imagenes/gps.png" class="mx-auto mb-2" alt="Ubicación" style="width:48px;height:48px;object-fit:contain;">
+                                <img src="../assets/imagenes/gps.png" class="mx-auto mb-2 img-brand" alt="Ubicación">
                                 <h3 class="card-title">Ubicación</h3>
                                 <p class="card-text">Santiago, Chile</p>
                             </div>
@@ -68,7 +68,7 @@
                     <article class="col-md-4">
                         <div class="card h-100 shadow-sm text-center">
                             <div class="card-body">
-                                <img src="../assets/imagenes/telefono.png" class="mx-auto mb-2" alt="Teléfono" style="width:48px;height:48px;object-fit:contain;">
+                                <img src="../assets/imagenes/telefono.png" class="mx-auto mb-2 img-brand" alt="Teléfono">
                                 <h3 class="card-title">Teléfono</h3>
                                 <p class="card-text">+56 9 1234 5678</p>
                             </div>
@@ -78,7 +78,7 @@
                     <article class="col-md-4">
                         <div class="card h-100 shadow-sm text-center">
                             <div class="card-body">
-                                <img src="../assets/imagenes/gmail.webp" class="mx-auto mb-2" alt="Correo" style="width:48px;height:48px;object-fit:contain;">
+                                <img src="../assets/imagenes/gmail.webp" class="mx-auto mb-2 img-brand" alt="Correo">
                                 <h3 class="card-title">Correo electrónico</h3>
                                 <p class="card-text">contacto@bioforjarc.cl</p>
                             </div>
@@ -96,25 +96,25 @@
                         <h2 class="text-center mb-3">Escríbenos</h2>
                         <p class="text-center mb-4">¿Tienes dudas, sugerencias o un proyecto en mente? Completa el formulario y te responderemos pronto.</p>
 
-                        <form action="#" method="post" class="card card-body shadow-sm p-4">
-                            <p class="mb-3">
+                        <form action="#" method="post" class="card card-body shadow-sm p-4 formulario-contacto">
+                            <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre *</label>
                                 <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Tu nombre" autocomplete="name" required>
-                            </p>
-                            <p class="mb-3">
+                            </div>
+                            <div class="mb-3">
                                 <label for="correo" class="form-label">Correo *</label>
                                 <input type="email" id="correo" name="correo" class="form-control" placeholder="tu@correo.cl" autocomplete="email" required>
-                            </p>
-                            <p class="mb-3">
+                            </div>
+                            <div class="mb-3">
                                 <label for="asunto" class="form-label">Asunto *</label>
                                 <input type="text" id="asunto" name="asunto" class="form-control" placeholder="Ej: Pedido personalizado" required>
-                            </p>
-                            <p class="mb-3">
+                            </div>
+                            <div class="mb-3">
                                 <label for="mensaje" class="form-label">Mensaje *</label>
                                 <textarea id="mensaje" name="mensaje" class="form-control" rows="6" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                            </p>
+                            </div>
                             <div class="d-flex gap-2 flex-wrap">
-                                <button type="submit" class="btn btn-success">Enviar mensaje</button>
+                                <button type="submit" class="btn btn-brand">Enviar mensaje</button>
                                 <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
                             </div>
                         </form>
@@ -127,9 +127,9 @@
             <div class="container text-center">
                 <h2 class="mb-4">Nuestras redes sociales</h2>
                 <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#" class="d-inline-flex align-items-center gap-2 btn btn-outline-success rounded-pill" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" style="width:28px;height:28px;object-fit:contain;"> Facebook</a></li>
-                    <li class="list-inline-item"><a href="#" class="d-inline-flex align-items-center gap-2 btn btn-outline-success rounded-pill" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" style="width:28px;height:28px;object-fit:contain;"> Instagram</a></li>
-                    <li class="list-inline-item"><a href="#" class="d-inline-flex align-items-center gap-2 btn btn-outline-success rounded-pill" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" style="width:28px;height:28px;object-fit:contain;"> X / Twitter</a></li>
+                    <li class="list-inline-item"><a href="#" class="d-inline-flex align-items-center gap-2 btn btn-outline-brand rounded-pill" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" class="img-brand"> Facebook</a></li>
+                    <li class="list-inline-item"><a href="#" class="d-inline-flex align-items-center gap-2 btn btn-outline-brand rounded-pill" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" class="img-brand"> Instagram</a></li>
+                    <li class="list-inline-item"><a href="#" class="d-inline-flex align-items-center gap-2 btn btn-outline-brand rounded-pill" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" class="img-brand"> X / Twitter</a></li>
                 </ul>
             </div>
         </section>
@@ -142,7 +142,7 @@
 
                 <div class="col-lg-4">
                     <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none mb-3">
-                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:44px;height:44px;object-fit:contain;border:2px solid rgba(255,255,255,0.5);">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle img-brand">
                         <span class="fw-bold text-white fs-5">BioForja<span class="text-warning">RC</span></span>
                     </a>
                     <p class="text-light">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
@@ -164,22 +164,22 @@
                     <h3 class="text-white mb-3">Contacto</h3>
                     <ul class="list-unstyled">
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/gps.png" alt="Ubicación" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/gps.png" alt="Ubicación" class="img-brand">
                             <span>Santiago, Chile</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" class="img-brand">
                             <span>+56 9 1234 5678</span>
                         </li>
                         <li class="d-flex align-items-center gap-2 mb-2">
-                            <img src="../assets/imagenes/gmail.webp" alt="Correo" style="width:28px;height:28px;object-fit:contain;">
+                            <img src="../assets/imagenes/gmail.webp" alt="Correo" class="img-brand">
                             <span>contacto@bioforjarc.cl</span>
                         </li>
                     </ul>
                     <div class="d-flex gap-3 mt-3">
-                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" style="width:36px;height:36px;object-fit:contain;"></a>
-                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" style="width:36px;height:36px;object-fit:contain;"></a>
-                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" style="width:36px;height:36px;object-fit:contain;"></a>
+                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" class="img-brand"></a>
+                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" class="img-brand"></a>
+                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" class="img-brand"></a>
                     </div>
                 </div>
 

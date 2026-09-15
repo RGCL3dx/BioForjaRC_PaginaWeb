@@ -1,5 +1,18 @@
-/* BioForjaRC - login.css — toques de marca sobre Bootstrap */
+/* =========================================================
+   BioForjaRC - login.css
+   ========================================================= */
 
 #olvide-clave {
     font-weight: 600;
+}
+
+/* Formulario de login mejorado */
+.formulario-login .form-control:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+}
+
+/* Card de login con imagen de marca */
+.card-login {
+    border-top: 4px solid var(--color-primario);
 }

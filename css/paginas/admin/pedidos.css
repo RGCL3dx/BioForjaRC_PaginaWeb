@@ -7,11 +7,11 @@
 #detalle-pedido h3 {
     color: var(--color-primario);
     border-bottom: 2px solid var(--color-acento);
-    padding-bottom: 8px;
+    padding-bottom: 0.5rem;
 }
 
 #detalle-pedido ul {
-    padding-left: 20px;
+    padding-left: 1.25rem;
     line-height: 1.8;
 }
 
@@ -34,4 +34,54 @@ header .navbar-nav > li > a[data-logout] {
 
 header .navbar-nav > li > a[data-logout]:hover {
     color: var(--bs-nav-link-hover-color, #FFFFFF);
+}
+
+/* Tabla de pedidos */
+.tabla-pedidos thead th {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.tabla-pedidos tbody tr:hover {
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+/* Badge de estado de pedido */
+.badge-estado-pedido {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Detalle de pedido */
+.detalle-pedido-container {
+    border: 2px solid rgba(46, 125, 50, 0.2);
+    border-radius: var(--radius-borde);
+    padding: 1.5rem;
+    background-color: rgba(246, 249, 246, 0.6);
+}
+
+/* Botón de actualizar estado */
+.btn-actualizar-estado {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+    transition: all var(--transicion);
+}
+
+.btn-actualizar-estado:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+    color: var(--color-blanco);
+}
+
+/* Tabla de resumen de pedido */
+.tabla-detalle-pedido tbody tr:hover {
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+.tabla-detalle-pedido thead th {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
 }

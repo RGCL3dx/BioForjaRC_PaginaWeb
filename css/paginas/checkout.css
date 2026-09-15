@@ -1,16 +1,40 @@
 /* =========================================================
    BioForjaRC - checkout.css
    Pago: resumen del pedido y formulario de envío/pago
-   (Bootstrap aporta tables, cards y forms; aquí la marca)
    ========================================================= */
 
-/* Fieldset de pago destacado (último del formulario) */
 main fieldset:last-of-type {
     border: 2px solid rgba(255, 179, 0, 0.45) !important;
     background-color: rgba(255, 179, 0, 0.06);
 }
 
-/* Pie de la tabla resumen */
 .tabla-checkout tfoot th:last-child {
     color: var(--color-primario-oscuro);
+}
+
+/* Formulario de checkout con foco de marca */
+.formulario-checkout .form-control:focus,
+.formulario-checkout .form-select:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+}
+
+/* Radio buttons personalizados */
+.form-check-input:checked {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(46, 125, 50, 0.25);
+}
+
+/* Tabla de resumen de checkout */
+.tabla-checkout thead th {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+.tabla-checkout tbody tr:hover {
+    background-color: rgba(46, 125, 50, 0.05);
 }
