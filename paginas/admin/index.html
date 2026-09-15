@@ -6,6 +6,7 @@
     <meta name="description" content="Panel de administración de BioForjaRC: gestiona productos, pedidos, usuarios e informes del negocio.">
     <meta name="author" content="BioForjaRC">
     <title>BioForjaRC | Panel de Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YcnS/1p0KQLI8apkWK2BtctoMJeGmO3QV1hb" crossorigin="anonymous">
     <link rel="stylesheet" href="../../css/base/global.css">
     <link rel="stylesheet" href="../../css/base/estructura.css">
     <link rel="stylesheet" href="../../css/paginas/admin/panel.css">
@@ -13,125 +14,173 @@
 <body>
 
     <header>
-        <a href="../index.html">
-            <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-            <span>BioForjaRC</span>
-        </a>
-
-        <nav aria-label="Navegación de administración">
-            <ul>
-                <li><a href="../index.html">Volver a la tienda</a></li>
-                <li><a href="index.html">Panel</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="pedidos.html">Pedidos</a></li>
-                <li><a href="usuarios.html">Usuarios</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" aria-label="Navegación de administración">
+            <div class="container">
+                <a href="../index.html" class="navbar-brand d-flex align-items-center gap-2" aria-label="Ir al inicio de BioForjaRC">
+                    <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:40px;height:40px;object-fit:contain;border:2px solid #4CAF50;">
+                    <span class="fw-bold">BioForja<span class="text-warning">RC</span> <span class="badge text-bg-warning text-dark">Admin</span></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navAdmin" aria-controls="navAdmin" aria-expanded="false" aria-label="Abrir menú de administración">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navAdmin">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a href="../index.html" class="nav-link">Volver a la tienda</a></li>
+                        <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">Panel</a></li>
+                        <li class="nav-item"><a href="inventario.html" class="nav-link">Inventario</a></li>
+                        <li class="nav-item"><a href="pedidos.html" class="nav-link">Pedidos</a></li>
+                        <li class="nav-item"><a href="usuarios.html" class="nav-link">Usuarios</a></li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
+    <main class="pt-5">
 
-        <section>
-            <h1>Panel de administración</h1>
-            <p>Bienvenido al centro de control de BioForjaRC.</p>
+        <section class="py-5 text-center">
+            <div class="container">
+                <h1 class="mb-3">Panel de administración</h1>
+                <p class="lead mb-0">Bienvenido al centro de control de BioForjaRC.</p>
+            </div>
         </section>
 
-        <section>
-            <h2>Resumen del negocio</h2>
+        <section class="pb-4">
+            <div class="container">
+                <h2 class="text-center mb-4">Resumen del negocio</h2>
+                <div class="row g-4">
 
-            <article>
-                <h3>Ventas del mes</h3>
-                <p><strong id="m-ventas">—</strong></p>
-            </article>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card h-100 shadow-sm text-center border-top border-4 border-success">
+                            <div class="card-body">
+                                <h3 class="card-title text-secondary">Ventas del mes</h3>
+                                <p class="card-text fs-3 fw-bold text-success-emphasis"><strong id="m-ventas">—</strong></p>
+                            </div>
+                        </div>
+                    </article>
 
-            <article>
-                <h3>Pedidos activos</h3>
-                <p><strong id="m-pedidos">—</strong></p>
-            </article>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card h-100 shadow-sm text-center border-top border-4 border-success">
+                            <div class="card-body">
+                                <h3 class="card-title text-secondary">Pedidos activos</h3>
+                                <p class="card-text fs-3 fw-bold text-success-emphasis"><strong id="m-pedidos">—</strong></p>
+                            </div>
+                        </div>
+                    </article>
 
-            <article>
-                <h3>Productos en stock</h3>
-                <p><strong id="m-productos">—</strong></p>
-            </article>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card h-100 shadow-sm text-center border-top border-4 border-success">
+                            <div class="card-body">
+                                <h3 class="card-title text-secondary">Productos en stock</h3>
+                                <p class="card-text fs-3 fw-bold text-success-emphasis"><strong id="m-productos">—</strong></p>
+                            </div>
+                        </div>
+                    </article>
 
-            <article>
-                <h3>Usuarios registrados</h3>
-                <p><strong id="m-usuarios">—</strong></p>
-            </article>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card h-100 shadow-sm text-center border-top border-4 border-success">
+                            <div class="card-body">
+                                <h3 class="card-title text-secondary">Usuarios registrados</h3>
+                                <p class="card-text fs-3 fw-bold text-success-emphasis"><strong id="m-usuarios">—</strong></p>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
         </section>
 
-        <section>
-            <h2>Accesos rápidos</h2>
-            <ul>
-                <li><a href="inventario.html">Gestionar inventario</a></li>
-                <li><a href="pedidos.html">Revisar pedidos</a></li>
-                <li><a href="usuarios.html">Administrar usuarios</a></li>
-            </ul>
+        <section class="pb-4">
+            <div class="container">
+                <h2 class="text-center mb-4">Accesos rápidos</h2>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="inventario.html" class="btn btn-outline-success btn-lg">Gestionar inventario</a>
+                    <a href="pedidos.html" class="btn btn-outline-success btn-lg">Revisar pedidos</a>
+                    <a href="usuarios.html" class="btn btn-outline-success btn-lg">Administrar usuarios</a>
+                </div>
+            </div>
         </section>
 
-        <section>
-            <h2>Top 5 productos más vendidos (según pedidos reales)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Unidades vendidas</th>
-                        <th>Ingresos</th>
-                    </tr>
-                </thead>
-                <tbody id="cuerpo-top">
-                    <tr>
-                        <td colspan="3">Cargando...</td>
-                    </tr>
-                </tbody>
-            </table>
+        <section class="pb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <h2 class="text-center mb-4">Top 5 productos más vendidos (según pedidos reales)</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped align-middle shadow-sm bg-white rounded">
+                                <thead class="table-success">
+                                    <tr>
+                                        <th scope="col">Producto</th>
+                                        <th scope="col">Unidades vendidas</th>
+                                        <th scope="col">Ingresos</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cuerpo-top">
+                                    <tr>
+                                        <td colspan="3">Cargando...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <footer>
+    <footer class="bg-dark text-light pt-5 pb-3 mt-5">
+        <div class="container">
+            <div class="row g-4">
 
-        <div>
-            <a href="../index.html">
-                <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-                <span>BioForjaRC</span>
-            </a>
-            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                <div class="col-lg-4">
+                    <a href="../index.html" class="d-flex align-items-center gap-2 text-decoration-none mb-3">
+                        <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:44px;height:44px;object-fit:contain;border:2px solid rgba(255,255,255,0.5);">
+                        <span class="fw-bold text-white fs-5">BioForja<span class="text-warning">RC</span></span>
+                    </a>
+                    <p class="text-light">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                </div>
+
+                <div class="col-lg-4">
+                    <h3 class="text-white mb-3">Enlaces</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../index.html" class="text-success text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="../productos.html" class="text-success text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="../cotizacion.html" class="text-success text-decoration-none">Cotización</a></li>
+                        <li class="mb-2"><a href="../contacto.html" class="text-success text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="index.html" class="text-success text-decoration-none">Panel de administración</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4">
+                    <h3 class="text-white mb-3">Contacto</h3>
+                    <ul class="list-unstyled">
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../../assets/imagenes/gps.png" alt="Ubicación" style="width:28px;height:28px;object-fit:contain;">
+                            <span>Santiago, Chile</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../../assets/imagenes/telefono.png" alt="Teléfono" style="width:28px;height:28px;object-fit:contain;">
+                            <span>+56 9 1234 5678</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../../assets/imagenes/gmail.webp" alt="Correo" style="width:28px;height:28px;object-fit:contain;">
+                            <span>contacto@bioforjarc.cl</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
 
-        <nav aria-label="Enlaces del sitio">
-            <h3>Enlaces</h3>
-            <ul>
-                <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../productos.html">Productos</a></li>
-                <li><a href="../cotizacion.html">Cotización</a></li>
-                <li><a href="../contacto.html">Contacto</a></li>
-                <li><a href="index.html">Panel de administración</a></li>
-            </ul>
-        </nav>
-
-        <div>
-            <h3>Contacto</h3>
-            <ul>
-                <li>
-                    <img src="../../assets/imagenes/gps.png" alt="Ubicación">
-                    <span>Santiago, Chile</span>
-                </li>
-                <li>
-                    <img src="../../assets/imagenes/telefono.png" alt="Teléfono">
-                    <span>+56 9 1234 5678</span>
-                </li>
-                <li>
-                    <img src="../../assets/imagenes/gmail.webp" alt="Correo">
-                    <span>contacto@bioforjarc.cl</span>
-                </li>
-            </ul>
+        <div class="bg-black text-center py-3 mt-4">
+            <div class="container">
+                <p class="mb-0">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
+            </div>
         </div>
-
-        <p>&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
-
     </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="../../js/auth.js" defer></script>
 <script src="../../js/productos.js" defer></script>
 <script src="../../js/admin.js" defer></script>

@@ -1,32 +1,5 @@
-/* =========================================================
-   BioForjaRC - login.css
-   Formulario de ingreso a la cuenta
-   ========================================================= */
+/* BioForjaRC - login.css — toques de marca sobre Bootstrap */
 
-/* Formulario reducido y centrado */
-main form {
-    max-width: 420px;
-    margin: 32px auto;
-}
-
-main form > p:last-of-type {
-    text-align: center;
-}
-
-/* Enlaces auxiliares debajo del formulario */
-main section:last-of-type {
-    text-align: center;
-    padding-top: 0;
-}
-
-main section:last-of-type p {
-    margin: 4px 0;
-}
-
-main section:last-of-type a {
+#olvide-clave {
     font-weight: 600;
-}
-
-main h1 + p {
-    max-width: 560px;
 }

@@ -1,17 +1,3 @@
-/* =========================================================
-   BioForjaRC - admin.js
-   Panel de administración funcional (demo front-end)
-
-   Qué hace:
-   - Resumen real: ventas del mes, pedidos activos, stock y
-     usuarios calculados desde los datos guardados.
-   - Inventario: formulario para agregar producto, edición
-     de precio y stock en línea, y eliminación.
-   - Usuarios: listado real, edición de datos/rol y
-     activación/desactivación de cuentas.
-   - Pedidos: listado real con detalle y cambio de estado.
-   ========================================================= */
-
 (function () {
     'use strict';
 
@@ -212,7 +198,7 @@
             var precio = document.createElement('input');
             precio.type = 'number';
             precio.min = '0';
-            precio.className = 'campo-precio';
+            precio.className = 'campo-precio form-control form-control-sm d-inline-block w-auto';
             precio.value = producto.precio;
             precio.setAttribute('data-id', producto.id);
             celdaPrecio.appendChild(precio);
@@ -222,7 +208,7 @@
             var stock = document.createElement('input');
             stock.type = 'number';
             stock.min = '0';
-            stock.className = 'campo-stock';
+            stock.className = 'campo-stock form-control form-control-sm d-inline-block w-auto';
             stock.value = producto.stock;
             stock.setAttribute('data-id', producto.id);
             celdaStock.appendChild(stock);
@@ -236,13 +222,14 @@
             var botonGuardar = document.createElement('button');
             botonGuardar.type = 'button';
             botonGuardar.textContent = 'Guardar';
+            botonGuardar.className = 'btn btn-success btn-sm';
             botonGuardar.setAttribute('data-guardar', producto.id);
             celdaAcciones.appendChild(botonGuardar);
 
             var botonEliminar = document.createElement('button');
             botonEliminar.type = 'button';
             botonEliminar.textContent = 'Eliminar';
-            botonEliminar.className = 'peligro';
+            botonEliminar.className = 'peligro btn btn-danger btn-sm';
             botonEliminar.setAttribute('data-eliminar', producto.id);
             celdaAcciones.appendChild(botonEliminar);
 
@@ -390,6 +377,7 @@
             var botonEditar = document.createElement('button');
             botonEditar.type = 'button';
             botonEditar.textContent = 'Editar';
+            botonEditar.className = 'btn btn-outline-success btn-sm';
             botonEditar.setAttribute('data-editar', usuario.id);
             if (esActual) { botonEditar.disabled = true; botonEditar.title = 'No puedes editar tu propia cuenta mientras estás conectado.'; }
             celdaAcciones.appendChild(botonEditar);
@@ -397,6 +385,7 @@
             var botonEstado = document.createElement('button');
             botonEstado.type = 'button';
             botonEstado.textContent = usuario.estado === 'Activo' ? 'Desactivar' : 'Activar';
+            botonEstado.className = 'btn btn-outline-secondary btn-sm';
             botonEstado.setAttribute('data-estado', usuario.id);
             if (esActual) { botonEstado.disabled = true; botonEstado.title = 'No puedes desactivar tu propia cuenta.'; }
             celdaAcciones.appendChild(botonEstado);
@@ -559,6 +548,7 @@
             var boton = document.createElement('button');
             boton.type = 'button';
             boton.textContent = 'Ver detalle';
+            boton.className = 'btn btn-outline-success btn-sm';
             boton.setAttribute('data-detalle', pedido.id);
             celdaAccion.appendChild(boton);
             filaPedido.appendChild(celdaAccion);
@@ -623,6 +613,7 @@
 
         var select = document.createElement('select');
         select.id = 'estado-pedido';
+        select.className = 'form-select w-auto';
         select.setAttribute('data-pedido', pedido.id);
         var opciones = ['En preparación', 'Despachado', 'Entregado', 'Cancelado'];
         for (var k = 0; k < opciones.length; k++) {
@@ -636,6 +627,7 @@
         var boton = document.createElement('button');
         boton.type = 'button';
         boton.textContent = 'Guardar estado';
+        boton.className = 'btn btn-success btn-sm';
         boton.setAttribute('data-guardar-estado', pedido.id);
 
         filaEstado.appendChild(etiqueta);

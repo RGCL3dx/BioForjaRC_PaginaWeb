@@ -11,18 +11,7 @@
     backdrop-filter: blur(2px);
 }
 
-.hero .boton-secundario {
-    border-color: var(--color-acento);
-    color: var(--color-blanco);
-}
-
-.hero .boton-secundario:hover {
-    background-color: var(--color-acento);
-    border-color: var(--color-acento);
-    color: var(--color-primario-oscuro);
-}
-
-/* Tarjetas de categoría con imagen recortada y hover */
+/* Tarjetas de categoría: imagen con zoom al pasar el mouse */
 .tarjeta-categoria img {
     transition: transform var(--transicion);
 }
@@ -39,45 +28,4 @@
     margin: 8px auto 0;
     background-color: var(--color-acento);
     border-radius: 2px;
-}
-
-/* Lista de proceso: puntos numerados con fondo por imagen */
-.lista-proceso {
-    max-width: 680px;
-    margin: 0 auto;
-    counter-reset: proceso;
-    background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra);
-    padding: 24px 32px;
-}
-
-.lista-proceso li {
-    counter-increment: proceso;
-    position: relative;
-    padding: 12px 0 12px 52px;
-    font-weight: 600;
-    border-bottom: 1px dashed var(--color-gris-claro);
-}
-
-.lista-proceso li:last-child {
-    border-bottom: none;
-}
-
-.lista-proceso li::before {
-    content: counter(proceso);
-    position: absolute;
-    left: 0;
-    top: 12px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-claro));
-    color: var(--color-blanco);
-    font-family: var(--fuente-principal);
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 3px 8px rgba(46, 125, 50, 0.35);
 }

@@ -1,65 +1,11 @@
 /* =========================================================
    BioForjaRC - cotizacion.css
    Formulario de solicitud de cotización personalizada
+   (Bootstrap aporta forms y cards; aquí la marca)
    ========================================================= */
 
-/* Ubicación y ancho del formulario */
-main form {
-    margin: 0 auto;
-    max-width: 760px;
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.97)),
-        url('../../assets/imagenes/extrusion-filamento.png');
-    background-size: cover;
-    background-position: center;
-}
-
-/* Títulos de secciones del formulario */
-main h2 {
-    text-align: center;
-    position: relative;
-    padding-bottom: 14px;
-}
-
-main h2::after {
-    content: '';
-    display: block;
-    width: 72px;
-    height: 4px;
-    margin: 12px auto 0;
-    background: var(--color-acento);
-    border-radius: 2px;
-}
-
-/* Áreas del formulario */
+/* Fieldsets del formulario */
 main fieldset {
-    border: 2px solid rgba(46, 125, 50, 0.2);
-    background-color: rgba(246, 249, 246, 0.8);
-}
-
-main form > p {
-    text-align: center;
-}
-
-/* Botones de envío y limpieza */
-main button[type="submit"] {
-    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-claro));
-}
-
-main button[type="reset"] {
-    background-color: var(--color-gris);
-}
-
-main button[type="reset"]:hover {
-    background-color: var(--color-gris);
-    box-shadow: none;
-}
-
-/* Nota explicativa final */
-main section:last-of-type {
-    background-color: var(--color-gris-claro);
-}
-
-main section:last-of-type h2::after {
-    margin-bottom: 4px;
+    border: 2px solid rgba(46, 125, 50, 0.2) !important;
+    background-color: rgba(246, 249, 246, 0.6);
 }

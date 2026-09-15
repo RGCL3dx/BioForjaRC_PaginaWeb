@@ -87,7 +87,7 @@
         guardarUsuarios([
             {
                 id: 1,
-                nombre: 'Ronald Cerda',
+                nombre: 'BioForjaRC',
                 rut: '11.111.111-1',
                 correo: 'admin@bioforjarc.cl',
                 telefono: '+56 9 0000 0000',
@@ -185,7 +185,7 @@
             }
         }
         guardarPedidos(pedidos);
-    }
+    }                                                                                                                                     
 
     /* -----------------------------------------------------
        6. Mensajes y avisos

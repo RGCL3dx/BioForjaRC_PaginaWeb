@@ -6,6 +6,7 @@
     <meta name="description" content="Solicita una cotización personalizada en BioForjaRC para productos ecológicos de impresión 3D y reciclaje de plástico.">
     <meta name="author" content="BioForjaRC">
     <title>BioForjaRC | Cotización</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YcnS/1p0KQLI8apkWK2BtctoMJeGmO3QV1hb" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/base/global.css">
     <link rel="stylesheet" href="../css/base/estructura.css">
     <link rel="stylesheet" href="../css/paginas/cotizacion.css">
@@ -13,154 +14,173 @@
 <body>
 
     <header>
-        <a href="index.html">
-            <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-            <span>BioForjaRC</span>
-        </a>
-
-        <nav aria-label="Navegación principal">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="login.html">Ingresar</a></li>
-                <li><a href="registro.html">Registro</a></li>
-                <li><a href="carrito.html">Carrito</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" aria-label="Navegación principal">
+            <div class="container">
+                <a href="index.html" class="navbar-brand d-flex align-items-center gap-2" aria-label="Ir al inicio de BioForjaRC">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:40px;height:40px;object-fit:contain;border:2px solid #4CAF50;">
+                    <span class="fw-bold">BioForja<span class="text-warning">RC</span></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPrincipal" aria-controls="navPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navPrincipal">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a href="index.html" class="nav-link">Inicio</a></li>
+                        <li class="nav-item"><a href="productos.html" class="nav-link">Productos</a></li>
+                        <li class="nav-item"><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                        <li class="nav-item"><a href="cotizacion.html" class="nav-link active" aria-current="page">Cotización</a></li>
+                        <li class="nav-item"><a href="contacto.html" class="nav-link">Contacto</a></li>
+                        <li class="nav-item"><a href="login.html" class="nav-link">Ingresar</a></li>
+                        <li class="nav-item"><a href="registro.html" class="nav-link">Registrarse</a></li>
+                    </ul>
+                    <a href="carrito.html" class="btn btn-outline-light ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
+                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" style="width:22px;height:22px;object-fit:contain;">
+                    </a>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
+    <main class="pt-5">
 
-        <section>
-            <h1>Solicita tu cotización</h1>
-            <p>Completa el siguiente formulario y te responderemos en un plazo de 24 a 48 horas hábiles con una propuesta adaptada a tus necesidades.</p>
+        <section class="py-5 text-center">
+            <div class="container">
+                <h1 class="mb-3">Solicita tu cotización</h1>
+                <p class="lead mb-0">Completa el siguiente formulario y te responderemos en un plazo de 24 a 48 horas hábiles con una propuesta adaptada a tus necesidades.</p>
+            </div>
         </section>
 
-        <section>
-            <h2>Formulario de cotización</h2>
+        <section class="pb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h2 class="text-center mb-4">Formulario de cotización</h2>
 
-            <form action="#" method="post">
+                        <form action="#" method="post" class="card card-body shadow-sm p-4">
+                            <fieldset class="border rounded p-3 mb-4">
+                                <legend class="fw-bold ps-2 pe-2 w-auto">Datos de contacto</legend>
 
-                <fieldset>
-                    <legend>Datos de contacto</legend>
+                                <p class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre completo *</label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: Juan Pérez" autocomplete="name" required>
+                                </p>
 
-                    <p>
-                        <label for="nombre">Nombre completo *</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
-                    </p>
+                                <p class="mb-3">
+                                    <label for="correo" class="form-label">Correo electrónico *</label>
+                                    <input type="email" id="correo" name="correo" class="form-control" placeholder="Ej: juan@correo.cl" autocomplete="email" required>
+                                </p>
 
-                    <p>
-                        <label for="correo">Correo electrónico *</label>
-                        <input type="email" id="correo" name="correo" placeholder="Ej: juan@correo.cl" required>
-                    </p>
+                                <p class="mb-3">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" id="telefono" name="telefono" class="form-control" placeholder="Ej: +56 9 1234 5678" autocomplete="tel">
+                                </p>
+                            </fieldset>
 
-                    <p>
-                        <label for="telefono">Teléfono</label>
-                        <input type="tel" id="telefono" name="telefono" placeholder="Ej: +56 9 1234 5678">
-                    </p>
-                </fieldset>
+                            <fieldset class="border rounded p-3 mb-4">
+                                <legend class="fw-bold ps-2 pe-2 w-auto">Detalles del pedido</legend>
 
-                <fieldset>
-                    <legend>Detalles del pedido</legend>
+                                <p class="mb-3">
+                                    <label for="producto" class="form-label">Tipo de producto *</label>
+                                    <select id="producto" name="producto" class="form-select" required>
+                                        <option value="">-- Selecciona una opción --</option>
+                                        <option value="maceteros">Maceteros</option>
+                                        <option value="articulados">Animales articulados</option>
+                                        <option value="sensorial">Juguetes sensoriales</option>
+                                        <option value="figuras">Figuras ecológicas</option>
+                                        <option value="filamento">Filamento para impresión 3D</option>
+                                        <option value="otro">Otro / Personalizado</option>
+                                    </select>
+                                </p>
 
-                    <p>
-                        <label for="producto">Tipo de producto *</label>
-                        <select id="producto" name="producto" required>
-                            <option value="">-- Selecciona una opción --</option>
-                            <option value="maceteros">Maceteros</option>
-                            <option value="articulados">Animales articulados</option>
-                            <option value="sensorial">Juguetes sensoriales</option>
-                            <option value="figuras">Figuras ecológicas</option>
-                            <option value="filamento">Filamento para impresión 3D</option>
-                            <option value="otro">Otro / Personalizado</option>
-                        </select>
-                    </p>
+                                <p class="mb-3">
+                                    <label for="cantidad" class="form-label">Cantidad estimada</label>
+                                    <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" placeholder="Ej: 50">
+                                </p>
 
-                    <p>
-                        <label for="cantidad">Cantidad estimada</label>
-                        <input type="number" id="cantidad" name="cantidad" min="1" placeholder="Ej: 50">
-                    </p>
+                                <p class="mb-3">
+                                    <label for="descripcion" class="form-label">Descripción del pedido *</label>
+                                    <textarea id="descripcion" name="descripcion" class="form-control" rows="6" placeholder="Describe los colores, medidas, diseño o cualquier detalle relevante de tu pedido..." required></textarea>
+                                </p>
+                            </fieldset>
 
-                    <p>
-                        <label for="descripcion">Descripción del pedido *</label>
-                        <textarea id="descripcion" name="descripcion" rows="6" placeholder="Describe los colores, medidas, diseño o cualquier detalle relevante de tu pedido..." required></textarea>
-                    </p>
-                </fieldset>
-
-                <p>
-                    <button type="submit">Enviar solicitud de cotización</button>
-                    <button type="reset">Limpiar formulario</button>
-                </p>
-
-            </form>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button type="submit" class="btn btn-success">Enviar solicitud de cotización</button>
+                                <button type="reset" class="btn btn-outline-secondary">Limpiar formulario</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section>
-            <h2>¿Necesitas algo urgente?</h2>
-            <p>Si tu proyecto tiene plazo ajustado, contáctanos directamente por correo o teléfono para evaluar la viabilidad.</p>
-            <a href="contacto.html">Ir a Contacto</a>
+        <section class="pb-5 text-center">
+            <div class="container">
+                <h2 class="mb-3">¿Necesitas algo urgente?</h2>
+                <p class="mb-4">Si tu proyecto tiene plazo ajustado, contáctanos directamente por correo o teléfono para evaluar la viabilidad.</p>
+                <a href="contacto.html" class="btn btn-success">Ir a Contacto</a>
+            </div>
         </section>
 
     </main>
 
-    <footer>
+    <footer class="bg-dark text-light pt-5 pb-3 mt-5">
+        <div class="container">
+            <div class="row g-4">
 
-        <div>
-            <a href="index.html">
-                <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-                <span>BioForjaRC</span>
-            </a>
-            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
-        </div>
+                <div class="col-lg-4">
+                    <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none mb-3">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:44px;height:44px;object-fit:contain;border:2px solid rgba(255,255,255,0.5);">
+                        <span class="fw-bold text-white fs-5">BioForja<span class="text-warning">RC</span></span>
+                    </a>
+                    <p class="text-light">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                </div>
 
-        <nav aria-label="Enlaces del sitio">
-            <h3>Enlaces</h3>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="mi-cuenta.html">Mi cuenta</a></li>
-            </ul>
-        </nav>
+                <div class="col-lg-4">
+                    <h3 class="text-white mb-3">Enlaces</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-success text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="nosotros.html" class="text-success text-decoration-none">Nosotros</a></li>
+                        <li class="mb-2"><a href="productos.html" class="text-success text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="cotizacion.html" class="text-success text-decoration-none">Cotización</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-success text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-success text-decoration-none">Mi cuenta</a></li>
+                    </ul>
+                </div>
 
-        <div>
-            <h3>Contacto</h3>
-            <ul>
-                <li>
-                    <img src="../assets/imagenes/gps.png" alt="Ubicación">
-                    <span>Santiago, Chile</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/telefono.png" alt="Teléfono">
-                    <span>+56 9 1234 5678</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/gmail.webp" alt="Correo">
-                    <span>contacto@bioforjarc.cl</span>
-                </li>
-            </ul>
-            <div>
-                <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
-                <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
-                <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"></a>
+                <div class="col-lg-4">
+                    <h3 class="text-white mb-3">Contacto</h3>
+                    <ul class="list-unstyled">
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../assets/imagenes/gps.png" alt="Ubicación" style="width:28px;height:28px;object-fit:contain;">
+                            <span>Santiago, Chile</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" style="width:28px;height:28px;object-fit:contain;">
+                            <span>+56 9 1234 5678</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../assets/imagenes/gmail.webp" alt="Correo" style="width:28px;height:28px;object-fit:contain;">
+                            <span>contacto@bioforjarc.cl</span>
+                        </li>
+                    </ul>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" style="width:36px;height:36px;object-fit:contain;"></a>
+                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" style="width:36px;height:36px;object-fit:contain;"></a>
+                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" style="width:36px;height:36px;object-fit:contain;"></a>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <div>
-            <h3>Administración</h3>
-            <ul>
-                <li><a href="admin/index.html">Panel de administración</a></li>
-            </ul>
+        <div class="bg-black text-center py-3 mt-4">
+            <div class="container">
+                <p class="mb-0">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
+            </div>
         </div>
-
-        <p>&copy; 2026 BioForjaRC.</p>
-
     </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="../js/validaciones.js" defer></script>
 <script src="../js/auth.js" defer></script>
 </body>

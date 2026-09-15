@@ -1,102 +1,8 @@
 /* =========================================================
    BioForjaRC - estructura.css
-   Maquetación principal: header, nav, main, footer
-   Compatible con index.html (clases) y páginas semánticas
+   Maquetación de apoyo (se apoya en Bootstrap para navbar,
+   grid, cards y footer; aquí solo ajustes de marca)
    ========================================================= */
-
-/* ---------------------------------------------------------
-   HEADER (sticky común para .cabecera y header)
-   --------------------------------------------------------- */
-.cabecera,
-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: var(--color-blanco);
-    box-shadow: 0 2px 10px rgba(27, 36, 27, 0.08);
-}
-
-/* Contenedor flexible:
-   - index.html usa .cabecera-contenido dentro del header
-   - las páginas semánticas usan el propio header como flex   */
-.cabecera-contenido,
-header:not(.cabecera) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    padding: 12px 20px;
-}
-
-/* Logo y marca */
-.cabecera-logo,
-header > a:first-of-type {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--color-tinta);
-}
-
-.cabecera-logo img,
-header > a:first-of-type img {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
-    border-radius: 50%;
-    border: 2px solid var(--color-primario-claro);
-}
-
-.cabecera-marca,
-header > a:first-of-type span {
-    font-family: var(--fuente-principal);
-    font-weight: 800;
-    font-size: 1.25rem;
-    color: var(--color-primario-oscuro);
-}
-
-/* ---------------------------------------------------------
-   NAVEGACIÓN (menús principal y de categorías)
-   --------------------------------------------------------- */
-.navegacion-lista,
-header nav ul,
-section nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 20px;
-    align-items: center;
-}
-
-.navegacion-lista a,
-header nav ul a,
-section nav ul a {
-    font-family: var(--fuente-principal);
-    font-weight: 600;
-    font-size: 0.95rem;
-    padding: 8px 2px;
-    border-bottom: 3px solid transparent;
-    color: var(--color-tinta);
-}
-
-.navegacion-lista a:hover,
-.navegacion-lista a.activo,
-header nav ul a:hover,
-section nav ul a:hover {
-    border-bottom-color: var(--color-primario);
-    color: var(--color-primario);
-}
-
-/* Icono de carrito en cabecera */
-.cabecera-carrito img {
-    width: 34px;
-    height: 34px;
-    object-fit: contain;
-    transition: transform var(--transicion);
-}
-
-.cabecera-carrito img:hover {
-    transform: scale(1.15);
-}
 
 /* ---------------------------------------------------------
    MAIN (mínimo para empujar el footer al final)
@@ -105,19 +11,9 @@ main {
     min-height: 60vh;
 }
 
-main > section {
-    padding: 56px 20px;
-}
-
-main > section > h1 {
-    text-align: center;
-}
-
-main > section > p {
-    max-width: 720px;
-    margin: 0 auto 20px;
-    text-align: center;
-    color: var(--color-gris);
+/* Compensa la navbar fija (56px) en páginas interiores */
+main.pt-5 {
+    padding-top: 76px;
 }
 
 /* ---------------------------------------------------------
@@ -133,8 +29,9 @@ main > section > p {
     background-position: center;
     background-attachment: fixed;
     color: var(--color-blanco);
-    padding: 140px 0;
+    padding: 160px 0 140px;
     text-align: center;
+    margin-top: 56px;
 }
 
 .hero-contenido {
@@ -154,38 +51,12 @@ main > section > p {
     color: rgba(255, 255, 255, 0.92);
 }
 
-.hero .boton + .boton {
-    margin-left: 12px;
-}
-
 /* ---------------------------------------------------------
-   SECCIONES Y GRID DE CATEGORÍAS (portada)
+   Tarjetas de categoría (portada): hover de marca sobre card
    --------------------------------------------------------- */
-.seccion {
-    padding: 72px 0;
-}
-
-.seccion-fondo {
-    background-color: var(--color-gris-claro);
-}
-
-.grid-categorias {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 26px;
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
 .tarjeta-categoria {
-    background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra);
-    overflow: hidden;
-    text-align: center;
-    padding-bottom: 22px;
     transition: transform var(--transicion), box-shadow var(--transicion);
+    overflow: hidden;
 }
 
 .tarjeta-categoria:hover {
@@ -193,236 +64,27 @@ main > section > p {
     box-shadow: var(--sombra-fuerte);
 }
 
-.tarjeta-categoria img {
-    width: 100%;
+.tarjeta-categoria .card-img-top {
     height: 210px;
     object-fit: cover;
 }
 
-.tarjeta-categoria h3 {
-    margin: 16px 16px 6px;
-}
-
-.tarjeta-categoria p {
-    margin: 0 16px 14px;
-    color: var(--color-gris);
-    font-size: 0.95rem;
+/* ---------------------------------------------------------
+   Secciones con fondo alterno
+   --------------------------------------------------------- */
+.seccion-fondo {
+    background-color: var(--color-gris-claro);
 }
 
 /* ---------------------------------------------------------
-   FOOTER - variante con clases (index.html)
+   RESPONSIVE del hero
    --------------------------------------------------------- */
-.pie-pagina {
-    background-color: var(--color-primario-oscuro);
-    color: var(--color-blanco);
-    margin-top: 40px;
-}
-
-.pie-contenido {
-    display: grid;
-    grid-template-columns: 1.6fr 1fr 1.6fr;
-    gap: 32px;
-    padding: 48px 20px;
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-}
-
-.pie-columna h3 {
-    color: var(--color-blanco);
-    margin-bottom: 14px;
-}
-
-.pie-lista {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.pie-lista li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.pie-lista a {
-    color: #c8e6c9;
-}
-
-.pie-lista a:hover {
-    color: var(--color-blanco);
-}
-
-.pie-lista img {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
-}
-
-.pie-redes {
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-}
-
-.pie-redes img {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    transition: transform var(--transicion);
-}
-
-.pie-redes img:hover {
-    transform: scale(1.15);
-}
-
-.pie-legal {
-    background-color: rgba(0, 0, 0, 0.25);
-    text-align: center;
-    padding: 16px 0;
-    font-size: 0.9rem;
-}
-
-/* ---------------------------------------------------------
-   FOOTER - variante semántica (resto de páginas)
-   --------------------------------------------------------- */
-footer:not(.pie-pagina) {
-    background-color: var(--color-primario-oscuro);
-    color: var(--color-blanco);
-    display: grid;
-    grid-template-columns: 1.6fr 1fr 1.6fr;
-    gap: 32px;
-    padding: 48px 20px 0;
-    margin-top: 40px;
-}
-
-footer:not(.pie-pagina) > div {
-    padding-bottom: 24px;
-}
-
-footer:not(.pie-pagina) h3 {
-    color: var(--color-blanco);
-    margin-bottom: 14px;
-}
-
-footer:not(.pie-pagina) nav ul {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-footer:not(.pie-pagina) nav ul a {
-    color: #c8e6c9;
-}
-
-footer:not(.pie-pagina) nav ul a:hover {
-    color: var(--color-blanco);
-}
-
-footer:not(.pie-pagina) ul {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-footer:not(.pie-pagina) ul li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-footer:not(.pie-pagina) ul li img {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
-}
-
-footer:not(.pie-pagina) > div > a:first-of-type {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--color-blanco);
-    font-family: var(--fuente-principal);
-    font-weight: 800;
-}
-
-footer:not(.pie-pagina) > div > a:first-of-type img {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-}
-
-footer:not(.pie-pagina) > p {
-    grid-column: 1 / -1;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 16px 0;
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-/* ---------------------------------------------------------
-   RESPONSIVE
-   --------------------------------------------------------- */
-@media (max-width: 900px) {
-    .cabecera-contenido,
-    header:not(.cabecera) {
-        justify-content: center;
-    }
-
-    .pie-contenido,
-    footer:not(.pie-pagina) {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
 @media (max-width: 640px) {
     .hero {
-        padding: 72px 0;
+        padding: 120px 0 72px;
     }
 
     .hero h1 {
         font-size: 1.9rem;
-    }
-
-    .hero .boton {
-        display: block;
-        width: 100%;
-    }
-
-    .hero .boton + .boton {
-        margin-left: 0;
-        margin-top: 12px;
-    }
-
-    .cabecera-contenido,
-    header:not(.cabecera) {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .navegacion-lista,
-    header nav ul {
-        justify-content: center;
-        gap: 4px 12px;
-    }
-
-    main > section {
-        padding: 40px 16px;
-    }
-
-    h1 {
-        font-size: 1.7rem;
-    }
-
-    h2 {
-        font-size: 1.4rem;
-    }
-
-    .pie-contenido,
-    footer:not(.pie-pagina) {
-        grid-template-columns: 1fr;
-        padding: 32px 16px 0;
     }
 }

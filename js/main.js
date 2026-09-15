@@ -138,19 +138,30 @@
 
     function renderizarTarjeta(producto) {
         var articulo = document.createElement('article');
+        articulo.className = 'card h-100 shadow-sm';
 
         var imagen = document.createElement('img');
         imagen.src = producto.imagen;
         imagen.alt = producto.titulo;
+        imagen.className = 'card-img-top';
+        articulo.appendChild(imagen);
+
+        var cuerpo = document.createElement('div');
+        cuerpo.className = 'card-body text-center d-flex flex-column';
 
         var titulo = document.createElement('h3');
+        titulo.className = 'card-title';
         titulo.textContent = producto.titulo;
+        cuerpo.appendChild(titulo);
 
         var precio = document.createElement('p');
+        precio.className = 'card-text';
         precio.textContent = 'Precio unitario: ' + formatearPrecio(producto.precio);
+        cuerpo.appendChild(precio);
 
         var filaCantidad = document.createElement('p');
         var etiqueta = document.createElement('label');
+        etiqueta.className = 'form-label';
         etiqueta.textContent = 'Cantidad';
         etiqueta.htmlFor = 'cantidad-' + producto.titulo.toLowerCase().replace(/[^a-z0-9]/gi, '-');
         var cantidad = document.createElement('input');
@@ -159,25 +170,26 @@
         cantidad.name = 'cantidad';
         cantidad.min = '1';
         cantidad.value = producto.cantidad;
+        cantidad.className = 'form-control text-center mx-auto';
         cantidad.setAttribute('data-producto', producto.titulo);
+        cantidad.style.maxWidth = '120px';
         filaCantidad.appendChild(etiqueta);
         filaCantidad.appendChild(cantidad);
+        cuerpo.appendChild(filaCantidad);
 
         var subtotal = document.createElement('p');
-        subtotal.className = 'subtotal-item';
+        subtotal.className = 'subtotal-item fw-bold';
         subtotal.textContent = 'Subtotal: ' + formatearPrecio(producto.precio * producto.cantidad);
+        cuerpo.appendChild(subtotal);
 
         var eliminar = document.createElement('a');
         eliminar.href = 'carrito.html';
+        eliminar.className = 'btn btn-outline-danger btn-sm mt-auto';
         eliminar.textContent = 'Eliminar';
         eliminar.setAttribute('data-eliminar', producto.titulo);
+        cuerpo.appendChild(eliminar);
 
-        articulo.appendChild(imagen);
-        articulo.appendChild(titulo);
-        articulo.appendChild(precio);
-        articulo.appendChild(filaCantidad);
-        articulo.appendChild(subtotal);
-        articulo.appendChild(eliminar);
+        articulo.appendChild(cuerpo);
 
         return articulo;
     }

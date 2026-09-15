@@ -1,6 +1,8 @@
 /* =========================================================
    BioForjaRC - global.css
    Variables, reseteo, tipografías y estilos generales
+   (la interfaz visual la aporta Bootstrap; aquí quedan la
+    marca, la tipografía y las clases que usa el JavaScript)
    ========================================================= */
 
 /* Fuentes: se cargan aquí para que toda página que enlace
@@ -48,8 +50,6 @@
 *,
 *::before,
 *::after {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
@@ -69,11 +69,6 @@ body {
 img {
     max-width: 100%;
     display: block;
-}
-
-ul,
-ol {
-    list-style: none;
 }
 
 a {
@@ -120,198 +115,34 @@ p {
 }
 
 /* ---------------------------------------------------------
-   Contenedor y utilidades
+   Títulos de sección: subrayado de acento sobre Bootstrap
+   (se excluyen los títulos dentro de cards)
    --------------------------------------------------------- */
-.contenedor {
-    width: 100%;
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.texto-centrado {
-    text-align: center;
-}
-
-.titulo-seccion {
-    text-align: center;
-    margin-bottom: 36px;
+main section h2:not(.card-title) {
     position: relative;
+    padding-bottom: 14px;
 }
 
-.titulo-seccion::after {
+main section h2:not(.card-title)::after {
     content: '';
     display: block;
     width: 72px;
     height: 4px;
-    margin: 12px auto 0;
+    margin: 10px auto 0;
     background: var(--color-acento);
     border-radius: 2px;
 }
 
 /* ---------------------------------------------------------
-   Botones (clases) y botones semánticos
+   Utilidades
    --------------------------------------------------------- */
-.boton,
-button {
-    display: inline-block;
-    padding: 12px 28px;
-    border: 2px solid transparent;
-    border-radius: var(--radio-boton);
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-    font-family: var(--fuente-principal);
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
+.texto-centrado {
     text-align: center;
-    transition: all var(--transicion);
-}
-
-.boton:hover,
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--sombra);
-    color: var(--color-blanco);
-}
-
-.boton-primario {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-}
-
-.boton-primario:hover {
-    background-color: var(--color-primario-oscuro);
-    color: var(--color-blanco);
-}
-
-.boton-secundario {
-    background-color: transparent;
-    border-color: var(--color-blanco);
-    color: var(--color-blanco);
-}
-
-.boton-secundario:hover {
-    background-color: var(--color-blanco);
-    color: var(--color-primario-oscuro);
-}
-
-.enlace {
-    font-weight: 700;
-    color: var(--color-acento);
 }
 
 /* ---------------------------------------------------------
-   Formularios (páginas semánticas: cotización, contacto, etc.)
-   --------------------------------------------------------- */
-form {
-    background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra);
-    padding: 32px;
-    max-width: 640px;
-}
-
-fieldset {
-    border: 1px solid var(--color-gris-claro);
-    border-radius: var(--radio-borde);
-    padding: 20px 24px;
-    margin-bottom: 24px;
-}
-
-legend {
-    font-family: var(--fuente-principal);
-    font-weight: 700;
-    color: var(--color-primario-oscuro);
-    padding: 0 8px;
-}
-
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--color-primario-oscuro);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"],
-input[type="number"],
-input[type="search"],
-select,
-textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 2px solid var(--color-gris-claro);
-    border-radius: 8px;
-    font-family: var(--fuente-texto);
-    font-size: 1rem;
-    background-color: var(--color-blanco);
-    color: var(--color-tinta);
-    transition: border-color var(--transicion), box-shadow var(--transicion);
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--color-primario);
-    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-    width: auto;
-    margin-right: 8px;
-    accent-color: var(--color-primario);
-}
-
-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-/* ---------------------------------------------------------
-   Tablas (carrito, checkout, admin, mi-cuenta)
-   --------------------------------------------------------- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
-    overflow: hidden;
-    box-shadow: var(--sombra);
-}
-
-thead {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-}
-
-th,
-td {
-    padding: 14px 16px;
-    text-align: left;
-    border-bottom: 1px solid var(--color-gris-claro);
-}
-
-thead th {
-    font-family: var(--fuente-principal);
-    font-weight: 700;
-}
-
-tbody tr:hover {
-    background-color: rgba(107, 143, 59, 0.08);
-}
-
-tfoot th {
-    background-color: var(--color-primario-claro);
-    color: var(--color-blanco);
-}
-
-/* ---------------------------------------------------------
-   Mensajes de validación (js/validaciones.js)
+   Mensajes de validación (js/validaciones.js y js/auth.js)
+   Se apoyan en Bootstrap (.is-invalid, .invalid-feedback)
    --------------------------------------------------------- */
 .campo-error input,
 .campo-error select,
@@ -345,6 +176,32 @@ tfoot th {
     color: var(--color-primario-oscuro);
 }
 
+/* Dentro de la navbar oscura de Bootstrap */
+.navbar .saludo-usuario {
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+}
+
+.navbar .saludo-usuario strong {
+    color: var(--color-blanco);
+    margin-left: 4px;
+}
+
+/* Enlace "Cerrar sesión" inyectado por js/auth.js en la navbar */
+.navbar-nav > li > a[data-logout] {
+    display: block;
+    padding: var(--bs-nav-link-padding-y, 0.5rem) var(--bs-nav-link-padding-x, 1rem);
+    color: rgba(255, 255, 255, 0.75) !important;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.navbar-nav > li > a[data-logout]:hover,
+.navbar-nav > li > a[data-logout]:focus {
+    color: var(--color-blanco) !important;
+}
+
 /* Aviso de credenciales / sesión en formularios */
 .aviso-auth {
     max-width: 640px;
@@ -376,6 +233,9 @@ tfoot th {
     color: var(--color-primario-oscuro);
     font-size: 0.75rem;
     font-weight: 700;
+    position: absolute;
+    top: -6px;
+    right: -8px;
 }
 
 /* Notificación al agregar/quitar productos */

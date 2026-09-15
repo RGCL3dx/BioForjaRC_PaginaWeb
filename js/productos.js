@@ -148,27 +148,36 @@
        ----------------------------------------------------- */
 
     function crearTarjeta(producto) {
+        var envoltorio = document.createElement('div');
+        envoltorio.className = 'col-12 col-sm-6 col-lg-4';
+
         var articulo = document.createElement('article');
+        articulo.className = 'card h-100 shadow-sm';
 
         var imagen = document.createElement('img');
         imagen.src = producto.imagen || IMAGEN_DEFECTO;
         imagen.alt = producto.titulo;
+        imagen.className = 'card-img-top';
+        articulo.appendChild(imagen);
+
+        var cuerpo = document.createElement('div');
+        cuerpo.className = 'card-body d-flex flex-column text-center';
 
         var titulo = document.createElement('h3');
+        titulo.className = 'card-title';
         titulo.textContent = producto.titulo;
+        cuerpo.appendChild(titulo);
 
         var descripcion = document.createElement('p');
+        descripcion.className = 'card-text flex-grow-1';
         descripcion.textContent = producto.descripcion || '';
+        cuerpo.appendChild(descripcion);
 
         var precio = document.createElement('p');
         var fuerte = document.createElement('strong');
         fuerte.textContent = formatearPrecio(producto.precio);
         precio.appendChild(fuerte);
-
-        articulo.appendChild(imagen);
-        articulo.appendChild(titulo);
-        articulo.appendChild(descripcion);
-        articulo.appendChild(precio);
+        cuerpo.appendChild(precio);
 
         var stock = document.createElement('p');
         if (producto.stock > 0) {
@@ -178,26 +187,35 @@
             stock.className = 'stock-producto agotado';
             stock.textContent = 'Agotado';
         }
-        articulo.appendChild(stock);
+        cuerpo.appendChild(stock);
+
+        var botones = document.createElement('div');
+        botones.className = 'd-flex flex-wrap justify-content-center gap-2 mt-2';
 
         if (producto.stock > 0) {
             var agregar = document.createElement('a');
             agregar.href = 'carrito.html';
+            agregar.className = 'btn btn-success btn-sm';
             agregar.textContent = 'Agregar al carrito';
-            articulo.appendChild(agregar);
+            botones.appendChild(agregar);
         } else {
             var agotado = document.createElement('span');
-            agotado.className = 'etiqueta-agotado';
+            agotado.className = 'badge rounded-pill text-bg-secondary';
             agotado.textContent = 'Agotado';
-            articulo.appendChild(agotado);
+            botones.appendChild(agotado);
         }
 
         var cotizar = document.createElement('a');
         cotizar.href = 'cotizacion.html';
+        cotizar.className = 'btn btn-outline-warning btn-sm';
         cotizar.textContent = 'Cotizar';
-        articulo.appendChild(cotizar);
+        botones.appendChild(cotizar);
 
-        return articulo;
+        cuerpo.appendChild(botones);
+        articulo.appendChild(cuerpo);
+        envoltorio.appendChild(articulo);
+
+        return envoltorio;
     }
 
     function renderizarCatalogo() {

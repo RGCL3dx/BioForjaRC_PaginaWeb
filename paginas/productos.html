@@ -6,6 +6,7 @@
     <meta name="description" content="Catálogo de productos BioForjaRC: maceteros, animales articulados, juegos sensoriales y figuras ecológicas hechas con plástico reciclado.">
     <meta name="author" content="BioForjaRC">
     <title>BioForjaRC | Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YcnS/1p0KQLI8apkWK2BtctoMJeGmO3QV1hb" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/base/global.css">
     <link rel="stylesheet" href="../css/base/estructura.css">
     <link rel="stylesheet" href="../css/paginas/productos.css">
@@ -13,124 +14,146 @@
 <body>
 
     <header>
-        <a href="index.html">
-            <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-            <span>BioForjaRC</span>
-        </a>
-
-        <nav aria-label="Navegación principal">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="login.html">Ingresar</a></li>
-                <li><a href="registro.html">Registro</a></li>
-                <li><a href="carrito.html">Carrito</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top" aria-label="Navegación principal">
+            <div class="container">
+                <a href="index.html" class="navbar-brand d-flex align-items-center gap-2" aria-label="Ir al inicio de BioForjaRC">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:40px;height:40px;object-fit:contain;border:2px solid #4CAF50;">
+                    <span class="fw-bold">BioForja<span class="text-warning">RC</span></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPrincipal" aria-controls="navPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navPrincipal">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a href="index.html" class="nav-link">Inicio</a></li>
+                        <li class="nav-item"><a href="productos.html" class="nav-link active" aria-current="page">Productos</a></li>
+                        <li class="nav-item"><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                        <li class="nav-item"><a href="cotizacion.html" class="nav-link">Cotización</a></li>
+                        <li class="nav-item"><a href="contacto.html" class="nav-link">Contacto</a></li>
+                        <li class="nav-item"><a href="login.html" class="nav-link">Ingresar</a></li>
+                        <li class="nav-item"><a href="registro.html" class="nav-link">Registrarse</a></li>
+                    </ul>
+                    <a href="carrito.html" class="btn btn-outline-light ms-lg-3 position-relative" aria-label="Ir al carrito de compras">
+                        <img src="../assets/imagenes/carrito.png" alt="Ícono de carrito de compras" style="width:22px;height:22px;object-fit:contain;">
+                    </a>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
+    <main class="pt-5">
 
-        <section>
-            <h1>Catálogo de productos</h1>
-            <p>Explora nuestra línea ecológica creada con plástico PET reciclado e impresión 3D.</p>
-
-            <nav aria-label="Filtrar por categoría">
-                <ul>
-                    <li><a href="#maceteros">Maceteros</a></li>
-                    <li><a href="#articulados">Animales articulados</a></li>
-                    <li><a href="#sensorial">Sensoriales</a></li>
-                    <li><a href="#figuras">Figuras ecológicas</a></li>
-                </ul>
-            </nav>
+        <section class="py-5 text-center">
+            <div class="container">
+                <h1 class="mb-3">Catálogo de productos</h1>
+                <p class="lead mb-4">Explora nuestra línea ecológica creada con plástico PET reciclado e impresión 3D.</p>
+                <nav aria-label="Filtrar por categoría" class="mb-2">
+                    <ul class="nav flex-wrap justify-content-center gap-2">
+                        <li class="nav-item"><a href="#maceteros" class="btn btn-outline-success rounded-pill">Maceteros</a></li>
+                        <li class="nav-item"><a href="#articulados" class="btn btn-outline-success rounded-pill">Animales articulados</a></li>
+                        <li class="nav-item"><a href="#sensorial" class="btn btn-outline-success rounded-pill">Sensoriales</a></li>
+                        <li class="nav-item"><a href="#figuras" class="btn btn-outline-success rounded-pill">Figuras ecológicas</a></li>
+                    </ul>
+                </nav>
+            </div>
         </section>
 
-        <section id="maceteros">
-            <h2>Maceteros</h2>
-            <div class="grid-productos" data-categoria="maceteros"></div>
+        <section id="maceteros" class="py-4">
+            <div class="container">
+                <h2 class="text-center mb-4">Maceteros</h2>
+                <div class="row g-4" data-categoria="maceteros"></div>
+            </div>
         </section>
 
-        <section id="articulados">
-            <h2>Animales articulados</h2>
-            <div class="grid-productos" data-categoria="articulados"></div>
+        <section id="articulados" class="py-4">
+            <div class="container">
+                <h2 class="text-center mb-4">Animales articulados</h2>
+                <div class="row g-4" data-categoria="articulados"></div>
+            </div>
         </section>
 
-        <section id="sensorial">
-            <h2>Juguetes sensoriales</h2>
-            <div class="grid-productos" data-categoria="sensorial"></div>
+        <section id="sensorial" class="py-4">
+            <div class="container">
+                <h2 class="text-center mb-4">Juguetes sensoriales</h2>
+                <div class="row g-4" data-categoria="sensorial"></div>
+            </div>
         </section>
 
-        <section id="figuras">
-            <h2>Figuras ecológicas</h2>
-            <div class="grid-productos" data-categoria="figuras"></div>
+        <section id="figuras" class="py-4">
+            <div class="container">
+                <h2 class="text-center mb-4">Figuras ecológicas</h2>
+                <div class="row g-4" data-categoria="figuras"></div>
+            </div>
         </section>
 
-        <section>
-            <h2>¿No encuentras lo que buscas?</h2>
-            <p>Solicita una cotización personalizada para proyectos, volúmenes o diseño propio.</p>
-            <a href="cotizacion.html">Solicitar cotización</a>
+        <section class="py-5 bg-light text-center">
+            <div class="container">
+                <h2 class="mb-3">¿No encuentras lo que buscas?</h2>
+                <p class="mb-4">Solicita una cotización personalizada para proyectos, volúmenes o diseño propio.</p>
+                <a href="cotizacion.html" class="btn btn-success btn-lg">Solicitar cotización</a>
+            </div>
         </section>
 
     </main>
 
-    <footer>
+    <footer class="bg-dark text-light pt-5 pb-3 mt-5">
+        <div class="container">
+            <div class="row g-4">
 
-        <div>
-            <a href="index.html">
-                <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-                <span>BioForjaRC</span>
-            </a>
-            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
-        </div>
+                <div class="col-lg-4">
+                    <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none mb-3">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" class="rounded-circle" style="width:44px;height:44px;object-fit:contain;border:2px solid rgba(255,255,255,0.5);">
+                        <span class="fw-bold text-white fs-5">BioForja<span class="text-warning">RC</span></span>
+                    </a>
+                    <p class="text-light">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                </div>
 
-        <nav aria-label="Enlaces del sitio">
-            <h3>Enlaces</h3>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="mi-cuenta.html">Mi cuenta</a></li>
-            </ul>
-        </nav>
+                <div class="col-lg-4">
+                    <h3 class="text-white mb-3">Enlaces</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-success text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="nosotros.html" class="text-success text-decoration-none">Nosotros</a></li>
+                        <li class="mb-2"><a href="productos.html" class="text-success text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="cotizacion.html" class="text-success text-decoration-none">Cotización</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-success text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-success text-decoration-none">Mi cuenta</a></li>
+                    </ul>
+                </div>
 
-        <div>
-            <h3>Contacto</h3>
-            <ul>
-                <li>
-                    <img src="../assets/imagenes/gps.png" alt="Ubicación">
-                    <span>Santiago, Chile</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/telefono.png" alt="Teléfono">
-                    <span>+56 9 1234 5678</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/gmail.webp" alt="Correo">
-                    <span>contacto@bioforjarc.cl</span>
-                </li>
-            </ul>
-            <div>
-                <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
-                <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
-                <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"></a>
+                <div class="col-lg-4">
+                    <h3 class="text-white mb-3">Contacto</h3>
+                    <ul class="list-unstyled">
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../assets/imagenes/gps.png" alt="Ubicación" style="width:28px;height:28px;object-fit:contain;">
+                            <span>Santiago, Chile</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../assets/imagenes/telefono.png" alt="Teléfono" style="width:28px;height:28px;object-fit:contain;">
+                            <span>+56 9 1234 5678</span>
+                        </li>
+                        <li class="d-flex align-items-center gap-2 mb-2">
+                            <img src="../assets/imagenes/gmail.webp" alt="Correo" style="width:28px;height:28px;object-fit:contain;">
+                            <span>contacto@bioforjarc.cl</span>
+                        </li>
+                    </ul>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook" style="width:36px;height:36px;object-fit:contain;"></a>
+                        <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram" style="width:36px;height:36px;object-fit:contain;"></a>
+                        <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X" style="width:36px;height:36px;object-fit:contain;"></a>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <div>
-            <h3>Administración</h3>
-            <ul>
-                <li><a href="admin/index.html">Panel de administración</a></li>
-            </ul>
+        <div class="bg-black text-center py-3 mt-4">
+            <div class="container">
+                <p class="mb-0">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
+            </div>
         </div>
-
-        <p>&copy; 2026 BioForjaRC.</p>
-
     </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="../js/auth.js" defer></script>
 <script src="../js/productos.js" defer></script>
 <script src="../js/main.js" defer></script>
