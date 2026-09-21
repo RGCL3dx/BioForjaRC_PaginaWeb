@@ -3,7 +3,7 @@
    Carrito de compras: productos seleccionados y resumen
    ========================================================= */
 
-/* Productos seleccionados: tarjetas horizontales */
+/* Productos seleccionados: tarjetas horizontales (render de main.js) */
 main section:nth-of-type(2) article {
     display: grid;
     grid-template-columns: 120px 1fr;
@@ -26,17 +26,19 @@ main section:nth-of-type(2) article img {
 
 main section:nth-of-type(2) article h3 {
     margin: 0 0 4px;
+    color: var(--color-primario-oscuro);
 }
 
 main section:nth-of-type(2) article p {
     margin: 0 0 6px;
     font-size: 0.95rem;
+    color: var(--color-gris);
 }
 
 main section:nth-of-type(2) article label {
-    display: inline;
     font-weight: 600;
     margin-right: 6px;
+    color: var(--color-primario-oscuro);
 }
 
 main section:nth-of-type(2) article input[type="number"] {
@@ -44,29 +46,30 @@ main section:nth-of-type(2) article input[type="number"] {
     display: inline-block;
 }
 
-main section:nth-of-type(2) article > a {
-    display: inline-block;
-    color: #c62828;
+main section:nth-of-type(2) article a[data-eliminar] {
+    justify-self: start;
+    color: var(--color-peligro);
     font-weight: 700;
 }
 
-main section:nth-of-type(2) article > a:hover {
+main section:nth-of-type(2) article a[data-eliminar]:hover {
     text-decoration: underline;
 }
 
 /* Resumen de la compra */
-main section:nth-of-type(3) {
+.resumen-carrito {
     max-width: 780px;
     margin: 0 auto;
 }
 
-main section:nth-of-type(3) h2 {
+.resumen-carrito h2 {
     text-align: center;
     position: relative;
     padding-bottom: 14px;
+    margin-bottom: 0;
 }
 
-main section:nth-of-type(3) h2::after {
+.resumen-carrito h2::after {
     content: '';
     display: block;
     width: 72px;
@@ -76,45 +79,8 @@ main section:nth-of-type(3) h2::after {
     border-radius: 2px;
 }
 
-main section:nth-of-type(3) table {
-    margin: 24px 0;
-}
-
-main section:nth-of-type(3) p {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-}
-
-main section:nth-of-type(3) a {
-    display: inline-block;
-    padding: 12px 26px;
-    border-radius: var(--radio-boton);
-    font-family: var(--fuente-principal);
-    font-weight: 700;
-}
-
-main section:nth-of-type(3) a[href="checkout.html"] {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-}
-
-main section:nth-of-type(3) a[href="checkout.html"]:hover {
-    background-color: var(--color-primario-oscuro);
-    color: var(--color-blanco);
-}
-
-main section:nth-of-type(3) a[href="productos.html"] {
-    background-color: var(--color-blanco);
-    border: 2px solid var(--color-primario);
-    color: var(--color-primario);
-}
-
-main section:nth-of-type(3) a[href="productos.html"]:hover {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
+.resumen-carrito .table {
+    margin-top: 24px;
 }
 
 @media (max-width: 640px) {
@@ -125,5 +91,9 @@ main section:nth-of-type(3) a[href="productos.html"]:hover {
 
     main section:nth-of-type(2) article img {
         margin: 0 auto;
+    }
+
+    main section:nth-of-type(2) article a[data-eliminar] {
+        justify-self: center;
     }
 }

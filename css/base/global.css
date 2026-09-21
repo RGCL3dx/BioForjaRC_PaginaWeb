@@ -1,41 +1,37 @@
 /* =========================================================
    BioForjaRC - global.css
-   Variables, reseteo, tipografías y estilos generales
+   Capa de marca sobre Bootstrap 5.
+   Mantiene la paleta corporativa y las clases que usa el JS
+   (main.js, auth.js, validaciones.js, productos.js, admin.js)
    ========================================================= */
 
-/* Fuentes: se cargan aquí para que toda página que enlace
-   global.css tenga la tipografía de marca */
+/* Fuentes de marca */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap');
 
 /* ---------------------------------------------------------
    Paleta de colores deducida del logo (reciclaje + tecnología)
    --------------------------------------------------------- */
 :root {
-    /* Verdes ecológicos (marca principal) */
     --color-primario:        #2E7D32;
     --color-primario-oscuro: #1B5E20;
     --color-primario-claro:  #4CAF50;
 
-    /* Verde oliva de reciclaje */
     --color-oliva:           #6B8F3B;
-
-    /* Color de acento (llamados a la acción) */
     --color-acento:          #FFB300;
+    --color-acento-oscuro:   #e6a800;
 
-    /* Neutros y contrastes */
     --color-tinta:           #1B241B;
     --color-gris:            #5B6B79;
     --color-gris-claro:      #E8EEE8;
     --color-fondo:           #F6F9F6;
     --color-blanco:          #FFFFFF;
 
-    /* Tipografías */
+    --color-peligro:         #c62828;
+
     --fuente-principal: 'Montserrat', 'Segoe UI', sans-serif;
     --fuente-texto: 'Open Sans', 'Segoe UI', sans-serif;
 
-    /* Métricas reutilizables */
     --radio-borde:    12px;
-    --radio-boton:    50px;
     --sombra:         0 4px 14px rgba(27, 36, 27, 0.10);
     --sombra-fuerte:  0 10px 26px rgba(27, 36, 27, 0.18);
     --transicion:     0.3s ease;
@@ -43,37 +39,24 @@
 }
 
 /* ---------------------------------------------------------
-   Reseteo básico
+   Tipografía y colores de base
    --------------------------------------------------------- */
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     font-family: var(--fuente-texto);
-    font-size: 1rem;
-    line-height: 1.6;
     color: var(--color-tinta);
     background-color: var(--color-fondo);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-img {
-    max-width: 100%;
-    display: block;
+main {
+    flex: 1 0 auto;
 }
 
-ul,
-ol {
-    list-style: none;
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fuente-principal);
+    color: var(--color-primario-oscuro);
 }
 
 a {
@@ -87,56 +70,128 @@ a:hover {
 }
 
 /* ---------------------------------------------------------
-   Títulos
+   Fondos y textos utilitarios de marca
    --------------------------------------------------------- */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: var(--fuente-principal);
-    line-height: 1.25;
-    color: var(--color-primario-oscuro);
+.bg-marca {
+    background-color: var(--color-primario-oscuro) !important;
 }
 
-h1 {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
+.bg-marca-claro {
+    background-color: var(--color-gris-claro) !important;
 }
 
-h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+.bg-primario {
+    background-color: var(--color-primario) !important;
 }
 
-h3 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
+.texto-marca {
+    color: var(--color-primario) !important;
 }
 
-p {
-    margin-bottom: 12px;
+.texto-acento {
+    color: var(--color-acento) !important;
+}
+
+.text-tinta {
+    color: var(--color-tinta) !important;
+}
+
+.texto-gris {
+    color: var(--color-gris) !important;
 }
 
 /* ---------------------------------------------------------
-   Contenedor y utilidades
+   Botones de marca (se usan junto a .btn de Bootstrap)
    --------------------------------------------------------- */
-.contenedor {
-    width: 100%;
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: 0 20px;
+.btn-marca {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--color-primario);
+    --bs-btn-border-color: var(--color-primario);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--color-primario-oscuro);
+    --bs-btn-hover-border-color: var(--color-primario-oscuro);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--color-primario-oscuro);
+    --bs-btn-active-border-color: var(--color-primario);
+    --bs-btn-disabled-bg: var(--color-primario);
+    --bs-btn-disabled-border-color: var(--color-primario);
 }
 
-.texto-centrado {
-    text-align: center;
+.btn-marca-outline {
+    --bs-btn-color: var(--color-primario);
+    --bs-btn-border-color: var(--color-primario);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--color-primario);
+    --bs-btn-hover-border-color: var(--color-primario);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--color-primario);
+    --bs-btn-active-border-color: var(--color-primario);
 }
 
+.btn-acento {
+    --bs-btn-color: var(--color-primario-oscuro);
+    --bs-btn-bg: var(--color-acento);
+    --bs-btn-border-color: var(--color-acento);
+    --bs-btn-hover-color: var(--color-primario-oscuro);
+    --bs-btn-hover-bg: var(--color-acento-oscuro);
+    --bs-btn-hover-border-color: var(--color-acento-oscuro);
+    --bs-btn-active-color: var(--color-primario-oscuro);
+    --bs-btn-active-bg: var(--color-acento-oscuro);
+    --bs-btn-active-border-color: var(--color-acento);
+}
+
+.btn-peligro {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--color-peligro);
+    --bs-btn-border-color: var(--color-peligro);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #b71c1c;
+    --bs-btn-hover-border-color: #b71c1c;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #b71c1c;
+    --bs-btn-active-border-color: var(--color-peligro);
+}
+
+/* ---------------------------------------------------------
+   Navbar de marca
+   --------------------------------------------------------- */
+.navbar-marca .navbar-brand,
+.navbar-marca .navbar-brand:hover {
+    color: var(--color-primario-oscuro);
+}
+
+.navbar-marca .navbar-brand img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--color-primario-claro);
+}
+
+.navbar-marca .nav-link {
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    color: var(--color-tinta);
+}
+
+.navbar-marca .nav-link:hover,
+.navbar-marca .nav-link.active {
+    color: var(--color-primario);
+}
+
+/* Enlace del carrito con contador */
+.navbar-marca a[href*="carrito.html"] {
+    position: relative;
+}
+
+/* ---------------------------------------------------------
+   Títulos de sección con subrayado de acento
+   --------------------------------------------------------- */
 .titulo-seccion {
     text-align: center;
-    margin-bottom: 36px;
     position: relative;
+    padding-bottom: 14px;
+    margin-bottom: 36px;
 }
 
 .titulo-seccion::after {
@@ -150,219 +205,53 @@ p {
 }
 
 /* ---------------------------------------------------------
-   Botones (clases) y botones semánticos
+   Tarjetas de formulario (login, registro, contacto, etc.)
    --------------------------------------------------------- */
-.boton,
-button {
-    display: inline-block;
-    padding: 12px 28px;
-    border: 2px solid transparent;
-    border-radius: var(--radio-boton);
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-    font-family: var(--fuente-principal);
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: center;
-    transition: all var(--transicion);
-}
-
-.boton:hover,
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--sombra);
-    color: var(--color-blanco);
-}
-
-.boton-primario {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-}
-
-.boton-primario:hover {
-    background-color: var(--color-primario-oscuro);
-    color: var(--color-blanco);
-}
-
-.boton-secundario {
-    background-color: transparent;
-    border-color: var(--color-blanco);
-    color: var(--color-blanco);
-}
-
-.boton-secundario:hover {
-    background-color: var(--color-blanco);
-    color: var(--color-primario-oscuro);
-}
-
-.enlace {
-    font-weight: 700;
-    color: var(--color-acento);
-}
-
-/* ---------------------------------------------------------
-   Formularios (páginas semánticas: cotización, contacto, etc.)
-   --------------------------------------------------------- */
-form {
-    background-color: var(--color-blanco);
+.card-formulario {
+    border: 0;
     border-radius: var(--radio-borde);
     box-shadow: var(--sombra);
-    padding: 32px;
-    max-width: 640px;
+    background-color: var(--color-blanco);
 }
 
-fieldset {
-    border: 1px solid var(--color-gris-claro);
+.fieldset-marca {
+    border: 2px solid rgba(46, 125, 50, 0.20);
     border-radius: var(--radio-borde);
+    background-color: rgba(246, 249, 246, 0.8);
     padding: 20px 24px;
     margin-bottom: 24px;
 }
 
-legend {
+.fieldset-marca legend {
     font-family: var(--fuente-principal);
     font-weight: 700;
     color: var(--color-primario-oscuro);
     padding: 0 8px;
-}
-
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--color-primario-oscuro);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"],
-input[type="number"],
-input[type="search"],
-select,
-textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 2px solid var(--color-gris-claro);
-    border-radius: 8px;
-    font-family: var(--fuente-texto);
-    font-size: 1rem;
-    background-color: var(--color-blanco);
-    color: var(--color-tinta);
-    transition: border-color var(--transicion), box-shadow var(--transicion);
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--color-primario);
-    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
-}
-
-input[type="checkbox"],
-input[type="radio"] {
     width: auto;
-    margin-right: 8px;
-    accent-color: var(--color-primario);
-}
-
-textarea {
-    resize: vertical;
-    min-height: 120px;
 }
 
 /* ---------------------------------------------------------
-   Tablas (carrito, checkout, admin, mi-cuenta)
+   Tablas de marca (encabezado verde y hover)
    --------------------------------------------------------- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
-    overflow: hidden;
-    box-shadow: var(--sombra);
-}
-
-thead {
+.tabla-marca thead th {
     background-color: var(--color-primario);
     color: var(--color-blanco);
-}
-
-th,
-td {
-    padding: 14px 16px;
-    text-align: left;
-    border-bottom: 1px solid var(--color-gris-claro);
-}
-
-thead th {
     font-family: var(--fuente-principal);
     font-weight: 700;
+    border: 0;
 }
 
-tbody tr:hover {
-    background-color: rgba(107, 143, 59, 0.08);
-}
-
-tfoot th {
+.tabla-marca tfoot th {
     background-color: var(--color-primario-claro);
     color: var(--color-blanco);
-}
-
-/* ---------------------------------------------------------
-   Mensajes de validación (js/validaciones.js)
-   --------------------------------------------------------- */
-.campo-error input,
-.campo-error select,
-.campo-error textarea {
-    border-color: #c62828 !important;
-    background-color: rgba(198, 40, 40, 0.05);
-}
-
-.mensaje-error {
-    display: block;
-    margin-top: 6px;
-    color: #c62828;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-/* ---------------------------------------------------------
-   Autenticación (js/auth.js)
-   --------------------------------------------------------- */
-/* Saludo de usuario en la navegación */
-.saludo-usuario {
-    font-family: var(--fuente-principal);
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--color-gris);
-    padding: 8px 2px;
-    white-space: nowrap;
-}
-
-.saludo-usuario strong {
-    color: var(--color-primario-oscuro);
-}
-
-/* Aviso de credenciales / sesión en formularios */
-.aviso-auth {
-    max-width: 640px;
-    margin: 20px auto 0;
-    padding: 14px 18px;
-    border-radius: 10px;
-    background-color: rgba(255, 179, 0, 0.12);
-    border: 1px solid var(--color-acento);
-    color: var(--color-primario-oscuro);
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-align: center;
+    border: 0;
 }
 
 /* ---------------------------------------------------------
    Interacción de la tienda (js/main.js)
    --------------------------------------------------------- */
-/* Contador de productos en el header */
+
+/* Contador de productos junto al ícono del carrito */
 .contador-carrito {
     display: inline-flex;
     align-items: center;
@@ -370,10 +259,11 @@ tfoot th {
     min-width: 20px;
     height: 20px;
     padding: 0 6px;
-    margin-left: 6px;
+    margin-left: 4px;
     border-radius: 999px;
     background-color: var(--color-acento);
     color: var(--color-primario-oscuro);
+    font-family: var(--fuente-principal);
     font-size: 0.75rem;
     font-weight: 700;
 }
@@ -383,7 +273,7 @@ tfoot th {
     position: fixed;
     right: 20px;
     bottom: 20px;
-    z-index: 999;
+    z-index: 2000;
     max-width: 320px;
     padding: 14px 20px;
     border-radius: 10px;
@@ -415,5 +305,165 @@ tfoot th {
     display: inline-block;
     margin-left: 8px;
     font-weight: 700;
-    color: var(--color-oliva);
+    color: var(--color-primario);
+}
+
+/* ---------------------------------------------------------
+   Autenticación (js/auth.js)
+   --------------------------------------------------------- */
+
+/* Saludo de usuario en la navegación */
+.saludo-usuario {
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    color: var(--color-gris);
+    white-space: nowrap;
+    margin-left: 4px;
+}
+
+.saludo-usuario strong {
+    color: var(--color-primario-oscuro);
+}
+
+/* Aviso de credenciales / sesión */
+.aviso-auth {
+    max-width: 640px;
+    margin: 20px auto 0;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background-color: rgba(255, 179, 0, 0.12);
+    border: 1px solid var(--color-acento);
+    color: var(--color-primario-oscuro);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* ---------------------------------------------------------
+   Validaciones (js/validaciones.js y js/auth.js)
+   --------------------------------------------------------- */
+.campo-error .form-control,
+.campo-error .form-select,
+.campo-error textarea {
+    border-color: var(--color-peligro) !important;
+    background-color: rgba(198, 40, 40, 0.05);
+}
+
+.mensaje-error {
+    display: block;
+    margin-top: 6px;
+    color: var(--color-peligro);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Catálogo (js/productos.js)
+   --------------------------------------------------------- */
+.stock-producto {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+.stock-producto.agotado {
+    color: var(--color-peligro);
+}
+
+.etiqueta-agotado {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;
+    background-color: var(--color-gris-claro);
+    color: var(--color-gris);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* ---------------------------------------------------------
+   Panel administrativo (js/admin.js)
+   --------------------------------------------------------- */
+.fila-actual td {
+    background-color: rgba(255, 179, 0, 0.10);
+}
+
+.aviso-sesion {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background-color: rgba(255, 179, 0, 0.12);
+    border: 1px solid var(--color-acento);
+    color: var(--color-primario-oscuro);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Botones generados por admin.js dentro de las tablas */
+.tabla-admin button[data-guardar],
+.tabla-admin button[data-guardar-estado] {
+    color: #fff;
+    background-color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-guardar]:hover,
+.tabla-admin button[data-guardar-estado]:hover {
+    background-color: var(--color-primario-oscuro);
+}
+
+.tabla-admin button.peligro {
+    color: #fff;
+    background-color: var(--color-peligro);
+    border: 1px solid var(--color-peligro);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button.peligro:hover {
+    background-color: #b71c1c;
+}
+
+.tabla-admin button[data-detalle] {
+    color: var(--color-primario-oscuro);
+    background-color: var(--color-acento);
+    border: 1px solid var(--color-acento);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------
+   Footer
+   --------------------------------------------------------- */
+.pie-pagina a {
+    color: #c8e6c9;
+    transition: color var(--transicion);
+}
+
+.pie-pagina a:hover {
+    color: var(--color-blanco);
+}
+
+.pie-pagina .pie-icono {
+    font-size: 1.1rem;
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 640px) {
+    .aviso-carrito {
+        left: 16px;
+        right: 16px;
+        max-width: none;
+    }
 }

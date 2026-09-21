@@ -6,6 +6,8 @@
     <meta name="description" content="Finaliza tu compra en BioForjaRC: ingresa tus datos de facturación, método de envío y pago.">
     <meta name="author" content="BioForjaRC">
     <title>BioForjaRC | Finalizar compra</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/base/global.css">
     <link rel="stylesheet" href="../css/base/estructura.css">
     <link rel="stylesheet" href="../css/paginas/checkout.css">
@@ -13,232 +15,224 @@
 <body>
 
     <header>
-        <a href="index.html">
-            <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-            <span>BioForjaRC</span>
-        </a>
-
-        <nav aria-label="Navegación principal">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="login.html">Ingresar</a></li>
-                <li><a href="registro.html">Registro</a></li>
-                <li><a href="carrito.html">Carrito</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-marca" aria-label="Navegación principal">
+            <div class="container-xl">
+                <a class="navbar-brand d-flex align-items-center gap-2 py-2" href="index.html" aria-label="Ir al inicio de BioForjaRC">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+                    <span class="fw-bold fs-4 text-tinta">BioForja<strong class="texto-acento">RC</strong></span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                    aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="cotizacion.html">Cotización</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.html">Ingresar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="registro.html">Registrarse</a></li>
+                        <li class="nav-item">
+                            <a class="btn btn-marca-outline rounded-pill px-3 mt-2 mb-2 mt-lg-0 mb-lg-0 ms-lg-2" href="carrito.html" aria-label="Ir al carrito de compras">
+                                <i class="bi bi-cart3"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
 
-        <section>
-            <h1>Finalizar compra</h1>
-            <p>Completa tus datos para generar la orden y el comprobante de compra.</p>
+        <section class="py-5">
+            <div class="container">
+                <h1 class="titulo-seccion">Finalizar compra</h1>
+                <p class="pagina-intro">Completa tus datos para generar la orden y el comprobante de compra.</p>
+            </div>
         </section>
 
-        <section>
-            <h2>Resumen del pedido</h2>
-            <table class="tabla-checkout">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Macetero clásico</td>
-                        <td>1</td>
-                        <td>$8.990</td>
-                    </tr>
-                    <tr>
-                        <td>Perro articulado</td>
-                        <td>1</td>
-                        <td>$9.990</td>
-                    </tr>
-                    <tr>
-                        <td>Estrella sensorial</td>
-                        <td>2</td>
-                        <td>$13.980</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="2">Subtotal productos</th>
-                        <th>$32.960</th>
-                    </tr>
-                    <tr>
-                        <th colspan="2">Costo de envío</th>
-                        <th>$3.500</th>
-                    </tr>
-                    <tr>
-                        <th colspan="2">Total a pagar</th>
-                        <th>$36.460</th>
-                    </tr>
-                </tfoot>
-            </table>
+        <section class="py-4">
+            <div class="container">
+                <h2>Resumen del pedido</h2>
+                <div class="table-responsive">
+                    <table class="tabla-checkout table align-middle tabla-marca">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3">Cargando tu pedido...</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Subtotal productos</th>
+                                <th>$0</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Costo de envío</th>
+                                <th>$3.500</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Total a pagar</th>
+                                <th>$0</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </section>
 
-        <section>
-            <h2>Datos de facturación</h2>
+        <section class="py-4">
+            <div class="container">
+                <h2>Datos de facturación</h2>
 
-            <form action="#" method="post">
+                <form class="card card-formulario formulario-checkout p-4 p-md-5" action="#" method="post">
 
-                <fieldset>
-                    <legend>Dirección de despacho</legend>
+                    <fieldset class="fieldset-marca">
+                        <legend>Dirección de despacho</legend>
 
-                    <p>
-                        <label for="nombre">Nombre completo *</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
-                    </p>
+                        <div class="mb-3">
+                            <label class="form-label" for="nombre">Nombre completo *</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" autocomplete="name" required>
+                        </div>
 
-                    <p>
-                        <label for="direccion">Dirección *</label>
-                        <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Siempre Viva 123" required>
-                    </p>
+                        <div class="mb-3">
+                            <label class="form-label" for="direccion">Dirección *</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ej: Av. Siempre Viva 123" autocomplete="street-address" required>
+                        </div>
 
-                    <p>
-                        <label for="comuna">Comuna *</label>
-                        <input type="text" id="comuna" name="comuna" placeholder="Ej: Santiago Centro" required>
-                    </p>
+                        <div class="mb-3">
+                            <label class="form-label" for="comuna">Comuna *</label>
+                            <input type="text" class="form-control" id="comuna" name="comuna" placeholder="Ej: Santiago Centro" autocomplete="address-level3" required>
+                        </div>
 
-                    <p>
-                        <label for="region">Región *</label>
-                        <select id="region" name="region" required>
-                            <option value="">-- Selecciona una región --</option>
-                            <option value="metropolitana">Región Metropolitana</option>
-                            <option value="valparaiso">Región de Valparaíso</option>
-                            <option value="libgral">Región del Libertador General Bernardo O'Higgins</option>
-                            <option value="maule">Región del Maule</option>
-                            <option value="bio">Región del Biobío</option>
-                            <option value="araycan">Región de La Araucanía</option>
-                        </select>
-                    </p>
-                </fieldset>
+                        <div class="mb-3">
+                            <label class="form-label" for="region">Región *</label>
+                            <select class="form-select" id="region" name="region" required>
+                                <option value="">-- Selecciona una región --</option>
+                                <option value="metropolitana">Región Metropolitana</option>
+                                <option value="valparaiso">Región de Valparaíso</option>
+                                <option value="libgral">Región del Libertador General Bernardo O'Higgins</option>
+                                <option value="maule">Región del Maule</option>
+                                <option value="bio">Región del Biobío</option>
+                                <option value="araycan">Región de La Araucanía</option>
+                            </select>
+                        </div>
+                    </fieldset>
 
-                <fieldset>
-                    <legend>Tipo de documento</legend>
-                    <p>
-                        <label for="boleta">
-                            <input type="radio" id="boleta" name="documento" value="boleta" checked>
-                            Boleta
-                        </label>
-                    </p>
-                    <p>
-                        <label for="factura">
-                            <input type="radio" id="factura" name="documento" value="factura">
-                            Factura
-                        </label>
-                    </p>
-                </fieldset>
+                    <fieldset class="fieldset-marca">
+                        <legend>Tipo de documento</legend>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="boleta" name="documento" value="boleta" checked>
+                            <label class="form-check-label" for="boleta">Boleta</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="factura" name="documento" value="factura">
+                            <label class="form-check-label" for="factura">Factura</label>
+                        </div>
+                    </fieldset>
 
-                <fieldset>
-                    <legend>Método de despacho</legend>
-                    <p>
-                        <label for="estandar">
-                            <input type="radio" id="estandar" name="despacho" value="estandar" checked>
-                            Envío estándar ($3.500)
-                        </label>
-                    </p>
-                    <p>
-                        <label for="express">
-                            <input type="radio" id="express" name="despacho" value="express">
-                            Envío express ($6.500)
-                        </label>
-                    </p>
-                    <p>
-                        <label for="retiro">
-                            <input type="radio" id="retiro" name="despacho" value="retiro">
-                            Retiro en tienda (sin costo)
-                        </label>
-                    </p>
-                </fieldset>
+                    <fieldset class="fieldset-marca">
+                        <legend>Método de despacho</legend>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="estandar" name="despacho" value="estandar" checked>
+                            <label class="form-check-label" for="estandar">Envío estándar ($3.500)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="express" name="despacho" value="express">
+                            <label class="form-check-label" for="express">Envío express ($6.500)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="retiro" name="despacho" value="retiro">
+                            <label class="form-check-label" for="retiro">Retiro en tienda (sin costo)</label>
+                        </div>
+                    </fieldset>
 
-                <fieldset>
-                    <legend>Método de pago</legend>
-                    <p>
-                        <label for="tarjeta">
-                            <input type="radio" id="tarjeta" name="pago" value="tarjeta" checked>
-                            Tarjeta de crédito o débito
-                        </label>
-                    </p>
-                    <p>
-                        <label for="transferencia">
-                            <input type="radio" id="transferencia" name="pago" value="transferencia">
-                            Transferencia bancaria
-                        </label>
-                    </p>
-                </fieldset>
+                    <fieldset class="fieldset-marca">
+                        <legend>Método de pago</legend>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="tarjeta" name="pago" value="tarjeta" checked>
+                            <label class="form-check-label" for="tarjeta">Tarjeta de crédito o débito</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="transferencia" name="pago" value="transferencia">
+                            <label class="form-check-label" for="transferencia">Transferencia bancaria</label>
+                        </div>
+                    </fieldset>
 
-                <p>
-                    <button type="submit">Confirmar compra y generar comprobante</button>
-                </p>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-acento btn-lg rounded-pill px-4">Confirmar compra y generar comprobante</button>
+                    </div>
 
-            </form>
+                </form>
+            </div>
         </section>
 
     </main>
 
-    <footer>
+    <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
+        <div class="container">
+            <div class="row g-4">
 
-        <div>
-            <a href="index.html">
-                <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-                <span>BioForjaRC</span>
-            </a>
-            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
-        </div>
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC"
+                            class="rounded-circle" style="width:44px;height:44px;object-fit:cover;border:2px solid rgba(255,255,255,0.5);">
+                        <span class="fw-bold fs-5">BioForja<strong class="texto-acento">RC</strong></span>
+                    </a>
+                    <p class="text-white-50">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                </div>
 
-        <nav aria-label="Enlaces del sitio">
-            <h3>Enlaces</h3>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="mi-cuenta.html">Mi cuenta</a></li>
-            </ul>
-        </nav>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white-50 text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="productos.html" class="text-white-50 text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="nosotros.html" class="text-white-50 text-decoration-none">Nosotros</a></li>
+                        <li class="mb-2"><a href="cotizacion.html" class="text-white-50 text-decoration-none">Cotización</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-white-50 text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-white-50 text-decoration-none">Mi cuenta</a></li>
+                    </ul>
+                </div>
 
-        <div>
-            <h3>Contacto</h3>
-            <ul>
-                <li>
-                    <img src="../assets/imagenes/gps.png" alt="Ubicación">
-                    <span>Santiago, Chile</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/telefono.png" alt="Teléfono">
-                    <span>+56 9 1234 5678</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/gmail.webp" alt="Correo">
-                    <span>contacto@bioforjarc.cl</span>
-                </li>
-            </ul>
-            <div>
-                <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
-                <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
-                <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"></a>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Contacto</h5>
+                    <p class="mb-2"><i class="bi bi-geo-alt-fill me-2 pie-icono text-white"></i>Santiago, Chile</p>
+                    <p class="mb-2"><i class="bi bi-telephone-fill me-2 pie-icono text-white"></i><a href="tel:+56912345678" class="text-white-50 text-decoration-none">+56 9 1234 5678</a></p>
+                    <p class="mb-3"><i class="bi bi-envelope-fill me-2 pie-icono text-white"></i><a href="mailto:contacto@bioforjarc.cl" class="text-white-50 text-decoration-none">contacto@bioforjarc.cl</a></p>
+                    <div class="d-flex gap-3 fs-4">
+                        <a href="#" class="text-white-50" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Administración</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="admin/index.html" class="text-white-50 text-decoration-none"><i class="bi bi-person-gear me-2"></i>Panel de administración</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-white-50 text-decoration-none"><i class="bi bi-person me-2"></i>Mi cuenta</a></li>
+                    </ul>
+                </div>
+
             </div>
+
+            <hr class="border-secondary my-4">
+
+            <p class="text-center text-white-50 small mb-0 pb-2">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
         </div>
-
-        <div>
-            <h3>Administración</h3>
-            <ul>
-                <li><a href="admin/index.html">Panel de administración</a></li>
-            </ul>
-        </div>
-
-        <p>&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
-
     </footer>
 
-<script src="../js/auth.js" defer></script>
-<script src="../js/main.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

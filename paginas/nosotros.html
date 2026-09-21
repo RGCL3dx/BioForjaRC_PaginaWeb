@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Conoce BioForjaRC: misión, visión y el proceso de reciclaje de plástico que convierte botellas PET en productos de impresión 3D.">
+    <meta name="description" content="Conoce a BioForjaRC: somos un emprendimiento chileno que transforma plástico PET reciclado en productos de impresión 3D.">
     <meta name="author" content="BioForjaRC">
     <title>BioForjaRC | Nosotros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/base/global.css">
     <link rel="stylesheet" href="../css/base/estructura.css">
     <link rel="stylesheet" href="../css/paginas/nosotros.css">
@@ -13,147 +15,224 @@
 <body>
 
     <header>
-        <a href="index.html">
-            <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-            <span>BioForjaRC</span>
-        </a>
-
-        <nav aria-label="Navegación principal">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="login.html">Ingresar</a></li>
-                <li><a href="registro.html">Registro</a></li>
-                <li><a href="carrito.html">Carrito</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-marca" aria-label="Navegación principal">
+            <div class="container-xl">
+                <a class="navbar-brand d-flex align-items-center gap-2 py-2" href="index.html" aria-label="Ir al inicio de BioForjaRC">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+                    <span class="fw-bold fs-4 text-tinta">BioForja<strong class="texto-acento">RC</strong></span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                    aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="nosotros.html">Nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="cotizacion.html">Cotización</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.html">Ingresar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="registro.html">Registrarse</a></li>
+                        <li class="nav-item">
+                            <a class="btn btn-marca-outline rounded-pill px-3 mt-2 mb-2 mt-lg-0 mb-lg-0 ms-lg-2" href="carrito.html" aria-label="Ir al carrito de compras">
+                                <i class="bi bi-cart3"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
 
-        <section>
-            <h1>Sobre nosotros</h1>
-            <p>Somos BioForjaRC, una tienda que transforma el reciclaje de plástico en productos útiles y creativos gracias a la impresión 3D.</p>
+        <section class="py-5">
+            <div class="container">
+                <h1 class="titulo-seccion">Nosotros</h1>
+                <p class="pagina-intro">Un emprendimiento chileno que combina reciclaje y tecnología para cuidar el planeta.</p>
+            </div>
         </section>
 
-        <section>
-            <h2>Misión</h2>
-            <p>Recuperar botellas plásticas del medio ambiente y convertirlas en productos ecológicos, funcionales y de calidad mediante la impresión 3D.</p>
+        <section class="py-4">
+            <div class="container">
+                <div class="row g-4 align-items-center">
+
+                    <article class="col-lg-6">
+                        <h2>Nuestra historia</h2>
+                        <p>BioForja<strong>RC</strong> nace con la convicción de que los residuos pueden convertirse en algo útil y bello. Recuperamos botellas de plástico PET y otros residuos plásticos, los transformamos en filamento ecológico y lo imprimimos en 3D para crear maceteros, animales articulados, juegos sensoriales y figuras decorativas.</p>
+                        <p>Cada producto cuenta una historia de reciclaje: menos plástico en el vertedero, menos emisiones y más conciencia ambiental en los hogares chilenos.</p>
+
+                        <div class="d-flex gap-3 mt-4">
+                            <a href="cotizacion.html" class="btn btn-marca rounded-pill px-4">Quiero una cotización</a>
+                            <a href="productos.html" class="btn btn-marca-outline rounded-pill px-4">Ver productos</a>
+                        </div>
+                    </article>
+
+                    <figure class="col-lg-6 text-center">
+                        <img src="../assets/imagenes/fondo.webp" alt="Fondo de Industrialización en BioForjaRC"
+                            class="img-fluid rounded-4 shadow">
+                        <figcaption class="texto-gris small mt-2">Producción de filamento reciclado en BioForjaRC.</figcaption>
+                    </figure>
+
+                </div>
+            </div>
         </section>
 
-        <section>
-            <h2>Visión</h2>
-            <p>Ser una empresa líder en economía circular en Chile, inspirando el consumo responsable a través del diseño y el reciclaje.</p>
+        <section class="py-4 seccion-clara">
+            <div class="container">
+                <div class="row g-4">
+
+                    <article class="col-md-6">
+                        <div class="card tarjeta-valor h-100">
+                            <div class="card-body d-flex gap-3">
+                                <i class="bi bi-bullseye fs-1 text-marca"></i>
+                                <div>
+                                    <h3>Misión</h3>
+                                    <p class="mb-0">Reducir el impacto ambiental del plástico mediante productos ecológicos, accesibles y de calidad, educando a la comunidad sobre el reciclaje.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="col-md-6">
+                        <div class="card tarjeta-valor h-100">
+                            <div class="card-body d-flex gap-3">
+                                <i class="bi bi-eye fs-1 text-marca"></i>
+                                <div>
+                                    <h3>Visión</h3>
+                                    <p class="mb-0">Ser referente en economía circular en Chile, demostrando que el reciclaje y la fabricación digital pueden convivir en un modelo de negocio sostenible.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
         </section>
 
-        <section>
-            <h2>Conoce nuestro proceso</h2>
+        <section class="py-4">
+            <div class="container">
+                <h2>Mira cómo transformamos el plástico</h2>
+                <p class="texto-gris">Este video muestra el proceso de reciclaje de botellas PET y su conversión en filamento para impresión 3D.</p>
 
-            <video controls
-                   preload="none"
-                   poster="../assets/imagenes/triturado-plasticos.jpg"
-                   width="100%"
-                   aria-label="Vídeo explicativo del proceso de reciclaje de BioForjaRC">
-                <source src="../assets/videos/proceso-bioforjarc.mp4" type="video/mp4">
-                <p>Tu navegador no admite la reproducción de video. Puedes <a href="contacto.html">contactarnos</a> para más información.</p>
-            </video>
+                <div class="col-lg-10 mx-auto">
+                    <div class="contenedor-video">
+                        <iframe src="https://www.youtube-nocookie.com/embed/qhZfwsaZrnU"
+                            title="Reciclaje de botellas PET a filamento para impresión 3D"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section>
-            <h2>Nuestro proceso</h2>
+        <section class="py-5 seccion-clara">
+            <div class="container">
+                <h2 class="titulo-seccion">Nuestros compromisos</h2>
+                <div class="row g-4">
 
-            <article>
-                <img src="../assets/imagenes/recoleccion-botellas.jpg" alt="Recolección de botellas pet">
-                <h3>Recolección</h3>
-                <p>Reunimos botellas PET en puntos de acopio y campañas comunitarias.</p>
-            </article>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card tarjeta-valor h-100 text-center">
+                            <div class="card-body">
+                                <i class="bi bi-recycle fs-1 text-acento"></i>
+                                <h3 class="h5">Economía circular</h3>
+                                <p class="mb-0 small">Cada kg de plástico reciclado reduce residuos y emisiones.</p>
+                            </div>
+                        </div>
+                    </article>
 
-            <article>
-                <img src="../assets/imagenes/limpieza-botellas.jpg" alt="Limpieza de botellas plásticas">
-                <h3>Limpieza</h3>
-                <p>Lavamos y clasificamos el material para garantizar su calidad.</p>
-            </article>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card tarjeta-valor h-100 text-center">
+                            <div class="card-body">
+                                <i class="bi bi-chat-heart fs-1 text-acento"></i>
+                                <h3 class="h5">Educación</h3>
+                                <p class="mb-0 small">Compartimos contenido para que más personas se sumen al reciclaje.</p>
+                            </div>
+                        </div>
+                    </article>
 
-            <article>
-                <img src="../assets/imagenes/triturado-plasticos.jpg" alt="Triturado de plásticos">
-                <h3>Triturado</h3>
-                <p>Convertimos las botellas en pequeños fragmentos reutilizables.</p>
-            </article>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card tarjeta-valor h-100 text-center">
+                            <div class="card-body">
+                                <i class="bi bi-box-seam fs-1 text-acento"></i>
+                                <h3 class="h5">Calidad</h3>
+                                <p class="mb-0 small">Productos resistentes, seguros y aptos para toda la familia.</p>
+                            </div>
+                        </div>
+                    </article>
 
-            <article>
-                <img src="../assets/imagenes/extrusion-filamento.png" alt="Extrusión de filamento para impresión 3D">
-                <h3>Extrusión de filamento</h3>
-                <p>Transformamos el plástico en filamento para nuestras impresoras 3D.</p>
-            </article>
-        </section>
+                    <article class="col-md-6 col-lg-3">
+                        <div class="card tarjeta-valor h-100 text-center">
+                            <div class="card-body">
+                                <i class="bi bi-house-heart fs-1 text-acento"></i>
+                                <h3 class="h5">Comunidad</h3>
+                                <p class="mb-0 small">Apoyamos emprendimientos locales y talleres sustentables.</p>
+                            </div>
+                        </div>
+                    </article>
 
-        <section>
-            <h2>¿Quieres saber más?</h2>
-            <p>Contáctanos o solicita una cotización personalizada.</p>
-            <a href="contacto.html">Ir a Contacto</a>
-            <a href="cotizacion.html">Solicitar cotización</a>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <footer>
+    <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
+        <div class="container">
+            <div class="row g-4">
 
-        <div>
-            <a href="index.html">
-                <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-                <span>BioForjaRC</span>
-            </a>
-            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
-        </div>
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC"
+                            class="rounded-circle" style="width:44px;height:44px;object-fit:cover;border:2px solid rgba(255,255,255,0.5);">
+                        <span class="fw-bold fs-5">BioForja<strong class="texto-acento">RC</strong></span>
+                    </a>
+                    <p class="text-white-50">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                </div>
 
-        <nav aria-label="Enlaces del sitio">
-            <h3>Enlaces</h3>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="mi-cuenta.html">Mi cuenta</a></li>
-            </ul>
-        </nav>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white-50 text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="productos.html" class="text-white-50 text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="nosotros.html" class="text-white-50 text-decoration-none">Nosotros</a></li>
+                        <li class="mb-2"><a href="cotizacion.html" class="text-white-50 text-decoration-none">Cotización</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-white-50 text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-white-50 text-decoration-none">Mi cuenta</a></li>
+                    </ul>
+                </div>
 
-        <div>
-            <h3>Contacto</h3>
-            <ul>
-                <li>
-                    <img src="../assets/imagenes/gps.png" alt="Ubicación">
-                    <span>Santiago, Chile</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/telefono.png" alt="Teléfono">
-                    <span>+56 9 1234 5678</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/gmail.webp" alt="Correo">
-                    <span>contacto@bioforjarc.cl</span>
-                </li>
-            </ul>
-            <div>
-                <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
-                <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
-                <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"></a>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Contacto</h5>
+                    <p class="mb-2"><i class="bi bi-geo-alt-fill me-2 pie-icono text-white"></i>Santiago, Chile</p>
+                    <p class="mb-2"><i class="bi bi-telephone-fill me-2 pie-icono text-white"></i><a href="tel:+56912345678" class="text-white-50 text-decoration-none">+56 9 1234 5678</a></p>
+                    <p class="mb-3"><i class="bi bi-envelope-fill me-2 pie-icono text-white"></i><a href="mailto:contacto@bioforjarc.cl" class="text-white-50 text-decoration-none">contacto@bioforjarc.cl</a></p>
+                    <div class="d-flex gap-3 fs-4">
+                        <a href="#" class="text-white-50" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Administración</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="admin/index.html" class="text-white-50 text-decoration-none"><i class="bi bi-person-gear me-2"></i>Panel de administración</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-white-50 text-decoration-none"><i class="bi bi-person me-2"></i>Mi cuenta</a></li>
+                    </ul>
+                </div>
+
             </div>
+
+            <hr class="border-secondary my-4">
+
+            <p class="text-center text-white-50 small mb-0 pb-2">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
         </div>
-
-        <div>
-            <h3>Administración</h3>
-            <ul>
-                <li><a href="admin/index.html">Panel de administración</a></li>
-            </ul>
-        </div>
-
-        <p>&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
-
     </footer>
 
-<script src="../js/auth.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

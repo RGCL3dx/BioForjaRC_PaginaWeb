@@ -1,86 +1,21 @@
 /* =========================================================
    BioForjaRC - mi-cuenta.css
-   Cuenta del cliente: datos, direcciones e historial
+   Datos personales, direcciones e historial de compras
    ========================================================= */
 
-/* Datos personales y direcciones como tarjetas */
-main section:nth-of-type(2),
-main section:nth-of-type(3) {
-    max-width: 680px;
-    margin: 0 auto;
-    background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra);
-    padding: 28px;
+.ficha-cuenta dd {
+    margin-bottom: 0;
 }
 
-main section:nth-of-type(2) {
-    margin-bottom: 24px;
+.lista-direcciones {
+    margin: 0;
+    padding-left: 1.2rem;
 }
 
-main section:nth-of-type(2) ul,
-main section:nth-of-type(3) ul {
-    display: grid;
-    gap: 8px;
-    padding-left: 20px;
-    list-style: none;
+.lista-direcciones li {
+    margin-bottom: 6px;
 }
 
-main section:nth-of-type(2) li,
-main section:nth-of-type(3) li {
-    position: relative;
-    padding-left: 24px;
-}
-
-main section:nth-of-type(2) li::before,
-main section:nth-of-type(3) li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-claro));
-}
-
-main section:nth-of-type(2) a,
-main section:nth-of-type(3) a {
-    font-weight: 700;
-    color: var(--color-primario);
-}
-
-main section:nth-of-type(2) a:hover,
-main section:nth-of-type(3) a:hover {
-    color: var(--color-primario-oscuro);
-}
-
-/* Historial de pedidos */
-main section:nth-of-type(4) {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-main section:nth-of-type(4) h2 {
-    text-align: center;
-    position: relative;
-    padding-bottom: 14px;
-}
-
-main section:nth-of-type(4) h2::after {
-    content: '';
-    display: block;
-    width: 72px;
-    height: 4px;
-    margin: 12px auto 0;
-    background: var(--color-acento);
-    border-radius: 2px;
-}
-
-main section:nth-of-type(4) table {
-    margin-top: 20px;
-}
-
-main section:nth-of-type(4) td a {
-    font-weight: 700;
+.tarjeta-direccion {
+    padding: 12px;
 }

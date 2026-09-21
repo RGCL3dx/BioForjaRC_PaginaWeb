@@ -1,77 +1,17 @@
 /* =========================================================
-   BioForjaRC - admin/inventario.css
-   Gestión del inventario de productos
+   BioForjaRC - inventario.css (admin)
    ========================================================= */
 
-/* Formulario para agregar productos */
-#seccion-agregar form {
-    max-width: 560px;
-    margin: 0 auto;
-}
-
-#seccion-agregar form p {
-    margin-bottom: 16px;
-}
-
-#seccion-agregar form > p:last-of-type {
-    text-align: center;
-    margin-bottom: 0;
-}
-
-/* Listado de productos */
-#seccion-inventario {
-    max-width: 940px;
-    margin: 0 auto;
-}
-
-#seccion-inventario > p {
-    max-width: 420px;
-    margin: 0 auto 18px;
-    text-align: left;
-}
-
-#seccion-inventario h2,
-#seccion-agregar h2 {
-    text-align: center;
-    position: relative;
-    padding-bottom: 14px;
-}
-
-#seccion-inventario h2::after,
-#seccion-agregar h2::after {
-    content: '';
-    display: block;
-    width: 72px;
-    height: 4px;
-    margin: 12px auto 0;
-    background: var(--color-acento);
-    border-radius: 2px;
-}
-
-main table {
-    margin: 20px 0;
-}
-
-/* Campos de edición en la tabla */
 .campo-precio,
 .campo-stock {
-    width: 100px;
-    padding: 8px 10px;
+    width: 110px;
 }
 
-#tabla-inventario button {
-    font-size: 0.85rem;
-    padding: 8px 14px;
+.tarjeta-metrica:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-fuerte);
 }
 
-#tabla-inventario button + button {
-    margin-left: 6px;
-}
-
-button.peligro {
-    background-color: #c62828;
-}
-
-button.peligro:hover {
-    background-color: #b71c1c;
+.fila-actual {
+    background-color: var(--color-claro) !important;
 }

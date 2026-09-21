@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contacta con BioForjaRC: ubicación, teléfono, correo y redes sociales. Estamos en Santiago, Chile.">
+    <meta name="description" content="Contáctate con BioForjaRC: dudas, encargos personalizados o comentarios sobre nuestros productos reciclados.">
     <meta name="author" content="BioForjaRC">
     <title>BioForjaRC | Contacto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/base/global.css">
     <link rel="stylesheet" href="../css/base/estructura.css">
     <link rel="stylesheet" href="../css/paginas/contacto.css">
@@ -13,149 +15,164 @@
 <body>
 
     <header>
-        <a href="index.html">
-            <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-            <span>BioForjaRC</span>
-        </a>
-
-        <nav aria-label="Navegación principal">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="login.html">Ingresar</a></li>
-                <li><a href="registro.html">Registro</a></li>
-                <li><a href="carrito.html">Carrito</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-marca" aria-label="Navegación principal">
+            <div class="container-xl">
+                <a class="navbar-brand d-flex align-items-center gap-2 py-2" href="index.html" aria-label="Ir al inicio de BioForjaRC">
+                    <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+                    <span class="fw-bold fs-4 text-tinta">BioForja<strong class="texto-acento">RC</strong></span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                    aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuPrincipal">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="cotizacion.html">Cotización</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.html">Ingresar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="registro.html">Registrarse</a></li>
+                        <li class="nav-item">
+                            <a class="btn btn-marca-outline rounded-pill px-3 mt-2 mb-2 mt-lg-0 mb-lg-0 ms-lg-2" href="carrito.html" aria-label="Ir al carrito de compras">
+                                <i class="bi bi-cart3"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
 
-        <section>
-            <h1>Contáctanos</h1>
-            <p>Estamos en Santiago, Chile. Escríbenos o visítanos y te atenderemos con gusto.</p>
+        <section class="py-5">
+            <div class="container">
+                <h1 class="titulo-seccion">Contacto</h1>
+                <p class="pagina-intro">Escríbenos y te responderemos a la brevedad.</p>
+            </div>
         </section>
 
-        <section>
-            <h2>Información de contacto</h2>
+        <section class="py-4 seccion-clara">
+            <div class="container">
+                <div class="row g-4">
 
-            <article>
-                <h3>Ubicación</h3>
-                <img src="../assets/imagenes/gps.png" alt="Ubicación">
-                <p>Santiago, Chile</p>
-            </article>
+                    <div class="col-lg-7">
+                        <form class="card card-formulario p-4 p-md-5" action="#" method="post">
 
-            <article>
-                <h3>Teléfono</h3>
-                <img src="../assets/imagenes/telefono.png" alt="Teléfono">
-                <p>+56 9 1234 5678</p>
-            </article>
+                            <div class="mb-3">
+                                <label class="form-label" for="nombre">Nombre completo *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" autocomplete="name" required>
+                            </div>
 
-            <article>
-                <h3>Correo electrónico</h3>
-                <img src="../assets/imagenes/gmail.webp" alt="Correo">
-                <p>contacto@bioforjarc.cl</p>
-            </article>
-        </section>
+                            <div class="mb-3">
+                                <label class="form-label" for="correo">Correo electrónico *</label>
+                                <input type="email" class="form-control" id="correo" name="correo" placeholder="ej: juan@correo.cl" autocomplete="email" required>
+                            </div>
 
-        <section>
-            <h2>Escríbenos</h2>
-            <p>¿Tienes dudas, sugerencias o un proyecto en mente? Completa el formulario y te responderemos pronto.</p>
+                            <div class="mb-3">
+                                <label class="form-label" for="telefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="+56 9 1234 5678" autocomplete="tel">
+                            </div>
 
-            <form action="#" method="post">
-                <p>
-                    <label for="nombre">Nombre *</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
-                </p>
-                <p>
-                    <label for="correo">Correo *</label>
-                    <input type="email" id="correo" name="correo" placeholder="tu@correo.cl" required>
-                </p>
-                <p>
-                    <label for="asunto">Asunto *</label>
-                    <input type="text" id="asunto" name="asunto" placeholder="Ej: Pedido personalizado" required>
-                </p>
-                <p>
-                    <label for="mensaje">Mensaje *</label>
-                    <textarea id="mensaje" name="mensaje" rows="6" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                </p>
-                <p>
-                    <button type="submit">Enviar mensaje</button>
-                    <button type="reset">Limpiar</button>
-                </p>
-            </form>
-        </section>
+                            <div class="mb-3">
+                                <label class="form-label" for="asunto">Asunto *</label>
+                                <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Ej: Consulta por maceteros" required>
+                            </div>
 
-        <section>
-            <h2>Nuestras redes sociales</h2>
-            <ul>
-                <li><a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"> Facebook</a></li>
-                <li><a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"> Instagram</a></li>
-                <li><a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"> X / Twitter</a></li>
-            </ul>
+                            <div class="mb-4">
+                                <label class="form-label" for="mensaje">Mensaje *</label>
+                                <textarea class="form-control" id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos en qué te podemos ayudar (mínimo 10 caracteres)..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-acento btn-lg rounded-pill px-4">Enviar mensaje</button>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="card card-formulario p-4 h-100">
+                            <h2 class="h5 fw-bold mb-3">¿Prefieres escribirnos directo?</h2>
+
+                            <p class="mb-2"><i class="bi bi-geo-alt-fill me-2 pie-icono text-marca"></i>Santiago, Chile</p>
+                            <p class="mb-2"><i class="bi bi-telephone-fill me-2 pie-icono text-marca"></i><a href="tel:+56912345678" class="enlace-marca">+56 9 1234 5678</a></p>
+                            <p class="mb-4"><i class="bi bi-envelope-fill me-2 pie-icono text-marca"></i><a href="mailto:contacto@bioforjarc.cl" class="enlace-marca">contacto@bioforjarc.cl</a></p>
+
+                            <h3 class="h6 text-uppercase fw-bold texto-gris mb-3">Horario de atención</h3>
+                            <p class="mb-1">Lunes a viernes: 09:00 – 18:00 hrs</p>
+                            <p class="mb-4">Sábado: 10:00 – 14:00 hrs</p>
+
+                            <h3 class="h6 text-uppercase fw-bold texto-gris mb-3">Síguenos</h3>
+                            <div class="d-flex gap-3 fs-3">
+                                <a href="#" class="text-marca" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                                <a href="#" class="text-marca" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                                <a href="#" class="text-marca" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <footer>
+    <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
+        <div class="container">
+            <div class="row g-4">
 
-        <div>
-            <a href="index.html">
-                <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-                <span>BioForjaRC</span>
-            </a>
-            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
-        </div>
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
+                        <img src="../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC"
+                            class="rounded-circle" style="width:44px;height:44px;object-fit:cover;border:2px solid rgba(255,255,255,0.5);">
+                        <span class="fw-bold fs-5">BioForja<strong class="texto-acento">RC</strong></span>
+                    </a>
+                    <p class="text-white-50">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                </div>
 
-        <nav aria-label="Enlaces del sitio">
-            <h3>Enlaces</h3>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="productos.html">Productos</a></li>
-                <li><a href="cotizacion.html">Cotización</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="mi-cuenta.html">Mi cuenta</a></li>
-            </ul>
-        </nav>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white-50 text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="productos.html" class="text-white-50 text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="nosotros.html" class="text-white-50 text-decoration-none">Nosotros</a></li>
+                        <li class="mb-2"><a href="cotizacion.html" class="text-white-50 text-decoration-none">Cotización</a></li>
+                        <li class="mb-2"><a href="contacto.html" class="text-white-50 text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-white-50 text-decoration-none">Mi cuenta</a></li>
+                    </ul>
+                </div>
 
-        <div>
-            <h3>Contacto</h3>
-            <ul>
-                <li>
-                    <img src="../assets/imagenes/gps.png" alt="Ubicación">
-                    <span>Santiago, Chile</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/telefono.png" alt="Teléfono">
-                    <span>+56 9 1234 5678</span>
-                </li>
-                <li>
-                    <img src="../assets/imagenes/gmail.webp" alt="Correo">
-                    <span>contacto@bioforjarc.cl</span>
-                </li>
-            </ul>
-            <div>
-                <a href="#" aria-label="Facebook"><img src="../assets/imagenes/facebook.webp" alt="Facebook"></a>
-                <a href="#" aria-label="Instagram"><img src="../assets/imagenes/instagram.webp" alt="Instagram"></a>
-                <a href="#" aria-label="X (Twitter)"><img src="../assets/imagenes/X.webp" alt="X"></a>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Contacto</h5>
+                    <p class="mb-2"><i class="bi bi-geo-alt-fill me-2 pie-icono text-white"></i>Santiago, Chile</p>
+                    <p class="mb-2"><i class="bi bi-telephone-fill me-2 pie-icono text-white"></i><a href="tel:+56912345678" class="text-white-50 text-decoration-none">+56 9 1234 5678</a></p>
+                    <p class="mb-3"><i class="bi bi-envelope-fill me-2 pie-icono text-white"></i><a href="mailto:contacto@bioforjarc.cl" class="text-white-50 text-decoration-none">contacto@bioforjarc.cl</a></p>
+                    <div class="d-flex gap-3 fs-4">
+                        <a href="#" class="text-white-50" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50" aria-label="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Administración</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="admin/index.html" class="text-white-50 text-decoration-none"><i class="bi bi-person-gear me-2"></i>Panel de administración</a></li>
+                        <li class="mb-2"><a href="mi-cuenta.html" class="text-white-50 text-decoration-none"><i class="bi bi-person me-2"></i>Mi cuenta</a></li>
+                    </ul>
+                </div>
+
             </div>
+
+            <hr class="border-secondary my-4">
+
+            <p class="text-center text-white-50 small mb-0 pb-2">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
         </div>
-
-        <div>
-            <h3>Administración</h3>
-            <ul>
-                <li><a href="admin/index.html">Panel de administración</a></li>
-            </ul>
-        </div>
-
-        <p>&copy; 2026 BioForjaRC.</p>
-
     </footer>
 
-<script src="../js/validaciones.js" defer></script>
-<script src="../js/auth.js" defer></script>
+    <script src="../js/validaciones.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

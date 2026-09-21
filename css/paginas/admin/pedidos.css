@@ -1,75 +1,12 @@
 /* =========================================================
-   BioForjaRC - admin/pedidos.css
-   Gestión y detalle de pedidos
+   BioForjaRC - administracion/pedidos.css
    ========================================================= */
 
-/* Listado de pedidos */
-main section:nth-of-type(2) {
-    max-width: 940px;
-    margin: 0 auto;
+.fila-pedido:hover {
+    background-color: var(--color-claro);
+    cursor: pointer;
 }
 
-main section:nth-of-type(2) h2 {
-    text-align: center;
-    position: relative;
-    padding-bottom: 14px;
-}
-
-main section:nth-of-type(2) h2::after {
-    content: '';
-    display: block;
-    width: 72px;
-    height: 4px;
-    margin: 12px auto 0;
-    background: var(--color-acento);
-    border-radius: 2px;
-}
-
-main table {
-    margin: 20px 0;
-}
-
-#tabla-pedidos button {
-    font-size: 0.85rem;
-    padding: 8px 14px;
-}
-
-/* Detalle de un pedido */
-main section:nth-of-type(3) article {
-    max-width: 520px;
-    margin: 0 auto;
-    background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra);
-    padding: 24px;
-}
-
-main section:nth-of-type(3) article h3 {
-    color: var(--color-primario);
-    border-bottom: 2px solid var(--color-acento);
-    padding-bottom: 8px;
-    margin-top: 0;
-}
-
-main section:nth-of-type(3) article ul {
-    padding-left: 20px;
-    line-height: 1.8;
-}
-
-main section:nth-of-type(3) article p:last-of-type {
-    font-weight: 700;
-}
-
-#detalle-pedido p > label {
-    margin-bottom: 0;
-}
-
-#estado-pedido {
-    width: auto;
-    padding: 8px 12px;
-}
-
-#detalle-pedido button {
-    font-size: 0.85rem;
-    padding: 8px 14px;
+.select-estado-pedido {
+    min-width: 170px;
 }

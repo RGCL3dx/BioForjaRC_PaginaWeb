@@ -1,21 +1,18 @@
 /* =========================================================
    BioForjaRC - checkout.css
-   Pago: resumen del pedido y formulario de envío/pago
+   Finalizar compra: resumen del pedido y datos de facturación
    ========================================================= */
 
 /* Resumen del pedido */
-main section:nth-of-type(2) {
-    max-width: 780px;
-    margin: 0 auto;
-}
-
-main section:nth-of-type(2) h2 {
+main section:nth-of-type(2) h2,
+main section:nth-of-type(3) h2 {
     text-align: center;
     position: relative;
     padding-bottom: 14px;
 }
 
-main section:nth-of-type(2) h2::after {
+main section:nth-of-type(2) h2::after,
+main section:nth-of-type(3) h2::after {
     content: '';
     display: block;
     width: 72px;
@@ -25,33 +22,22 @@ main section:nth-of-type(2) h2::after {
     border-radius: 2px;
 }
 
-main section:nth-of-type(2) table {
-    margin: 20px 0;
+.tabla-checkout {
+    max-width: 780px;
+    margin: 24px auto 0;
 }
 
-/* Formulario de envío y pago dentro de tarjeta */
-main form {
-    margin: 24px auto;
-    max-width: 720px;
+.tabla-checkout tfoot tr:first-child th {
+    font-size: 1.1rem;
 }
 
-main form > p:last-of-type {
-    text-align: center;
+.tabla-checkout tfoot tr:last-child th {
+    font-size: 1.3rem;
+    color: var(--color-primario);
 }
 
-/* Datos de pago destacados */
-main fieldset:last-of-type {
-    border: 2px solid rgba(255, 179, 0, 0.45);
-    background-color: rgba(255, 179, 0, 0.06);
-}
-
-main button[type="submit"] {
-    background: linear-gradient(135deg, var(--color-acento), #e6a800);
-    color: var(--color-primario-oscuro);
-}
-
-main button[type="submit"]:hover {
-    background: linear-gradient(135deg, #e6a800, var(--color-acento));
-    color: var(--color-primario-oscuro);
-    box-shadow: 0 6px 18px rgba(255, 179, 0, 0.45);
+/* Formulario de datos de facturación */
+.formulario-checkout {
+    max-width: 780px;
+    margin: 0 auto;
 }

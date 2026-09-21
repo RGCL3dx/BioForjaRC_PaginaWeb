@@ -1,58 +1,15 @@
 /* =========================================================
    BioForjaRC - registro.css
-   Formulario de registro de usuarios
+   Creación de cuenta de cliente
    ========================================================= */
 
-main form {
-    max-width: 640px;
-    margin: 32px auto;
+.card-formulario {
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-/* Checkbox de términos resaltado */
-main form p:has(input[type="checkbox"]) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px;
-    background-color: rgba(107, 143, 59, 0.12);
-    border-radius: 10px;
-    font-weight: 600;
-}
-
-main form p:has(input[type="checkbox"]) label {
-    margin: 0;
-    color: var(--color-tinta);
-}
-
-/* Botones del formulario */
-main form > p:last-of-type {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-}
-
-main button[type="reset"] {
-    background-color: var(--color-gris);
-}
-
-main button[type="reset"]:hover {
-    background-color: var(--color-gris);
-    box-shadow: none;
-}
-
-/* Enlace de retorno al login */
-main section:last-of-type {
-    text-align: center;
-    padding-top: 0;
-}
-
-main section:last-of-type a {
-    font-weight: 600;
-}
-
-@media (max-width: 640px) {
-    main form > p:last-of-type {
-        flex-direction: column;
+@media (min-width: 768px) {
+    .card-formulario .form-label {
+        font-size: 0.95rem;
     }
 }

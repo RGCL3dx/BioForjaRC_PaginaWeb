@@ -295,7 +295,8 @@
         for (var i = 0; i < enlaces.length; i++) {
             var enlace = enlaces[i];
             var divisor = enlace.closest('div');
-            if (divisor && divisor.querySelector('h3') && /administración/i.test(divisor.querySelector('h3').textContent)) {
+            var titulo = divisor && divisor.querySelector('h3, h5');
+            if (divisor && titulo && /administración/i.test(titulo.textContent)) {
                 divisor.remove();
             } else {
                 var item = enlace.closest('li');

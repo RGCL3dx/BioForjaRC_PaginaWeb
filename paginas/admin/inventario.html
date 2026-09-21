@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gestión de productos y stock del catálogo BioForjaRC: agrega, edita y controla existencias.">
-    <meta name="author" content="BioForjaRC">
+    <meta name="robots" content="noindex">
+    <meta name="description" content="Gestión de inventario BioForjaRC: agrega, edita y elimina productos.">
     <title>BioForjaRC | Inventario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../../css/base/global.css">
     <link rel="stylesheet" href="../../css/base/estructura.css">
     <link rel="stylesheet" href="../../css/paginas/admin/inventario.css">
@@ -13,152 +15,181 @@
 <body>
 
     <header>
-        <a href="../index.html">
-            <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-            <span>BioForjaRC</span>
-        </a>
-
-        <nav aria-label="Navegación de administración">
-            <ul>
-                <li><a href="../index.html">Volver a la tienda</a></li>
-                <li><a href="index.html">Panel</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="pedidos.html">Pedidos</a></li>
-                <li><a href="usuarios.html">Usuarios</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-marca" aria-label="Navegación de administración">
+            <div class="container-xl">
+                <a class="navbar-brand d-flex align-items-center gap-2 py-2" href="index.html" aria-label="Ir al panel de BioForjaRC">
+                    <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
+                    <span class="fw-bold fs-5 text-tinta">BioForja<strong class="texto-acento">RC</strong><span class="badge bg-warning text-dark ms-2 align-middle">Admin</span></span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuAdmin"
+                    aria-controls="menuAdmin" aria-expanded="false" aria-label="Abrir menú de administración">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menuAdmin">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Panel</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="inventario.html">Inventario</a></li>
+                        <li class="nav-item"><a class="nav-link" href="usuarios.html">Usuarios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.html"><i class="bi bi-box-arrow-up-right me-1"></i>Ver tienda</a></li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
 
-        <section>
-            <h1>Inventario de productos</h1>
-            <p>Supervisa las existencias del catálogo, agrega productos y mantén actualizados precios y stock.</p>
+        <section class="py-5">
+            <div class="container">
+                <h1 class="titulo-seccion">Inventario</h1>
+                <p class="pagina-intro">Agrega productos al catálogo y actualiza precios y stock de la tienda.</p>
+            </div>
         </section>
 
-        <section id="seccion-agregar">
-            <h2>Agregar nuevo producto</h2>
+        <section class="py-4">
+            <div class="container">
+                <div class="card card-formulario p-4 p-md-5">
+                    <h2 class="h5 fw-bold mb-3"><i class="bi bi-plus-circle me-2 pie-icono text-marca"></i>Agregar producto</h2>
 
-            <form id="form-agregar-producto" action="#">
+                    <form id="form-agregar-producto" action="#" method="post">
+                        <div class="row g-3">
 
-                <p>
-                    <label for="nombre">Nombre del producto *</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Macetero colgante" required>
-                </p>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label" for="nombre">Nombre del producto *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Macetero clásico 15cm" required>
+                            </div>
 
-                <p>
-                    <label for="descripcion">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" rows="3" placeholder="Breve descripción del producto"></textarea>
-                </p>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="categoria">Categoría *</label>
+                                <select class="form-select" id="categoria" name="categoria" required>
+                                    <option value="">-- Selecciona --</option>
+                                    <option value="maceteros">Maceteros</option>
+                                    <option value="articulados">Animales articulados</option>
+                                    <option value="sensorial">Juguetes sensoriales</option>
+                                    <option value="figuras">Figuras ecológicas</option>
+                                </select>
+                            </div>
 
-                <p>
-                    <label for="categoria">Categoría *</label>
-                    <select id="categoria" name="categoria" required>
-                        <option value="">-- Selecciona una categoría --</option>
-                        <option value="maceteros">Maceteros</option>
-                        <option value="articulados">Animales articulados</option>
-                        <option value="sensorial">Juguetes sensoriales</option>
-                        <option value="figuras">Figuras ecológicas</option>
-                    </select>
-                </p>
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="descripcion">Descripción *</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Describe el producto, su material y medidas (mínimo 10 caracteres)..." required></textarea>
+                            </div>
 
-                <p>
-                    <label for="precio">Precio (CLP) *</label>
-                    <input type="number" id="precio" name="precio" min="0" placeholder="Ej: 8990" required>
-                </p>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="precio">Precio ($) *</label>
+                                <input type="number" class="form-control" id="precio" name="precio" min="0" step="100" placeholder="Ej: 8990" required>
+                            </div>
 
-                <p>
-                    <label for="stock">Cantidad en stock *</label>
-                    <input type="number" id="stock" name="stock" min="0" placeholder="Ej: 10" required>
-                </p>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="stock">Stock (unidades) *</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" placeholder="Ej: 10" required>
+                            </div>
 
-                <p>
-                    <label for="imagen">Imagen (URL o ruta)</label>
-                    <input type="text" id="imagen" name="imagen" placeholder="Ej: ../assets/imagenes/macetero-1.webp">
-                </p>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="imagen">URL de la imagen *</label>
+                                <input type="text" class="form-control" id="imagen" name="imagen" placeholder="../assets/imagenes/productos/..." required>
+                            </div>
 
-                <p>
-                    <button type="submit">Agregar producto</button>
-                </p>
+                        </div>
 
-            </form>
+                        <div class="d-flex flex-wrap gap-3 mt-2">
+                            <button type="submit" class="btn btn-acento rounded-pill px-4">Guardar producto</button>
+                            <button type="reset" class="btn btn-marca-outline rounded-pill px-4">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </section>
 
-        <section id="seccion-inventario">
-            <h2>Listado de productos</h2>
+        <section class="py-4">
+            <div class="container">
+                <div class="card card-formulario p-4">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+                        <h2 class="h5 fw-bold mb-0"><i class="bi bi-cube me-2 pie-icono text-marca"></i>Productos registrados</h2>
+                    </div>
 
-            <p>
-                <label for="buscar-producto">Buscar por nombre</label>
-                <input type="search" id="buscar-producto" placeholder="Ej: macetero">
-            </p>
+                    <div class="mb-3">
+                        <label class="form-label visually-hidden" for="buscar-producto">Buscar producto</label>
+                        <input type="search" class="form-control" id="buscar-producto" placeholder="Buscar por nombre de producto...">
+                    </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Producto</th>
-                        <th>Categoría</th>
-                        <th>Precio</th>
-                        <th>Stock</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-inventario">
-                    <tr>
-                        <td colspan="7">Cargando inventario...</td>
-                    </tr>
-                </tbody>
-            </table>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle tabla-marca tabla-admin" id="tabla-inventario">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Categoría</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Stock</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7">Cargando inventario...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <footer>
+    <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
+        <div class="container">
+            <div class="row g-4">
 
-        <div>
-            <a href="../index.html">
-                <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC">
-                <span>BioForjaRC</span>
-            </a>
-            <p>Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                <div class="col-lg-4 col-md-6">
+                    <a href="../index.html" class="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
+                        <img src="../../assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC"
+                            class="rounded-circle" style="width:44px;height:44px;object-fit:cover;border:2px solid rgba(255,255,255,0.5);">
+                        <span class="fw-bold fs-5">BioForja<strong class="texto-acento">RC</strong></span>
+                    </a>
+                    <p class="text-white-50">Reciclamos plástico y lo transformamos en productos ecológicos mediante impresión 3D.</p>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Administración</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white-50 text-decoration-none">Panel</a></li>
+                        <li class="mb-2"><a href="inventario.html" class="text-white-50 text-decoration-none">Inventario</a></li>
+                        <li class="mb-2"><a href="usuarios.html" class="text-white-50 text-decoration-none">Usuarios</a></li>
+                        <li class="mb-2"><a href="pedidos.html" class="text-white-50 text-decoration-none">Pedidos</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Tienda</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../index.html" class="text-white-50 text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="../productos.html" class="text-white-50 text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="../cotizacion.html" class="text-white-50 text-decoration-none">Cotización</a></li>
+                        <li class="mb-2"><a href="../contacto.html" class="text-white-50 text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase fw-bold text-white">Contacto</h5>
+                    <p class="mb-1"><i class="bi bi-envelope-fill me-2 pie-icono text-white"></i><a href="mailto:contacto@bioforjarc.cl" class="text-white-50 text-decoration-none">contacto@bioforjarc.cl</a></p>
+                    <p class="mb-0"><i class="bi bi-telephone-fill me-2 pie-icono text-white"></i><a href="tel:+56912345678" class="text-white-50 text-decoration-none">+56 9 1234 5678</a></p>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary my-4">
+
+            <p class="text-center text-white-50 small mb-0 pb-2">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
         </div>
-
-        <nav aria-label="Enlaces del sitio">
-            <h3>Enlaces</h3>
-            <ul>
-                <li><a href="../index.html">Inicio</a></li>
-                <li><a href="../productos.html">Productos</a></li>
-                <li><a href="../cotizacion.html">Cotización</a></li>
-                <li><a href="../contacto.html">Contacto</a></li>
-                <li><a href="index.html">Panel de administración</a></li>
-            </ul>
-        </nav>
-
-        <div>
-            <h3>Contacto</h3>
-            <ul>
-                <li>
-                    <img src="../../assets/imagenes/gps.png" alt="Ubicación">
-                    <span>Santiago, Chile</span>
-                </li>
-                <li>
-                    <img src="../../assets/imagenes/telefono.png" alt="Teléfono">
-                    <span>+56 9 1234 5678</span>
-                </li>
-                <li>
-                    <img src="../../assets/imagenes/gmail.webp" alt="Correo">
-                    <span>contacto@bioforjarc.cl</span>
-                </li>
-            </ul>
-        </div>
-
-        <p>&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
-
     </footer>
 
-<script src="../../js/auth.js" defer></script>
-<script src="../../js/productos.js" defer></script>
-<script src="../../js/admin.js" defer></script>
+    <script src="../../js/auth.js" defer></script>
+    <script src="../../js/productos.js" defer></script>
+    <script src="../../js/admin.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -149,26 +149,33 @@
 
     function crearTarjeta(producto) {
         var articulo = document.createElement('article');
+        articulo.className = 'card card-producto h-100 border-0 shadow-sm';
 
         var imagen = document.createElement('img');
+        imagen.className = 'card-img-top';
         imagen.src = producto.imagen || IMAGEN_DEFECTO;
         imagen.alt = producto.titulo;
 
+        var cuerpo = document.createElement('div');
+        cuerpo.className = 'card-body d-flex flex-column text-center';
+
         var titulo = document.createElement('h3');
+        titulo.className = 'card-title h5';
         titulo.textContent = producto.titulo;
 
         var descripcion = document.createElement('p');
+        descripcion.className = 'card-text';
         descripcion.textContent = producto.descripcion || '';
 
         var precio = document.createElement('p');
+        precio.className = 'card-text';
         var fuerte = document.createElement('strong');
         fuerte.textContent = formatearPrecio(producto.precio);
         precio.appendChild(fuerte);
 
-        articulo.appendChild(imagen);
-        articulo.appendChild(titulo);
-        articulo.appendChild(descripcion);
-        articulo.appendChild(precio);
+        cuerpo.appendChild(titulo);
+        cuerpo.appendChild(descripcion);
+        cuerpo.appendChild(precio);
 
         var stock = document.createElement('p');
         if (producto.stock > 0) {
@@ -178,24 +185,29 @@
             stock.className = 'stock-producto agotado';
             stock.textContent = 'Agotado';
         }
-        articulo.appendChild(stock);
+        cuerpo.appendChild(stock);
 
         if (producto.stock > 0) {
             var agregar = document.createElement('a');
             agregar.href = 'carrito.html';
+            agregar.className = 'btn btn-marca mt-auto mb-2';
             agregar.textContent = 'Agregar al carrito';
-            articulo.appendChild(agregar);
+            cuerpo.appendChild(agregar);
         } else {
             var agotado = document.createElement('span');
-            agotado.className = 'etiqueta-agotado';
+            agotado.className = 'etiqueta-agotado mb-2';
             agotado.textContent = 'Agotado';
-            articulo.appendChild(agotado);
+            cuerpo.appendChild(agotado);
         }
 
         var cotizar = document.createElement('a');
         cotizar.href = 'cotizacion.html';
+        cotizar.className = 'btn btn-marca-outline';
         cotizar.textContent = 'Cotizar';
-        articulo.appendChild(cotizar);
+        cuerpo.appendChild(cotizar);
+
+        articulo.appendChild(imagen);
+        articulo.appendChild(cuerpo);
 
         return articulo;
     }
