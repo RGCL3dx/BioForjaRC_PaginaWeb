@@ -1,5 +1,3 @@
-/* BioForjaRC - auth.js: acceso (login/registro), sesión y datos del usuario */
-
 (function () {
     'use strict';
 
@@ -8,9 +6,6 @@
     var CLAVE_PEDIDOS = 'bioforjarc-pedidos';
     var RUTA_ADMIN = /\/admin\//.test(window.location.pathname);
 
-    /* -----------------------------------------------------
-       1. Hash simple (demo, no reemplaza bcrypt)
-       ----------------------------------------------------- */
 
     function hashClave(texto) {
         var hash = 5381;
@@ -22,7 +17,7 @@
     }
 
     /* -----------------------------------------------------
-       2. Lectura / escritura de almacenamiento
+        2. Lectura / escritura de almacenamiento
        ----------------------------------------------------- */
 
     function leerJSON(clave, porDefecto) {
@@ -64,7 +59,7 @@
     }
 
     /* -----------------------------------------------------
-       3. Cuentas de demostración
+        3. Cuentas de demostración
        ----------------------------------------------------- */
 
     function sembrarUsuarios() {
@@ -98,7 +93,7 @@
     }
 
     /* -----------------------------------------------------
-       4. Sesión
+        4. Sesión
        ----------------------------------------------------- */
 
     function leerSesion() {
@@ -141,7 +136,7 @@
     }
 
     /* -----------------------------------------------------
-       5. Pedidos
+        5. Pedidos
        ----------------------------------------------------- */
 
     function guardarPedido(pedido) {
@@ -175,7 +170,7 @@
     }
 
     /* -----------------------------------------------------
-       6. Mensajes y avisos
+        6. Mensajes y avisos
        ----------------------------------------------------- */
 
     function mostrarAviso(contenedor, mensaje) {
@@ -186,13 +181,17 @@
             aviso.setAttribute('role', 'alert');
             contenedor.appendChild(aviso);
         }
+        // Si el contenedor es un div estático con la clase alert, quitamos el d-none de Bootstrap
+        if (aviso.classList.contains('d-none')) {
+            aviso.classList.remove('d-none');
+        }
         aviso.textContent = mensaje;
     }
 
     function limpiarAviso(form) {
         var aviso = form.querySelector('.aviso-auth');
         if (aviso) {
-            aviso.remove();
+            aviso.classList.add('d-none');
         }
     }
 
@@ -209,7 +208,7 @@
     }
 
     /* -----------------------------------------------------
-       7. Menú dinámico (header) y footer admin
+        7. Menú dinámico (header) y footer admin
        ----------------------------------------------------- */
 
     function cerrarSesionYRedirigir() {
@@ -295,7 +294,7 @@
     }
 
     /* -----------------------------------------------------
-       8. Protección de rutas
+        8. Protección de rutas
        ----------------------------------------------------- */
 
     function protegerMiCuenta() {
@@ -337,7 +336,7 @@
     }
 
     /* -----------------------------------------------------
-       9. Mi cuenta (datos dinámicos)
+        9. Mi cuenta (datos dinámicos)
        ----------------------------------------------------- */
 
     function formatearPrecio(numero) {
@@ -427,7 +426,7 @@
     }
 
     /* -----------------------------------------------------
-       10. Login, registro y recuperación
+        10. Login, registro y recuperación
        ----------------------------------------------------- */
 
     function manejarLogin(form) {
@@ -514,27 +513,27 @@
                 return;
             }
             var aviso = seccion.querySelector('.aviso-auth');
-            if (aviso) {
-                aviso.remove();
+            if (aviso && !aviso.classList.contains('d-none')) {
+                aviso.classList.add('d-none');
                 return;
             }
-            mostrarAviso(seccion, 'Demostración: la recuperación por correo no está operativa. Usa admin@bioforjarc.cl / Admin123 (admin) o juan@correo.cl / Clave1234 (cliente).');
+            mostrarAviso(seccion.querySelector('form') || seccion, 'Demostración: la recuperación por correo no está operativa. Usa admin@bioforjarc.cl / Admin123 (admin) o juan@correo.cl / Clave1234 (cliente).');
         });
     }
 
     function avisoAdminRequerido() {
-        if (!/admin=1/.test(window.location.search)) {
-            return;
-        }
+        // Modificado para aceptar tanto ?admin=1 como si entra directamente con la redirección
         var form = document.querySelector('form');
         if (!form) {
             return;
         }
-        mostrarAviso(form, 'Para entrar al panel necesitas una cuenta de administrador. Usa admin@bioforjarc.cl con la contraseña Admin123.');
+        if (/admin=1/.test(window.location.search)) {
+            mostrarAviso(form, 'Debes ser administrador para entrar.');
+        }
     }
 
     /* -----------------------------------------------------
-       11. Inicialización
+        11. Inicialización
        ----------------------------------------------------- */
 
     function inicializar() {
