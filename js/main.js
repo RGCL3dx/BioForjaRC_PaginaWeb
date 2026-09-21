@@ -1,13 +1,8 @@
-/* BioForjaRC - main.js: carrito, catálogo y datos de la tienda */
-
 (function () {
     'use strict';
 
     var CLAVE_CARRITO = 'bioforjarc-carrito';
 
-    /* -----------------------------------------------------
-       1. Utilidades: precios, persistencia y badge
-       ----------------------------------------------------- */
 
     function formatearPrecio(numero) {
         return '$' + numero.toLocaleString('es-CL');
@@ -73,10 +68,6 @@
         }, 2600);
     }
 
-    /* -----------------------------------------------------
-       2. Catálogo (productos.html): agregar al carrito
-       ----------------------------------------------------- */
-
     function obtenerProductoDe(articulo) {
         var titulo = articulo.querySelector('h3').textContent.trim();
         var precioTexto = articulo.querySelector('p strong').textContent.replace(/[^0-9]/g, '');
@@ -119,10 +110,6 @@
             mostrarNotificacion('Se agregó ' + articulo.querySelector('h3').textContent.trim() + ' a tu carrito.');
         }
     }
-
-    /* -----------------------------------------------------
-       3. Carrito (carrito.html): listado y resumen
-       ----------------------------------------------------- */
 
     function renderizarTarjeta(producto) {
         var articulo = document.createElement('article');
@@ -297,9 +284,6 @@
         mostrarNotificacion(titulo + ' fue eliminado de tu carrito.');
     }
 
-    /* -----------------------------------------------------
-       4. Checkout (checkout.html): resumen y comprobante
-       ----------------------------------------------------- */
 
     var COSTOS_ENVIO = {
         estandar: 3500,
@@ -384,10 +368,6 @@
             estado: 'En preparación'
         };
     }
-
-    /* -----------------------------------------------------
-       5. Inicialización y delegación de eventos
-       ----------------------------------------------------- */
 
     function inicializar() {
         actualizarBadge();

@@ -1,11 +1,6 @@
-/* BioForjaRC - validaciones.js: reglas y mensajes de los formularios */
-
 (function () {
     'use strict';
 
-    /* -----------------------------------------------------
-       1. Expresiones y utilidades compartidas
-       ----------------------------------------------------- */
 
     var patronRut = /^\d{1,2}(\.\d{3}){2}-[0-9kK]$/;
     var patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -36,9 +31,6 @@
         campo.removeAttribute('aria-invalid');
     }
 
-    /* -----------------------------------------------------
-       2. Reglas por tipo de campo (mensajes contextuales)
-       ----------------------------------------------------- */
 
     function validarNombre(campo) {
         var valor = campo.value.trim();
@@ -150,9 +142,6 @@
         return '';
     }
 
-    /* -----------------------------------------------------
-       3. Selección de regla según el nombre del campo
-       ----------------------------------------------------- */
 
     function obtenerMensajeError(campo) {
         var nombre = campo.name || campo.id || '';
@@ -177,9 +166,6 @@
         return '';
     }
 
-    /* -----------------------------------------------------
-       4. Validación de un campo y del formulario completo
-       ----------------------------------------------------- */
 
     function validarCampo(campo) {
         var mensaje = obtenerMensajeError(campo);
@@ -203,9 +189,6 @@
         return !hayError;
     }
 
-    /* -----------------------------------------------------
-       5. Eventos: validación en vivo + control del envío
-       ----------------------------------------------------- */
 
     function iniciarValidacion(form) {
         var campos = form.querySelectorAll('input, select, textarea');

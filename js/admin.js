@@ -1,5 +1,3 @@
-/* BioForjaRC - admin.js: panel, inventario, usuarios y pedidos */
-
 (function () {
     'use strict';
 

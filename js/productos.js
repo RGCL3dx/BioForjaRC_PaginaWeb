@@ -1,14 +1,8 @@
-/* BioForjaRC - productos.js: catálogo, stock y tarjetas del producto */
-
 (function () {
     'use strict';
 
     var CLAVE = 'bioforjarc-productos';
     var IMAGEN_DEFECTO = '../assets/imagenes/macetero-1.webp';
-
-    /* -----------------------------------------------------
-       1. Almacenamiento
-       ----------------------------------------------------- */
 
     function leer() {
         try {
@@ -22,10 +16,6 @@
     function guardar(lista) {
         window.localStorage.setItem(CLAVE, JSON.stringify(lista));
     }
-
-    /* -----------------------------------------------------
-       2. Catálogo inicial (mismos productos que la tienda)
-       ----------------------------------------------------- */
 
     function semilla() {
         return [
@@ -60,10 +50,6 @@
         }
         guardar(lista);
     }
-
-    /* -----------------------------------------------------
-       3. Operaciones CRUD
-       ----------------------------------------------------- */
 
     function siguienteId(lista) {
         var mayor = 0;
@@ -132,10 +118,6 @@
     function formatearPrecio(numero) {
         return '$' + Number(numero || 0).toLocaleString('es-CL');
     }
-
-    /* -----------------------------------------------------
-       4. Render del catálogo (productos.html)
-       ----------------------------------------------------- */
 
     function crearTarjeta(producto) {
         var articulo = document.createElement('article');
@@ -216,10 +198,6 @@
             }
         }
     }
-
-    /* -----------------------------------------------------
-       5. Inicialización
-       ----------------------------------------------------- */
 
     function inicializar() {
         sembrar();

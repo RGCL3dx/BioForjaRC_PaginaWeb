@@ -69,7 +69,7 @@
         guardarUsuarios([
             {
                 id: 1,
-                nombre: 'Ronald Cerda',
+                nombre: 'Administrador',
                 rut: '11.111.111-1',
                 correo: 'admin@bioforjarc.cl',
                 telefono: '+56 9 0000 0000',
@@ -80,9 +80,9 @@
             },
             {
                 id: 2,
-                nombre: 'Juan Pérez',
+                nombre: 'Hermenegildo González',
                 rut: '12.345.678-9',
-                correo: 'juan@correo.cl',
+                correo: 'hermenegildo.gonzalez@correo.cl',
                 telefono: '+56 9 1234 5678',
                 clave: hashClave('Clave1234'),
                 rol: 'cliente',
