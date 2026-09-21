@@ -1,16 +1,4 @@
-/* =========================================================
-   BioForjaRC - main.js
-   Lógica interactiva de la tienda
-
-   Qué hace:
-   - Agrega productos al carrito desde el catálogo
-     (productos.html) y lo guarda en localStorage.
-   - Muestra un contador de productos en el header.
-   - Actualiza cantidades, subtotales, total y elimina
-     productos desde la página del carrito.
-   - Calcula el costo de envío y el total en el checkout,
-     y genera el comprobante de compra.
-   ========================================================= */
+/* BioForjaRC - main.js: carrito, catálogo y datos de la tienda */
 
 (function () {
     'use strict';

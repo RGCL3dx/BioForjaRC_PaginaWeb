@@ -1,16 +1,4 @@
-/* =========================================================
-   BioForjaRC - admin.js
-   Panel de administración funcional (demo front-end)
-
-   Qué hace:
-   - Resumen real: ventas del mes, pedidos activos, stock y
-     usuarios calculados desde los datos guardados.
-   - Inventario: formulario para agregar producto, edición
-     de precio y stock en línea, y eliminación.
-   - Usuarios: listado real, edición de datos/rol y
-     activación/desactivación de cuentas.
-   - Pedidos: listado real con detalle y cambio de estado.
-   ========================================================= */
+/* BioForjaRC - admin.js: panel, inventario, usuarios y pedidos */
 
 (function () {
     'use strict';

@@ -1,14 +1,4 @@
-/* =========================================================
-   BioForjaRC - validaciones.js
-   Validaciones de formularios en el cliente (JS puro)
-
-   Qué protes:
-   - Precantista: cada formulario valida sus campos.
-     - Tratar: registra, login, contacto y cotización.
-   - Muestra mensajes de error claros y específicos
-     bajo cada campo, respetando la paleta corporativa.
-   - No permite enviar datos incompletos o mal formados.
-   ========================================================= */
+/* BioForjaRC - validaciones.js: reglas y mensajes de los formularios */
 
 (function () {
     'use strict';

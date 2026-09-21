@@ -1,17 +1,4 @@
-/* =========================================================
-   BioForjaRC - auth.js
-   Autenticación, sesión y protección de rutas (demo front-end)
-
-   Qué hace:
-   - Registra usuarios en localStorage ('bioforjarc-usuarios').
-   - Valida credenciales e inicia sesión (sessionStorage 'bioforjarc-sesion').
-   - Crea cuentas de demostración (admin y cliente).
-   - Actualiza el menú según la sesión y protege mi-cuenta y /admin.
-   - Guarda pedidos del checkout ('bioforjarc-pedidos').
-
-   ADVERTENCIA: es protección de interfaz con localStorage/sessionStorage.
-   Para un sitio en producción se requiere backend real.
-   ========================================================= */
+/* BioForjaRC - auth.js: acceso (login/registro), sesión y datos del usuario */
 
 (function () {
     'use strict';

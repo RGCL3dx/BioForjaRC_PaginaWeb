@@ -1,14 +1,4 @@
-/* =========================================================
-   BioForjaRC - productos.js
-   Catálogo central de productos con stock (demo front-end)
-
-   Qué hace:
-   - Mantiene el catálogo en localStorage ('bioforjarc-productos').
-   - Siembra los productos de la tienda con stock inicial.
-   - Expone API para que las páginas admin lean, agregen,
-     editen (precio/stock) y eliminen productos.
-   - Renderiza el catálogo en productos.html (tienda).
-   ========================================================= */
+/* BioForjaRC - productos.js: catálogo, stock y tarjetas del producto */
 
 (function () {
     'use strict';
