@@ -4,6 +4,7 @@
     var CLAVE_USUARIOS = 'bioforjarc-usuarios';
     var CLAVE_SESION = 'bioforjarc-sesion';
     var CLAVE_PEDIDOS = 'bioforjarc-pedidos';
+    var CLAVE_COTIZACIONES = 'bioforjarc-cotizaciones';
     var RUTA_ADMIN = /\/admin\//.test(window.location.pathname);
 
 
@@ -47,6 +48,29 @@
 
     function guardarPedidos(pedidos) {
         guardarJSON(CLAVE_PEDIDOS, pedidos);
+    }
+
+    function leerCotizaciones() {
+        return leerJSON(CLAVE_COTIZACIONES, []);
+    }
+
+    function guardarCotizaciones(cotizaciones) {
+        guardarJSON(CLAVE_COTIZACIONES, cotizaciones);
+    }
+
+    function agregarCotizacion(datos) {
+        var cotizaciones = leerCotizaciones();
+        var mayor = 0;
+        for (var i = 0; i < cotizaciones.length; i++) {
+            if (cotizaciones[i].id > mayor) {
+                mayor = cotizaciones[i].id;
+            }
+        }
+        datos.id = mayor + 1;
+        datos.estado = datos.estado || 'Nueva';
+        cotizaciones.push(datos);
+        guardarCotizaciones(cotizaciones);
+        return datos;
     }
 
     function buscarPorCorreo(usuarios, correo) {
@@ -579,7 +603,10 @@
         guardarPedido: guardarPedido,
         pedidosDe: pedidosDe,
         leerPedidos: leerPedidos,
-        actualizarEstadoPedido: actualizarEstadoPedido
+        actualizarEstadoPedido: actualizarEstadoPedido,
+        leerCotizaciones: leerCotizaciones,
+        guardarCotizaciones: guardarCotizaciones,
+        agregarCotizacion: agregarCotizacion
     };
 
 })();

@@ -122,6 +122,7 @@
     function crearTarjeta(producto) {
         var articulo = document.createElement('article');
         articulo.className = 'card card-producto h-100 border-0 shadow-sm';
+        articulo.setAttribute('data-id', producto.id);
 
         var imagen = document.createElement('img');
         imagen.className = 'card-img-top';

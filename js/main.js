@@ -72,19 +72,51 @@
         var titulo = articulo.querySelector('h3').textContent.trim();
         var precioTexto = articulo.querySelector('p strong').textContent.replace(/[^0-9]/g, '');
         var imagen = articulo.querySelector('img').getAttribute('src');
+        var id = articulo.getAttribute('data-id');
 
         return {
+            id: id ? parseInt(id, 10) : null,
             titulo: titulo,
             precio: parseInt(precioTexto, 10),
             imagen: imagen
         };
     }
 
+    /* Busca el producto en el catálogo (por id o, como respaldo, por título) */
+    function stockProducto(item) {
+        if (!window.BioForjaProductos) {
+            return null;
+        }
+        var id = parseInt(item.id, 10);
+        var catalogo = id ? BioForjaProductos.buscar(id) : null;
+        if (!catalogo && item.titulo) {
+            var lista = BioForjaProductos.leer();
+            for (var i = 0; i < lista.length; i++) {
+                if (String(lista[i].titulo).toLowerCase() === String(item.titulo).toLowerCase()) {
+                    catalogo = lista[i];
+                    break;
+                }
+            }
+        }
+        return catalogo;
+    }
+
     function agregarAlCarrito(producto) {
         var carrito = leerCarrito();
+        var catalogo = stockProducto(producto);
+        var stock = catalogo ? (parseInt(catalogo.stock, 10) || 0) : Infinity;
+
+        if (stock <= 0) {
+            mostrarNotificacion(producto.titulo + ' está agotado y no se puede agregar.');
+            return;
+        }
 
         for (var i = 0; i < carrito.length; i++) {
             if (carrito[i].titulo === producto.titulo) {
+                if ((parseInt(carrito[i].cantidad, 10) + 1) > stock) {
+                    mostrarNotificacion('Solo quedan ' + stock + ' unidades de ' + producto.titulo + ' en stock.');
+                    return;
+                }
                 carrito[i].cantidad = parseInt(carrito[i].cantidad, 10) + 1;
                 guardarCarrito(carrito);
                 return;
@@ -126,7 +158,7 @@
 
         var filaCantidad = document.createElement('p');
         var etiqueta = document.createElement('label');
-        etiqueta.textContent = 'Cantidad';
+        etiqueta.textContent = 'Cantidad (máx. ' + (producto.maxStock !== null ? producto.maxStock : '—') + ')';
         etiqueta.htmlFor = 'cantidad-' + producto.titulo.toLowerCase().replace(/[^a-z0-9]/gi, '-');
         var cantidad = document.createElement('input');
         cantidad.type = 'number';
@@ -134,6 +166,9 @@
         cantidad.name = 'cantidad';
         cantidad.min = '1';
         cantidad.value = producto.cantidad;
+        if (producto.maxStock !== null) {
+            cantidad.max = String(producto.maxStock);
+        }
         cantidad.setAttribute('data-producto', producto.titulo);
         filaCantidad.appendChild(etiqueta);
         filaCantidad.appendChild(cantidad);
@@ -221,8 +256,34 @@
         }
     }
 
+    function normalizarCarrito(carrito) {
+        var cambio = false;
+        for (var i = 0; i < carrito.length; i++) {
+            var catalogo = stockProducto(carrito[i]);
+            if (catalogo) {
+                var stock = parseInt(catalogo.stock, 10) || 0;
+                carrito[i].maxStock = stock;
+                var cantidad = parseInt(carrito[i].cantidad, 10) || 0;
+                if (stock <= 0 && cantidad > 0) {
+                    carrito.splice(i, 1);
+                    i--;
+                    cambio = true;
+                } else if (cantidad > stock) {
+                    carrito[i].cantidad = stock;
+                    cambio = true;
+                }
+            } else {
+                carrito[i].maxStock = null;
+            }
+        }
+        if (cambio) {
+            guardarCarrito(carrito);
+        }
+        return carrito;
+    }
+
     function renderizarCarrito() {
-        var carrito = leerCarrito();
+        var carrito = normalizarCarrito(leerCarrito());
         var seccion = document.querySelector('main section:nth-of-type(2)');
 
         if (seccion) {
@@ -243,6 +304,7 @@
             return;
         }
 
+        var titulo = campo.getAttribute('data-producto');
         var cantidad = parseInt(campo.value, 10);
         if (!cantidad || cantidad < 1) {
             cantidad = 1;
@@ -250,18 +312,41 @@
         }
 
         var carrito = leerCarrito();
+        var producto = null;
         for (var i = 0; i < carrito.length; i++) {
-            if (carrito[i].titulo === campo.getAttribute('data-producto')) {
-                carrito[i].cantidad = cantidad;
+            if (carrito[i].titulo === titulo) {
+                producto = carrito[i];
                 break;
             }
         }
+        if (!producto) {
+            return;
+        }
 
+        var catalogo = stockProducto(producto);
+        if (catalogo) {
+            var stock = parseInt(catalogo.stock, 10) || 0;
+            if (stock <= 0) {
+                carrito = carrito.filter(function (item) { return item.titulo !== titulo; });
+                guardarCarrito(carrito);
+                renderizarCarrito();
+                actualizarBadge();
+                mostrarNotificacion(titulo + ' está agotado y se eliminó de tu carrito.');
+                return;
+            }
+            if (cantidad > stock) {
+                cantidad = stock;
+                campo.value = String(stock);
+                mostrarNotificacion('Solo hay ' + stock + ' unidades de ' + titulo + ' en stock.');
+            }
+        }
+
+        producto.cantidad = cantidad;
         guardarCarrito(carrito);
+
         var contenedor = campo.closest('article');
         var subtotal = contenedor.querySelector('.subtotal-item');
-        var producto = carrito.find(function (item) { return item.titulo === campo.getAttribute('data-producto'); });
-        if (subtotal && producto) {
+        if (subtotal) {
             subtotal.textContent = 'Subtotal: ' + formatearPrecio(producto.precio * producto.cantidad);
         }
         renderizarTabla(carrito);
@@ -369,8 +454,49 @@
         };
     }
 
+    function manejarFormularioCotizacion() {
+        var form = document.querySelector('form');
+        if (!form || !form.querySelector('[name="categoria"]') || !form.querySelector('[name="descripcion"]')) {
+            return;
+        }
+
+        form.addEventListener('submit', function (evento) {
+            if (form.querySelector('.campo-error')) {
+                return;
+            }
+            evento.preventDefault();
+
+            function valor(nombre) {
+                var nodo = form.querySelector('[name="' + nombre + '"]');
+                return nodo ? nodo.value.trim() : '';
+            }
+
+            if (!window.BioForjaAuth || !BioForjaAuth.agregarCotizacion) {
+                alert('No se pudo enviar la solicitud. Inténtalo de nuevo.');
+                return;
+            }
+
+            BioForjaAuth.agregarCotizacion({
+                nombre: valor('nombre'),
+                correo: valor('correo'),
+                telefono: valor('telefono'),
+                categoria: valor('categoria'),
+                cantidad: valor('cantidad'),
+                plazo: valor('plazo'),
+                descripcion: valor('descripcion'),
+                fecha: new Date().toLocaleDateString('es-CL'),
+                fechaISO: new Date().toISOString()
+            });
+
+            form.reset();
+            mostrarNotificacion('Solicitud de cotización enviada. Un asesor te contactará pronto.');
+        });
+    }
+
     function inicializar() {
         actualizarBadge();
+
+        manejarFormularioCotizacion();
 
         var catalogo = document.querySelector('#maceteros, #articulados, #sensorial, #figuras');
         if (catalogo) {
@@ -400,7 +526,43 @@
                         window.location.href = 'login.html';
                         return;
                     }
+
+                    var carrito = leerCarrito();
+                    if (!carrito.length) {
+                        evento.preventDefault();
+                        alert('Tu carrito está vacío.');
+                        return;
+                    }
+
+                    var bloqueados = [];
+                    for (var b = 0; b < carrito.length; b++) {
+                        var catalogo = stockProducto(carrito[b]);
+                        if (catalogo && (parseInt(catalogo.stock, 10) || 0) < parseInt(carrito[b].cantidad, 10)) {
+                            bloqueados.push({ titulo: carrito[b].titulo, stock: parseInt(catalogo.stock, 10) || 0 });
+                        }
+                    }
+                    if (bloqueados.length) {
+                        evento.preventDefault();
+                        var mensaje = 'No hay stock suficiente para completar la compra:\n';
+                        for (var m = 0; m < bloqueados.length; m++) {
+                            mensaje += '- ' + bloqueados[m].titulo + ' (quedan ' + bloqueados[m].stock + ' unidades)\n';
+                        }
+                        alert(mensaje);
+                        return;
+                    }
+
                     var orden = construirComprobante();
+
+                    for (var d = 0; d < orden.items.length; d++) {
+                        var item = orden.items[d];
+                        var productoStock = stockProducto(item);
+                        if (productoStock && window.BioForjaProductos) {
+                            var resto = (parseInt(productoStock.stock, 10) || 0) - parseInt(item.cantidad, 10);
+                            if (resto < 0) { resto = 0; }
+                            BioForjaProductos.actualizar(productoStock.id, { stock: resto });
+                        }
+                    }
+
                     BioForjaAuth.guardarPedido(orden);
                     guardarCarrito([]);
                     actualizarBadge();

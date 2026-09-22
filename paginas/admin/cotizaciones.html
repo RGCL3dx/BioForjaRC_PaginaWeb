@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
-    <meta name="description" content="Gestión de inventario BioForjaRC: agrega, edita y elimina productos.">
-    <title>BioForjaRC | Inventario</title>
+    <meta name="description" content="Solicitudes de cotización BioForjaRC: revisa los requerimientos enviados por los clientes.">
+    <title>BioForjaRC | Cotizaciones</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../../css/base/global.css">
     <link rel="stylesheet" href="../../css/base/estructura.css">
-    <link rel="stylesheet" href="../../css/paginas/admin/inventario.css">
+    <link rel="stylesheet" href="../../css/paginas/admin/pedidos.css">
 </head>
 <body>
 
@@ -28,10 +28,10 @@
                 <div class="collapse navbar-collapse" id="menuAdmin">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="index.html">Panel</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="inventario.html">Inventario</a></li>
+                        <li class="nav-item"><a class="nav-link" href="inventario.html">Inventario</a></li>
                         <li class="nav-item"><a class="nav-link" href="usuarios.html">Usuarios</a></li>
                         <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="cotizaciones.html">Cotizaciones</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="cotizaciones.html">Cotizaciones</a></li>
                         <li class="nav-item"><a class="nav-link" href="../index.html"><i class="bi bi-box-arrow-up-right me-1"></i>Ver tienda</a></li>
                     </ul>
                 </div>
@@ -43,98 +43,45 @@
 
         <section class="py-5">
             <div class="container">
-                <h1 class="titulo-seccion">Inventario</h1>
-                <p class="pagina-intro">Agrega productos al catálogo y actualiza precios y stock de la tienda.</p>
-            </div>
-        </section>
-
-        <section class="py-4">
-            <div class="container">
-                <div class="card card-formulario p-4 p-md-5">
-                    <h2 class="h5 fw-bold mb-3"><i class="bi bi-plus-circle me-2 pie-icono text-marca"></i>Agregar producto</h2>
-
-                    <form id="form-agregar-producto" action="#" method="post">
-                        <div class="row g-3">
-
-                            <div class="col-md-8 mb-3">
-                                <label class="form-label" for="nombre">Nombre del producto *</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Macetero clásico 15cm" required>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="categoria">Categoría *</label>
-                                <select class="form-select" id="categoria" name="categoria" required>
-                                    <option value="">-- Selecciona --</option>
-                                    <option value="maceteros">Maceteros</option>
-                                    <option value="articulados">Animales articulados</option>
-                                    <option value="sensorial">Juguetes sensoriales</option>
-                                    <option value="figuras">Figuras ecológicas</option>
-                                </select>
-                            </div>
-
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="descripcion">Descripción *</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Describe el producto, su material y medidas (mínimo 10 caracteres)..." required></textarea>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="precio">Precio ($) *</label>
-                                <input type="number" class="form-control" id="precio" name="precio" min="0" step="100" placeholder="Ej: 8990" required>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="stock">Stock (unidades) *</label>
-                                <input type="number" class="form-control" id="stock" name="stock" min="0" placeholder="Ej: 10" required>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="imagen">URL de la imagen *</label>
-                                <input type="text" class="form-control" id="imagen" name="imagen" placeholder="../assets/imagenes/productos/..." required>
-                            </div>
-
-                        </div>
-
-                        <div class="d-flex flex-wrap gap-3 mt-2">
-                            <button type="submit" class="btn btn-acento rounded-pill px-4">Guardar producto</button>
-                            <button type="reset" class="btn btn-marca-outline rounded-pill px-4">Limpiar</button>
-                        </div>
-                    </form>
-                </div>
+                <h1 class="titulo-seccion">Solicitudes de cotización</h1>
+                <p class="pagina-intro">Revisa los requerimientos enviados por los clientes desde el formulario de cotización.</p>
             </div>
         </section>
 
         <section class="py-4">
             <div class="container">
                 <div class="card card-formulario p-4">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-                        <h2 class="h5 fw-bold mb-0"><i class="bi bi-cube me-2 pie-icono text-marca"></i>Productos registrados</h2>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label visually-hidden" for="buscar-producto">Buscar producto</label>
-                        <input type="search" class="form-control" id="buscar-producto" placeholder="Buscar por nombre de producto...">
-                    </div>
+                    <h2 class="h5 fw-bold mb-3"><i class="bi bi-envelope-paper me-2 pie-icono text-marca"></i>Listado de solicitudes</h2>
 
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle tabla-marca tabla-admin" id="tabla-inventario">
+                        <table class="table table-hover align-middle tabla-marca tabla-admin" id="tabla-cotizaciones">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Producto</th>
+                                    <th scope="col">N°</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Correo</th>
+                                    <th scope="col">Teléfono</th>
                                     <th scope="col">Categoría</th>
-                                    <th scope="col">Precio</th>
-                                    <th scope="col">Stock</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Acciones</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="7">Cargando inventario...</td>
+                                    <td colspan="8">Cargando solicitudes...</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-4">
+            <div class="container">
+                <div class="card card-formulario p-4 p-md-5" id="detalle-cotizacion">
+                    <p class="mb-0">Selecciona una solicitud para ver su detalle.</p>
                 </div>
             </div>
         </section>

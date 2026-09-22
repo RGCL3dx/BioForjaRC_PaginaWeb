@@ -82,11 +82,19 @@
         }
 
         var usuarios = BioForjaAuth.leerUsuarios() || [];
+        var cotizaciones = BioForjaAuth.leerCotizaciones() || [];
+        var pendientes = 0;
+        for (var c = 0; c < cotizaciones.length; c++) {
+            if ((cotizaciones[c].estado || 'Nueva') === 'Nueva') {
+                pendientes++;
+            }
+        }
 
         ponerTexto('m-ventas', formatearPrecio(ventasMes));
         ponerTexto('m-pedidos', String(activos));
         ponerTexto('m-productos', conStock + ' de ' + productos.length + ' con stock (' + unidades + ' unidades)');
         ponerTexto('m-usuarios', String(usuarios.length));
+        ponerTexto('m-cotizaciones', cotizaciones.length + ' (' + pendientes + ' nuevas)');
 
         renderTopProductos(pedidos);
     }
@@ -659,6 +667,125 @@
     }
 
     /* -----------------------------------------------------
+       Cotizaciones (admin/cotizaciones.html)
+       ----------------------------------------------------- */
+
+    var ETIQUETAS_COTIZACION = {
+        maceteros: 'Maceteros',
+        articulados: 'Animales articulados',
+        sensorial: 'Juguetes sensoriales',
+        figuras: 'Figuras ecológicas',
+        otro: 'Otro'
+    };
+
+    var ETIQUETAS_PLAZO = {
+        '1': 'Antes de 1 semana',
+        '2': 'Entre 1 y 2 semanas',
+        '3': 'Más de 2 semanas'
+    };
+
+    function etiquetaCategoriaCotizacion(valor) {
+        return ETIQUETAS_COTIZACION[valor] || valor || '—';
+    }
+
+    function etiquetaPlazo(valor) {
+        return ETIQUETAS_PLAZO[valor] || valor || '—';
+    }
+
+    function renderCotizaciones() {
+        var cotizaciones = BioForjaAuth.leerCotizaciones() || [];
+        var cuerpo = document.getElementById('tabla-cotizaciones');
+        if (!cuerpo) { return; }
+        cuerpo.innerHTML = '';
+
+        if (!cotizaciones.length) {
+            var fila = document.createElement('tr');
+            var celda = document.createElement('td');
+            celda.colSpan = 8;
+            celda.textContent = 'No hay solicitudes de cotización todavía. Cuando un cliente envíe el formulario, aparecerá aquí.';
+            fila.appendChild(celda);
+            cuerpo.appendChild(fila);
+            vaciarDetalleCotizacion();
+            return;
+        }
+
+        for (var i = cotizaciones.length - 1; i >= 0; i--) {
+            var cotizacion = cotizaciones[i];
+            var filaCot = document.createElement('tr');
+
+            crearCelda(filaCot, '#' + cotizacion.id);
+            crearCelda(filaCot, cotizacion.nombre || '—');
+            crearCelda(filaCot, cotizacion.correo || '—');
+            crearCelda(filaCot, cotizacion.telefono || '—');
+            crearCelda(filaCot, etiquetaCategoriaCotizacion(cotizacion.categoria));
+            crearCelda(filaCot, cotizacion.cantidad || '—');
+            crearCelda(filaCot, cotizacion.fecha || '—');
+
+            var celdaAccion = document.createElement('td');
+            var boton = document.createElement('button');
+            boton.type = 'button';
+            boton.textContent = 'Ver detalle';
+            boton.setAttribute('data-detalle-cotizacion', cotizacion.id);
+            celdaAccion.appendChild(boton);
+            filaCot.appendChild(celdaAccion);
+
+            cuerpo.appendChild(filaCot);
+        }
+    }
+
+    function vaciarDetalleCotizacion() {
+        var detalle = document.getElementById('detalle-cotizacion');
+        if (!detalle) { return; }
+        detalle.innerHTML = '';
+        var aviso = document.createElement('p');
+        aviso.textContent = 'Selecciona una solicitud para ver su detalle.';
+        detalle.appendChild(aviso);
+    }
+
+    function renderDetalleCotizacion(id) {
+        var cotizaciones = BioForjaAuth.leerCotizaciones() || [];
+        var cotizacion = null;
+        for (var i = 0; i < cotizaciones.length; i++) {
+            if (cotizaciones[i].id === id) { cotizacion = cotizaciones[i]; break; }
+        }
+        if (!cotizacion) { return; }
+
+        var detalle = document.getElementById('detalle-cotizacion');
+        if (!detalle) { return; }
+        detalle.innerHTML = '';
+
+        var titulo = document.createElement('h3');
+        titulo.textContent = 'Solicitud N° ' + cotizacion.id;
+        detalle.appendChild(titulo);
+
+        crearParrafo(detalle, 'Nombre: ' + (cotizacion.nombre || '—'));
+        crearParrafo(detalle, 'Correo: ' + (cotizacion.correo || '—'));
+        crearParrafo(detalle, 'Teléfono: ' + (cotizacion.telefono || '—'));
+        crearParrafo(detalle, 'Fecha de solicitud: ' + (cotizacion.fecha || '—'));
+        crearParrafo(detalle, 'Categoría: ' + etiquetaCategoriaCotizacion(cotizacion.categoria));
+        crearParrafo(detalle, 'Cantidad estimada: ' + (cotizacion.cantidad || '—'));
+        crearParrafo(detalle, 'Plazo deseado: ' + etiquetaPlazo(cotizacion.plazo));
+        crearParrafo(detalle, 'Estado: ' + (cotizacion.estado || 'Nueva'));
+
+        var detalleProyecto = document.createElement('p');
+        detalleProyecto.innerHTML = '<strong>Descripción del proyecto:</strong>';
+        detalle.appendChild(detalleProyecto);
+
+        var texto = document.createElement('p');
+        texto.textContent = cotizacion.descripcion || '—';
+        detalle.appendChild(texto);
+    }
+
+    function enlazarCotizaciones() {
+        document.body.addEventListener('click', function (evento) {
+            var detalle = evento.target.closest('[data-detalle-cotizacion]');
+            if (detalle) {
+                renderDetalleCotizacion(parseInt(detalle.getAttribute('data-detalle-cotizacion'), 10));
+            }
+        });
+    }
+
+    /* -----------------------------------------------------
        Inicialización según la página
        ----------------------------------------------------- */
 
@@ -680,6 +807,9 @@
         } else if (/pedidos\.html/.test(ruta)) {
             renderPedidos();
             enlazarPedidos();
+        } else if (/cotizaciones\.html/.test(ruta)) {
+            renderCotizaciones();
+            enlazarCotizaciones();
         } else {
             renderPanel();
         }
