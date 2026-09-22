@@ -4,5 +4,5 @@ Correo	admin@bioforjarc.cl
 Contraseña	Admin123
 
 🔑 Credenciales normales (cliente)
-Correo	hermenegildo.gonzalez@correo.cl
+Correo	juan@correo.cl
 Contraseña	Clave1234
