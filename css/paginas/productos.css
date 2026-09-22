@@ -21,10 +21,37 @@ main section[id] > h2::after {
     border-radius: 2px;
 }
 
-/* Tarjetas de producto (generadas por productos.js) */
+/* Tarjetas de producto (generadas por productos.js)
+   Todas al mismo alto: la descripción ocupa el espacio sobrante
+   y el precio, stock y botones quedan alineados abajo. */
+main .row > [class*="col-"] {
+    display: flex;
+}
+
+.card-producto {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+.card-producto:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-fuerte);
+}
+
 .card-producto .card-img-top {
     height: 220px;
     object-fit: cover;
+}
+
+.card-producto .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
 }
 
 .card-producto .card-title {
@@ -36,6 +63,18 @@ main section[id] > h2::after {
     color: var(--color-gris);
     font-size: 0.95rem;
     margin-bottom: 8px;
+}
+
+/* La descripción crece para empujar precio/stock/botoneras al pie */
+.card-producto .card-descripcion {
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.card-producto .card-descripcion:empty::after {
+    content: 'Sin descripción';
+    font-style: italic;
+    opacity: 0.7;
 }
 
 /* Precio destacado con píldora verde */
@@ -68,4 +107,26 @@ main section[id] > h2::after {
 /* Grid interno sutil en las tarjetas */
 .card-producto .btn {
     align-self: center;
+}
+
+.card-producto .etiqueta-agotado,
+.card-producto .stock-producto {
+    align-self: center;
+    text-align: center;
+}
+
+/* Responsividad del catálogo */
+@media (max-width: 576px) {
+    .card-producto .card-img-top {
+        height: 200px;
+    }
+
+    .card-producto .card-title {
+        min-height: 0;
+    }
+
+    main section[id] > h2 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
 }

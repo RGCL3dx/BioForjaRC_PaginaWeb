@@ -48,66 +48,15 @@
             </div>
         </section>
 
-        <section class="py-4">
-            <div class="container">
-                <div class="card card-formulario p-4 p-md-5">
-                    <h2 class="h5 fw-bold mb-3"><i class="bi bi-plus-circle me-2 pie-icono text-marca"></i>Agregar producto</h2>
-
-                    <form id="form-agregar-producto" action="#" method="post">
-                        <div class="row g-3">
-
-                            <div class="col-md-8 mb-3">
-                                <label class="form-label" for="nombre">Nombre del producto *</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Macetero clásico 15cm" required>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="categoria">Categoría *</label>
-                                <select class="form-select" id="categoria" name="categoria" required>
-                                    <option value="">-- Selecciona --</option>
-                                    <option value="maceteros">Maceteros</option>
-                                    <option value="articulados">Animales articulados</option>
-                                    <option value="sensorial">Juguetes sensoriales</option>
-                                    <option value="figuras">Figuras ecológicas</option>
-                                </select>
-                            </div>
-
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="descripcion">Descripción *</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Describe el producto, su material y medidas (mínimo 10 caracteres)..." required></textarea>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="precio">Precio ($) *</label>
-                                <input type="number" class="form-control" id="precio" name="precio" min="0" step="100" placeholder="Ej: 8990" required>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="stock">Stock (unidades) *</label>
-                                <input type="number" class="form-control" id="stock" name="stock" min="0" placeholder="Ej: 10" required>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label" for="imagen">URL de la imagen *</label>
-                                <input type="text" class="form-control" id="imagen" name="imagen" placeholder="../assets/imagenes/productos/..." required>
-                            </div>
-
-                        </div>
-
-                        <div class="d-flex flex-wrap gap-3 mt-2">
-                            <button type="submit" class="btn btn-acento rounded-pill px-4">Guardar producto</button>
-                            <button type="reset" class="btn btn-marca-outline rounded-pill px-4">Limpiar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-4">
+        <section class="py-4" id="seccion-productos">
             <div class="container">
                 <div class="card card-formulario p-4">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
                         <h2 class="h5 fw-bold mb-0"><i class="bi bi-cube me-2 pie-icono text-marca"></i>Productos registrados</h2>
+                        <button type="button" class="btn btn-acento rounded-pill px-4" data-bs-toggle="modal"
+                            data-bs-target="#modal-agregar-producto">
+                            <i class="bi bi-plus-lg me-1"></i>Agregar producto
+                        </button>
                     </div>
 
                     <div class="mb-3">
@@ -188,6 +137,73 @@
             <p class="text-center text-white-50 small mb-0 pb-2">&copy; 2026 BioForjaRC. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <!-- Formulario flotante para agregar productos -->
+    <div class="modal fade" id="modal-agregar-producto" tabindex="-1" aria-labelledby="titulo-modal-producto" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-marca text-white">
+                    <h2 class="modal-title h5 fw-bold mb-0" id="titulo-modal-producto">
+                        <i class="bi bi-plus-circle me-2"></i>Agregar producto
+                    </h2>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="form-agregar-producto" action="#" method="post">
+                        <div class="row g-3">
+
+                            <div class="col-md-8">
+                                <label class="form-label" for="nombre">Nombre del producto *</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Macetero clásico 15cm" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label" for="categoria">Categoría *</label>
+                                <select class="form-select" id="categoria" name="categoria" required>
+                                    <option value="">-- Selecciona --</option>
+                                    <option value="maceteros">Maceteros</option>
+                                    <option value="articulados">Animales articulados</option>
+                                    <option value="sensorial">Juguetes sensoriales</option>
+                                    <option value="figuras">Figuras ecológicas</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="descripcion">Descripción *</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Describe el producto, su material y medidas (mínimo 10 caracteres)..." required></textarea>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label" for="precio">Precio ($) *</label>
+                                <input type="number" class="form-control" id="precio" name="precio" min="0" step="100" placeholder="Ej: 8990" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label" for="stock">Stock (unidades) *</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" placeholder="Ej: 10" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label" for="imagen">URL de la imagen *</label>
+                                <input type="text" class="form-control" id="imagen" name="imagen" placeholder="../assets/imagenes/productos/..." required>
+                            </div>
+
+                            <div class="col-12">
+                                <small class="text-gris">Al guardarlo, el producto aparecerá en el listado de abajo y en la tienda.</small>
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3 mt-3 mb-0">
+                            <button type="submit" class="btn btn-acento rounded-pill px-4" form="form-agregar-producto">Guardar producto</button>
+                            <button type="reset" class="btn btn-marca-outline rounded-pill px-4" form="form-agregar-producto">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="../../js/auth.js" defer></script>
     <script src="../../js/productos.js" defer></script>

@@ -23,10 +23,52 @@
         return '$' + Number(numero || 0).toLocaleString('es-CL');
     }
 
-    function estadoProducto(stock) {
+    function estadoProducto(stock, activo) {
+        if (activo === false) { return 'Desactivado'; }
         if (stock <= 0) { return 'Agotado'; }
         if (stock <= 5) { return 'Poco stock'; }
         return 'Activo';
+    }
+
+    /* Aviso flotante reutilizando el estilo global .aviso-carrito */
+    function notificar(mensaje) {
+        var aviso = document.createElement('div');
+        aviso.className = 'aviso-carrito';
+        aviso.textContent = mensaje;
+        document.body.appendChild(aviso);
+        setTimeout(function () { aviso.classList.add('aviso-carrito-visible'); }, 10);
+        setTimeout(function () { aviso.remove(); }, 3000);
+    }
+
+    /* Apertura/cierre de flotantes (modales de Bootstrap) */
+    function elementoModal(id) {
+        var nodo = document.getElementById(id);
+        if (!nodo || !nodo.classList.contains('modal')) { return null; }
+        return nodo;
+    }
+
+    function abrirModal(id) {
+        var nodo = elementoModal(id);
+        if (!nodo) { return; }
+        if (window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance(nodo).show();
+        } else {
+            nodo.style.display = 'block';
+            nodo.classList.add('show');
+            nodo.removeAttribute('aria-hidden');
+        }
+    }
+
+    function cerrarModal(id) {
+        var nodo = elementoModal(id);
+        if (!nodo) { return; }
+        if (window.bootstrap && bootstrap.Modal) {
+            var instancia = bootstrap.Modal.getInstance(nodo);
+            if (instancia) { instancia.hide(); return; }
+        }
+        nodo.style.display = 'none';
+        nodo.classList.remove('show');
+        nodo.setAttribute('aria-hidden', 'true');
     }
 
     function etiquetaCategoria(valor) {
@@ -179,7 +221,7 @@
             var fila = document.createElement('tr');
             var celda = document.createElement('td');
             celda.colSpan = 7;
-            celda.textContent = filtroInventario ? 'Sin coincidencias para tu búsqueda.' : 'No hay productos registrados. Agrega el primero con el formulario de arriba.';
+            celda.textContent = filtroInventario ? 'Sin coincidencias para tu búsqueda.' : 'No hay productos registrados. Crea el primero con el botón "Agregar producto".';
             fila.appendChild(celda);
             cuerpo.appendChild(fila);
             return;
@@ -223,22 +265,29 @@
             filaProd.appendChild(celdaStock);
 
             var celdaEstado = document.createElement('td');
-            celdaEstado.textContent = estadoProducto(parseInt(producto.stock, 10) || 0);
+            celdaEstado.textContent = estadoProducto(parseInt(producto.stock, 10) || 0, producto.activo);
             filaProd.appendChild(celdaEstado);
 
             var celdaAcciones = document.createElement('td');
             var botonGuardar = document.createElement('button');
             botonGuardar.type = 'button';
             botonGuardar.textContent = 'Guardar';
+            botonGuardar.className = 'accion-guardar';
             botonGuardar.setAttribute('data-guardar', producto.id);
             celdaAcciones.appendChild(botonGuardar);
 
-            var botonEliminar = document.createElement('button');
-            botonEliminar.type = 'button';
-            botonEliminar.textContent = 'Eliminar';
-            botonEliminar.className = 'peligro';
-            botonEliminar.setAttribute('data-eliminar', producto.id);
-            celdaAcciones.appendChild(botonEliminar);
+            /* Desactivar en lugar de eliminar: el producto conserva sus datos
+               y simplemente deja de mostrarse en la tienda. */
+            var estaActivo = producto.activo !== false;
+            var botonActivo = document.createElement('button');
+            botonActivo.type = 'button';
+            botonActivo.textContent = estaActivo ? 'Desactivar' : 'Activar';
+            botonActivo.className = estaActivo ? 'peligro' : 'reactivar';
+            botonActivo.setAttribute('data-activar', producto.id);
+            botonActivo.title = estaActivo ?
+                'Deja de mostrar el producto en la tienda sin borrarlo.' :
+                'Vuelve a mostrar el producto en la tienda.';
+            celdaAcciones.appendChild(botonActivo);
 
             filaProd.appendChild(celdaAcciones);
             cuerpo.appendChild(filaProd);
@@ -282,7 +331,7 @@
                     return;
                 }
 
-                BioForjaProductos.agregar({
+                var nuevo = BioForjaProductos.agregar({
                     titulo: nombre,
                     descripcion: descripcion,
                     categoria: categoria,
@@ -291,8 +340,25 @@
                     imagen: imagen
                 });
                 form.reset();
+
+                /* Se cierra el formulario flotante y lleva al listado de productos
+                   del panel para ver el producto recién creado. */
+                filtroInventario = '';
+                var buscador = document.getElementById('buscar-producto');
+                if (buscador) { buscador.value = ''; }
                 renderInventario();
-                window.location.hash = 'seccion-inventario';
+                cerrarModal('modal-agregar-producto');
+
+                var seccion = document.getElementById('seccion-productos');
+                if (seccion) {
+                    seccion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                var filaNueva = document.querySelector('#tabla-inventario tr[data-id="' + nuevo.id + '"]');
+                if (filaNueva) {
+                    filaNueva.classList.add('fila-nueva');
+                    setTimeout(function () { filaNueva.classList.remove('fila-nueva'); }, 4000);
+                }
+                notificar('Producto "' + nuevo.titulo + '" agregado al catálogo.');
             });
         }
 
@@ -320,14 +386,22 @@
                 return;
             }
 
-            var eliminar = evento.target.closest('[data-eliminar]');
-            if (eliminar) {
-                var idEliminar = parseInt(eliminar.getAttribute('data-eliminar'), 10);
-                var producto = BioForjaProductos.buscar(idEliminar);
-                if (producto && confirm('¿Seguro que deseas eliminar "' + producto.titulo + '" del catálogo?')) {
-                    BioForjaProductos.eliminar(idEliminar);
-                    renderInventario();
+            var activar = evento.target.closest('[data-activar]');
+            if (activar) {
+                var idActivar = parseInt(activar.getAttribute('data-activar'), 10);
+                var productoActivo = BioForjaProductos.buscar(idActivar);
+                if (!productoActivo) { return; }
+
+                var quedaraActivo = productoActivo.activo === false;
+                if (!quedaraActivo && !confirm('¿Desactivar "' + productoActivo.titulo + '"?\n\nDejará de mostrarse en la tienda, pero conservas todo su historial y datos.')) {
+                    return;
                 }
+
+                BioForjaProductos.actualizar(idActivar, { activo: quedaraActivo });
+                renderInventario();
+                notificar(quedaraActivo ?
+                    '"' + productoActivo.titulo + '" está activo de nuevo en la tienda.' :
+                    '"' + productoActivo.titulo + '" quedó desactivado (no se borra).');
             }
         });
     }
@@ -462,7 +536,19 @@
             aviso.style.display = esActual ? 'block' : 'none';
         }
 
-        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        /* Iniciales del usuario en el avatar del flotante */
+        var avatar = document.getElementById('avatar-usuario');
+        if (avatar) {
+            var iniciales = usuario.nombre.trim().split(/\s+/).slice(0, 2)
+                .map(function (parte) { return parte.charAt(0).toUpperCase(); }).join('');
+            avatar.textContent = iniciales || '?';
+        }
+        var tituloModal = document.getElementById('titulo-modal-usuario');
+        if (tituloModal) {
+            tituloModal.textContent = 'Editar usuario: ' + usuario.nombre;
+        }
+
+        abrirModal('modal-editar-usuario');
     }
 
     function enlazarFormularioUsuario() {
@@ -502,10 +588,9 @@
             BioForjaAuth.guardarUsuarios(lista);
             renderUsuarios();
             form.reset();
-            var seccion = document.getElementById('seccion-editar-usuario');
-            if (seccion && seccion.querySelector('.aviso-auth')) {
-                seccion.querySelector('.aviso-auth').remove();
-            }
+
+            cerrarModal('modal-editar-usuario');
+            notificar('Cambios guardados para ' + nombre + '.');
         });
     }
 
@@ -781,6 +866,7 @@
             var detalle = evento.target.closest('[data-detalle-cotizacion]');
             if (detalle) {
                 renderDetalleCotizacion(parseInt(detalle.getAttribute('data-detalle-cotizacion'), 10));
+                abrirModal('modal-detalle-cotizacion');
             }
         });
     }

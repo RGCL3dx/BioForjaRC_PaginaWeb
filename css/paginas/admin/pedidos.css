@@ -10,3 +10,15 @@
 .select-estado-pedido {
     min-width: 170px;
 }
+
+/* Responsividad de las tablas del panel */
+@media (max-width: 576px) {
+    .tabla-admin {
+        min-width: 640px;
+    }
+
+    .campo-precio,
+    .campo-stock {
+        width: 90px;
+    }
+}

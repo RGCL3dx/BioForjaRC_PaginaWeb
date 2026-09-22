@@ -3,67 +3,21 @@
    Administración de cuentas de usuario
    ========================================================= */
 
-/* Buscador */
-main section:nth-of-type(2) {
-    max-width: 520px;
-    margin: 0 auto;
-}
-
-main section:nth-of-type(2) p {
-    margin: 0;
-}
-
-/* Listado de usuarios */
-main section:nth-of-type(3) {
-    max-width: 940px;
-    margin: 0 auto;
-}
-
-#seccion-editar-usuario form {
-    max-width: 560px;
-    margin: 0 auto;
-}
-
-#seccion-editar-usuario form p {
-    margin-bottom: 16px;
-}
-
-#seccion-editar-usuario form > p:last-of-type {
-    text-align: center;
-    margin-bottom: 0;
-}
-
-main section:nth-of-type(2) h2,
-main section:nth-of-type(3) h2,
-#seccion-editar-usuario h2 {
-    text-align: center;
-    position: relative;
-    padding-bottom: 14px;
-}
-
-main section:nth-of-type(2) h2::after,
-main section:nth-of-type(3) h2::after,
-#seccion-editar-usuario h2::after {
-    content: '';
-    display: block;
-    width: 72px;
-    height: 4px;
-    margin: 12px auto 0;
-    background: var(--color-acento);
-    border-radius: 2px;
+/* Encabezados de tarjeta (mismo estilo que el resto del panel) */
+main section h2 {
+    color: var(--color-primario-oscuro);
 }
 
 main table {
-    margin: 20px 0;
+    margin: 0;
 }
 
+/* Acciones de la tabla de usuarios */
 #tabla-usuarios button {
     font-size: 0.85rem;
     padding: 8px 14px;
-}
-
-#tabla-usuarios button + button {
-    margin-left: 6px;
+    border-radius: 50px;
+    margin: 3px 4px 3px 0;
 }
 
 #tabla-usuarios button:disabled {
@@ -85,4 +39,16 @@ main table {
     color: var(--color-primario-oscuro);
     font-size: 0.9rem;
     font-weight: 600;
+}
+
+/* Responsividad */
+@media (max-width: 576px) {
+    main section h2 {
+        font-size: 1.15rem;
+    }
+
+    #tabla-usuarios button {
+        font-size: 0.8rem;
+        padding: 7px 12px;
+    }
 }

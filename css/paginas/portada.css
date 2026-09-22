@@ -19,3 +19,44 @@
 .tarjeta-categoria:hover .card-img-top {
     transform: scale(1.06);
 }
+
+/* Tarjetas de categoría: todas al mismo alto y botón alineado abajo */
+.row > .col > .tarjeta-categoria {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tarjeta-categoria .card-img-top {
+    height: 210px;
+    object-fit: cover;
+}
+
+.tarjeta-categoria .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 18px;
+}
+
+.tarjeta-categoria .card-body h3 {
+    margin-bottom: 8px;
+}
+
+.tarjeta-categoria .card-body p {
+    flex: 1 1 auto;
+    margin-bottom: 14px;
+}
+
+.tarjeta-categoria .card-body .btn {
+    align-self: center;
+    margin-top: auto;
+}
+
+/* Responsive de la portada */
+@media (max-width: 576px) {
+    .tarjeta-categoria .card-img-top {
+        height: 190px;
+    }
+}

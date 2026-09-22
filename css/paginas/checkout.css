@@ -41,3 +41,29 @@ main section:nth-of-type(3) h2::after {
     max-width: 780px;
     margin: 0 auto;
 }
+
+/* Responsividad del checkout */
+@media (max-width: 767.98px) {
+    .tabla-checkout,
+    .formulario-checkout {
+        max-width: 100%;
+    }
+
+    .tabla-checkout {
+        font-size: 0.92rem;
+        min-width: 480px;
+    }
+
+    .fieldset-marca {
+        padding: 16px;
+    }
+
+    .formulario-checkout .btn,
+    main section:nth-of-type(3) > .container > h2 {
+        width: 100%;
+    }
+
+    .formulario-checkout .text-center .btn {
+        white-space: normal;
+    }
+}

@@ -73,8 +73,16 @@
         if (campo.hasAttribute('required') && !valor) {
             return 'El teléfono es obligatorio para avanzar.';
         }
-        if (valor && !/^\+?[0-9 ]{8,12}$/.test(valor)) {
-            return 'Ingresa un teléfono válido (ej: +56 9 1234 5678).';
+        if (!valor) {
+            return '';
+        }
+        /* Acepta +, espacios, guiones y paréntesis (formatos chilenos e internacionales) */
+        if (!/^\+?[\d\s\-()]+$/.test(valor)) {
+            return 'El teléfono solo puede tener números, espacios, guiones o paréntesis (ej: +56 9 1234 5678).';
+        }
+        var digitos = valor.replace(/\D/g, '');
+        if (digitos.length < 8 || digitos.length > 12) {
+            return 'Ingresa un teléfono válido de 8 a 12 dígitos (ej: +56 9 1234 5678).';
         }
         return '';
     }

@@ -61,9 +61,16 @@
         return mayor + 1;
     }
 
+    /* Un producto sigue "activo" salvo que se marque explícitamente como false.
+       Los productos guardados antes de esta función conservan el catálogo actual. */
+    function esActivo(producto) {
+        return !!producto && producto.activo !== false;
+    }
+
     function agregar(datos) {
         var lista = leer();
         datos.id = siguienteId(lista);
+        datos.activo = datos.activo !== false;
         datos.imagen = datos.imagen && datos.imagen.trim() ? datos.imagen.trim() : IMAGEN_DEFECTO;
         datos.stock = parseInt(datos.stock, 10);
         if (isNaN(datos.stock) || datos.stock < 0) {
@@ -137,7 +144,7 @@
         titulo.textContent = producto.titulo;
 
         var descripcion = document.createElement('p');
-        descripcion.className = 'card-text';
+        descripcion.className = 'card-text card-descripcion';
         descripcion.textContent = producto.descripcion || '';
 
         var precio = document.createElement('p');
@@ -193,6 +200,9 @@
         }
 
         for (var j = 0; j < lista.length; j++) {
+            if (!esActivo(lista[j])) {
+                continue;
+            }
             var contenedor = document.querySelector('[data-categoria="' + lista[j].categoria + '"]');
             if (contenedor) {
                 contenedor.appendChild(crearTarjeta(lista[j]));
@@ -216,6 +226,7 @@
         actualizar: actualizar,
         eliminar: eliminar,
         buscar: buscar,
+        esActivo: esActivo,
         renderizarCatalogo: renderizarCatalogo,
         formatearPrecio: formatearPrecio
     };

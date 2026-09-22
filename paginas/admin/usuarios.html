@@ -81,61 +81,96 @@
             </div>
         </section>
 
-        <section class="py-4" id="seccion-editar-usuario">
-            <div class="container">
-                <div class="card card-formulario p-4 p-md-5">
-                    <h2 class="h5 fw-bold mb-3"><i class="bi bi-pencil-square me-2 pie-icono text-marca"></i>Editar usuario</h2>
+    </main>
 
+    <!-- Flotante para editar usuario -->
+    <div class="modal fade" id="modal-editar-usuario" tabindex="-1" aria-labelledby="titulo-modal-usuario" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header bg-marca text-white">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="avatar-usuario" id="avatar-usuario" aria-hidden="true">?</span>
+                        <div>
+                            <p class="mb-0 small opacity-75">Panel de administración</p>
+                            <h2 class="modal-title h5 fw-bold mb-0" id="titulo-modal-usuario">Editar usuario</h2>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
                     <form id="form-editar-usuario" action="#" method="post">
                         <input type="hidden" id="edit-id" name="edit-id">
 
-                        <div class="row g-3">
+                        <fieldset class="fieldset-marca">
+                            <legend><i class="bi bi-person me-1"></i>Datos personales</legend>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="edit-nombre">Nombre completo</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                        <input type="text" class="form-control" id="edit-nombre" name="edit-nombre" required>
+                                    </div>
+                                </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label" for="edit-nombre">Nombre completo</label>
-                                <input type="text" class="form-control" id="edit-nombre" name="edit-nombre" required>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="edit-correo">Correo electrónico</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                        <input type="email" class="form-control" id="edit-correo" name="edit-correo" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label" for="edit-telefono">Teléfono</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                        <input type="tel" class="form-control" id="edit-telefono" name="edit-telefono" placeholder="+56 9 1234 5678">
+                                    </div>
+                                </div>
                             </div>
+                        </fieldset>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label" for="edit-correo">Correo electrónico</label>
-                                <input type="email" class="form-control" id="edit-correo" name="edit-correo" required>
+                        <fieldset class="fieldset-marca mb-0">
+                            <legend><i class="bi bi-shield-check me-1"></i>Rol y estado de la cuenta</legend>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="edit-rol">Rol</label>
+                                    <select class="form-select" id="edit-rol" name="edit-rol">
+                                        <option value="cliente">cliente</option>
+                                        <option value="administrador">administrador</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label" for="edit-estado">Estado</label>
+                                    <select class="form-select" id="edit-estado" name="edit-estado">
+                                        <option value="Activo">Activo</option>
+                                        <option value="Inactivo">Inactivo</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <small class="text-gris">Una cuenta "Inactiva" no puede iniciar sesión, pero conserva su historial de compras.</small>
+                                </div>
                             </div>
+                        </fieldset>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label" for="edit-telefono">Teléfono</label>
-                                <input type="tel" class="form-control" id="edit-telefono" name="edit-telefono">
-                            </div>
-
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label" for="edit-rol">Rol</label>
-                                <select class="form-select" id="edit-rol" name="edit-rol">
-                                    <option value="cliente">cliente</option>
-                                    <option value="administrador">administrador</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label" for="edit-estado">Estado</label>
-                                <select class="form-select" id="edit-estado" name="edit-estado">
-                                    <option value="Activo">Activo</option>
-                                    <option value="Inactivo">Inactivo</option>
-                                </select>
-                            </div>
-
-                        </div>
-
-                        <p class="aviso-sesion" style="display:none;">No puedes modificar tu propia cuenta mientras estás conectado.</p>
-
-                        <div class="d-flex flex-wrap gap-3 mt-2">
-                            <button type="submit" class="btn btn-acento rounded-pill px-4">Guardar cambios</button>
-                            <button type="reset" class="btn btn-marca-outline rounded-pill px-4">Limpiar</button>
-                        </div>
+                        <p class="aviso-sesion mt-3 mb-0" style="display:none;">No puedes modificar tu propia cuenta mientras estás conectado.</p>
                     </form>
                 </div>
-            </div>
-        </section>
 
-    </main>
+                <div class="modal-footer">
+                    <button type="submit" form="form-editar-usuario" class="btn btn-acento rounded-pill px-4">
+                        <i class="bi bi-check-lg me-1"></i>Guardar cambios
+                    </button>
+                    <button type="button" class="btn btn-marca-outline rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
         <div class="container">

@@ -436,9 +436,150 @@ a:hover {
     border-radius: 50px;
 }
 
+/* Botón "Ver detalle" de cotizaciones y "Editar" de usuarios */
+.tabla-admin button[data-detalle-cotizacion],
+.tabla-admin button[data-editar] {
+    color: #fff;
+    background-color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-detalle-cotizacion]:hover,
+.tabla-admin button[data-editar]:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+    color: #fff;
+}
+
+/* Activar / desactivar usuarios (acento) */
+.tabla-admin button[data-estado] {
+    color: var(--color-primario-oscuro);
+    background-color: var(--color-acento);
+    border: 1px solid var(--color-acento);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-estado]:hover {
+    background-color: var(--color-acento-oscuro);
+    border-color: var(--color-acento-oscuro);
+    color: var(--color-primario-oscuro);
+}
+
+/* Desactivar / activar productos (inventario) */
+.tabla-admin button[data-activar] {
+    color: #fff;
+    background-color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-activar]:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+}
+
+.tabla-admin button[data-activar].peligro {
+    color: #fff;
+    background-color: var(--color-peligro);
+    border-color: var(--color-peligro);
+}
+
+.tabla-admin button[data-activar].peligro:hover {
+    background-color: #b71c1c;
+    border-color: #b71c1c;
+}
+
+/* Las acciones se apilan ordenadas en pantallas angostas */
+.tabla-admin td:last-child button {
+    margin: 3px 4px 3px 0;
+}
+
 .tabla-admin button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------
+   Flotantes (modales) de administración
+   --------------------------------------------------------- */
+.modal-content {
+    border: 0;
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra-fuerte);
+    overflow: hidden;
+}
+
+.modal-header.bg-marca {
+    border-bottom: 0;
+}
+
+.modal-title {
+    color: var(--color-blanco);
+}
+
+.modal-body .form-label {
+    font-weight: 600;
+    color: var(--color-primario-oscuro);
+    margin-bottom: 4px;
+}
+
+.modal-body .fieldset-marca {
+    padding: 16px 18px;
+}
+
+/* Avatar con las iniciales del usuario en el modal de edición */
+.avatar-usuario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-acento), var(--color-acento-oscuro));
+    color: var(--color-primario-oscuro);
+    font-family: var(--fuente-principal);
+    font-weight: 800;
+    font-size: 1.2rem;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Contenido del detalle de una cotización */
+.detalle-cotizacion h3 {
+    color: var(--color-primario-oscuro);
+    margin-bottom: 12px;
+}
+
+.detalle-cotizacion p {
+    margin-bottom: 8px;
+    overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------
+   Tablas del panel: scroll horizontal en pantallas chicas
+   --------------------------------------------------------- */
+.tabla-admin {
+    min-width: 700px;
+}
+
+/* ---------------------------------------------------------
+   Resaltado del producto recién creado
+   --------------------------------------------------------- */
+@keyframes filaDestacada {
+    0%   { background-color: rgba(255, 179, 0, 0.45); }
+    100% { background-color: transparent; }
+}
+
+tr.fila-nueva td {
+    animation: filaDestacada 4s ease-out;
+    font-weight: 600;
 }
 
 /* ---------------------------------------------------------
@@ -465,5 +606,32 @@ a:hover {
         left: 16px;
         right: 16px;
         max-width: none;
+    }
+
+    .titulo-seccion {
+        font-size: 1.55rem;
+        margin-bottom: 24px;
+    }
+
+    .pagina-intro {
+        font-size: 1rem;
+    }
+
+    /* Flotantes a pantalla casi completa en celulares */
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .tabla-admin {
+        min-width: 620px;
+    }
+
+    .tabla-admin button {
+        font-size: 0.8rem;
+        padding: 7px 12px;
     }
 }

@@ -232,6 +232,13 @@ main > section.seccion-clara {
 /* ---------------------------------------------------------
    Responsive
    --------------------------------------------------------- */
+@media (max-width: 992px) {
+    /* background-attachment: fixed no funciona bien en móvil/tablet */
+    .hero {
+        background-attachment: scroll;
+    }
+}
+
 @media (max-width: 640px) {
     .hero {
         padding: 72px 0;
@@ -241,7 +248,28 @@ main > section.seccion-clara {
         font-size: 1.9rem;
     }
 
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero-contenido {
+        padding: 24px 18px;
+    }
+
     main > section {
         padding: 36px 0;
+    }
+
+    .titulo-seccion {
+        font-size: 1.5rem;
+        margin-bottom: 24px;
+    }
+
+    .pagina-intro {
+        font-size: 1rem;
+    }
+
+    .lista-proceso {
+        padding: 18px 18px 18px 58px;
     }
 }

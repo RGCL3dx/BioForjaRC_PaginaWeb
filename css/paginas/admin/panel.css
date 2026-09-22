@@ -2,7 +2,36 @@
    BioForjaRC - admin/panel.css
    ========================================================= */
 
+.tarjeta-metrica {
+    height: 100%;
+    border: 0;
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+.tarjeta-metrica .card-body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Todos los valores al mismo tamaño de fuente y sin desbordes */
+.tarjeta-metrica .card-body p {
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+    margin-bottom: 0;
+}
+
 .tarjeta-metrica:hover {
     transform: translateY(-4px);
     box-shadow: var(--sombra-fuerte) !important;
+}
+
+/* Responsividad del panel */
+@media (max-width: 576px) {
+    .tarjeta-metrica .card-body {
+        padding: 20px !important;
+    }
 }
