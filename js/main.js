@@ -2,6 +2,7 @@
     'use strict';
 
     var CLAVE_CARRITO = 'bioforjarc-carrito';
+    var CLAVE_PRODUCTOS = 'bioforjarc-productos';
 
 
     function formatearPrecio(numero) {
@@ -82,23 +83,72 @@
         };
     }
 
-    /* Busca el producto en el catálogo (por id o, como respaldo, por título) */
+    /* Busca el producto en el catálogo (por id o, como respaldo, por título).
+       Lee el catálogo desde localStorage si productos.js no está cargado. */
     function stockProducto(item) {
-        if (!window.BioForjaProductos) {
+        var lista = null;
+
+        if (window.BioForjaProductos) {
+            lista = BioForjaProductos.leer();
+        } else {
+            try {
+                var datos = localStorage.getItem(CLAVE_PRODUCTOS);
+                lista = datos ? JSON.parse(datos) : null;
+            } catch (error) {
+                lista = null;
+            }
+        }
+        if (!lista) {
             return null;
         }
+
         var id = parseInt(item.id, 10);
-        var catalogo = id ? BioForjaProductos.buscar(id) : null;
-        if (!catalogo && item.titulo) {
-            var lista = BioForjaProductos.leer();
+        if (id) {
             for (var i = 0; i < lista.length; i++) {
-                if (String(lista[i].titulo).toLowerCase() === String(item.titulo).toLowerCase()) {
-                    catalogo = lista[i];
-                    break;
+                if (String(lista[i].id) === String(id)) {
+                    return lista[i];
                 }
             }
         }
-        return catalogo;
+        if (item.titulo) {
+            for (var j = 0; j < lista.length; j++) {
+                if (String(lista[j].titulo).toLowerCase() === String(item.titulo).toLowerCase()) {
+                    return lista[j];
+                }
+            }
+        }
+        return null;
+    }
+
+    function descontarStock(producto, cantidad) {
+        if (!producto) {
+            return;
+        }
+        var resto = (parseInt(producto.stock, 10) || 0) - parseInt(cantidad, 10);
+        if (resto < 0) {
+            resto = 0;
+        }
+        if (window.BioForjaProductos) {
+            BioForjaProductos.actualizar(producto.id, { stock: resto });
+            return;
+        }
+        var lista = null;
+        try {
+            var datos = localStorage.getItem(CLAVE_PRODUCTOS);
+            lista = datos ? JSON.parse(datos) : null;
+        } catch (error) {
+            lista = null;
+        }
+        if (!lista) {
+            return;
+        }
+        for (var i = 0; i < lista.length; i++) {
+            if (String(lista[i].id) === String(producto.id)) {
+                lista[i].stock = resto;
+                break;
+            }
+        }
+        localStorage.setItem(CLAVE_PRODUCTOS, JSON.stringify(lista));
     }
 
     function agregarAlCarrito(producto) {
@@ -555,12 +605,7 @@
 
                     for (var d = 0; d < orden.items.length; d++) {
                         var item = orden.items[d];
-                        var productoStock = stockProducto(item);
-                        if (productoStock && window.BioForjaProductos) {
-                            var resto = (parseInt(productoStock.stock, 10) || 0) - parseInt(item.cantidad, 10);
-                            if (resto < 0) { resto = 0; }
-                            BioForjaProductos.actualizar(productoStock.id, { stock: resto });
-                        }
+                        descontarStock(stockProducto(item), item.cantidad);
                     }
 
                     BioForjaAuth.guardarPedido(orden);
