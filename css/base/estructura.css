@@ -27,6 +27,14 @@ main > section {
 main > section.seccion-fondo,
 main > section.seccion-clara {
     background-color: var(--color-gris-claro);
+    background-image:
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 14px,
+            rgba(46, 125, 50, 0.025) 14px,
+            rgba(46, 125, 50, 0.025) 15px
+        );
 }
 
 /* Introducción centrada bajo el título de cada página */
@@ -44,9 +52,10 @@ main > section.seccion-clara {
    --------------------------------------------------------- */
 .hero {
     background-image: linear-gradient(
-        to right,
-        rgba(17, 55, 24, 0.62),
-        rgba(27, 94, 32, 0.42)
+        135deg,
+        rgba(10, 40, 16, 0.78) 0%,
+        rgba(27, 94, 32, 0.55) 55%,
+        rgba(107, 143, 59, 0.45) 100%
     ), url('../../assets/imagenes/fondo.webp');
     background-size: cover;
     background-position: center;
@@ -54,40 +63,63 @@ main > section.seccion-clara {
     color: var(--color-blanco);
     padding: 140px 0;
     text-align: center;
+    position: relative;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 90px;
+    background: linear-gradient(to top, var(--color-fondo), transparent);
+    pointer-events: none;
 }
 
 .hero h1 {
     color: var(--color-blanco);
     font-size: 2.6rem;
     margin-bottom: 18px;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
 .hero p {
     font-size: 1.15rem;
     margin-bottom: 30px;
-    color: rgba(255, 255, 255, 0.92);
+    color: rgba(255, 255, 255, 0.94);
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 }
 
 .hero .btn {
     margin: 4px 6px;
+    position: relative;
+    z-index: 1;
 }
 
 /* ---------------------------------------------------------
    Grid y tarjetas de categoría (portada)
    --------------------------------------------------------- */
 .tarjeta-categoria {
-    border: 0;
-    border-radius: var(--radio-borde);
+    border: 1px solid rgba(46, 125, 50, 0.08);
+    border-radius: calc(var(--radio-borde) + 4px);
     box-shadow: var(--sombra);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform var(--transicion), box-shadow var(--transicion);
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+    background-color: var(--color-blanco);
 }
 
 .tarjeta-categoria:hover {
     transform: translateY(-8px);
     box-shadow: var(--sombra-fuerte);
+    border-color: rgba(255, 179, 0, 0.45);
 }
 
 .tarjeta-categoria .card-img-top {
@@ -139,9 +171,10 @@ main > section.seccion-clara {
     max-width: 680px;
     margin: 0 auto;
     background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
+    border-radius: calc(var(--radio-borde) + 4px);
     box-shadow: var(--sombra);
     padding: 24px 32px;
+    border: 1px solid rgba(46, 125, 50, 0.08);
 }
 
 .lista-proceso li {
@@ -176,17 +209,19 @@ main > section.seccion-clara {
 
 /* Tarjetas de proceso (nosotros) */
 .tarjeta-proceso {
-    border: 0;
-    border-radius: var(--radio-borde);
+    border: 1px solid rgba(46, 125, 50, 0.08);
+    border-radius: calc(var(--radio-borde) + 4px);
     box-shadow: var(--sombra);
     overflow: hidden;
     text-align: center;
-    transition: transform var(--transicion), box-shadow var(--transicion);
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+    background-color: var(--color-blanco);
 }
 
 .tarjeta-proceso:hover {
     transform: translateY(-6px);
     box-shadow: var(--sombra-fuerte);
+    border-color: rgba(255, 179, 0, 0.45);
 }
 
 .tarjeta-proceso .card-img-top {

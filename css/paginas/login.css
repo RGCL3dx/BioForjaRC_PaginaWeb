@@ -5,9 +5,27 @@
 .card-acceso {
     max-width: 440px;
     margin: 0 auto;
+    border: 0;
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra-fuerte);
+    overflow: hidden;
+    position: relative;
+}
+
+.card-acceso::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--color-primario), var(--color-acento));
+    z-index: 1;
 }
 
 .aviso-demo {
     background-color: var(--color-gris-claro);
     border: 1px dashed var(--color-primario);
+    border-radius: 10px;
+    font-size: 0.9rem;
 }

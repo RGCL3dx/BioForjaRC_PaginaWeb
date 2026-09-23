@@ -41,10 +41,6 @@
 }
 
 @media (max-width: 576px) {
-    #detalle-pedido {
-        padding: 20px 16px;
-    }
-
     #detalle-pedido p {
         font-size: 0.95rem;
     }

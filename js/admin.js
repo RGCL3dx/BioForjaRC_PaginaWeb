@@ -302,7 +302,7 @@
                 var nombre = (form.querySelector('[name="nombre"]').value || '').trim();
                 var descripcion = (form.querySelector('[name="descripcion"]').value || '').trim();
                 var categoria = form.querySelector('[name="categoria"]').value;
-                var precio = parseInt(form.querySelector('[name="precio"]').value, 10);
+                var precio = parseFloat(form.querySelector('[name="precio"]').value);
                 var stock = parseInt(form.querySelector('[name="stock"]').value, 10);
                 var imagen = form.querySelector('[name="imagen"]').value;
 
@@ -359,7 +359,7 @@
                 var filaGuardar = guardar.closest('tr');
                 var precio = filaGuardar.querySelector('.campo-precio');
                 var stock = filaGuardar.querySelector('.campo-stock');
-                var nuevoPrecio = parseInt(precio.value, 10);
+                var nuevoPrecio = parseFloat(precio.value);
                 var nuevoStock = parseInt(stock.value, 10);
 
                 if (isNaN(nuevoPrecio) || nuevoPrecio < 0) {
@@ -705,6 +705,7 @@
 
         var boton = document.createElement('button');
         boton.type = 'button';
+        boton.className = 'btn btn-acento rounded-pill px-4';
         boton.textContent = 'Guardar estado';
         boton.setAttribute('data-guardar-estado', pedido.id);
 
@@ -726,6 +727,7 @@
             var detalle = evento.target.closest('[data-detalle]');
             if (detalle) {
                 renderDetalle(parseInt(detalle.getAttribute('data-detalle'), 10));
+                mostrarModal('modal-detalle-pedido');
                 return;
             }
 

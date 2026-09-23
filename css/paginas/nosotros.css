@@ -3,15 +3,17 @@
    ========================================================= */
 
 .tarjeta-valor {
-    border: none;
+    border: 1px solid rgba(46, 125, 50, 0.08);
     background-color: var(--color-blanco);
-    border-radius: var(--radio-borde);
+    border-radius: calc(var(--radio-borde) + 4px);
     box-shadow: var(--sombra);
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
 }
 
 .tarjeta-valor:hover {
     transform: translateY(-4px);
     box-shadow: var(--sombra-fuerte);
+    border-color: rgba(255, 179, 0, 0.45);
 }
 
 .contenedor-video {

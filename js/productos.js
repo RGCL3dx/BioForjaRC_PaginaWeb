@@ -2,7 +2,7 @@
     'use strict';
 
     var CLAVE = 'bioforjarc-productos';
-    var IMAGEN_DEFECTO = '../assets/imagenes/macetero-1.webp';
+    var IMAGEN_DEFECTO = '../assets/imagenes/SINIMAGEN.png';
 
     function leer() {
         try {
@@ -69,7 +69,7 @@
         if (isNaN(datos.stock) || datos.stock < 0) {
             datos.stock = 0;
         }
-        datos.precio = parseInt(datos.precio, 10);
+        datos.precio = parseFloat(datos.precio);
         if (isNaN(datos.precio) || datos.precio < 0) {
             datos.precio = 0;
         }

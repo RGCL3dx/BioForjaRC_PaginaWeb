@@ -87,33 +87,63 @@
        ----------------------------------------------------- */
 
     function sembrarUsuarios() {
-        if (window.localStorage.getItem(CLAVE_USUARIOS)) {
+        if (!window.localStorage.getItem(CLAVE_USUARIOS)) {
+            guardarUsuarios([
+                {
+                    id: 1,
+                    nombre: 'Administrador',
+                    rut: '11.111.111-1',
+                    correo: 'admin@bioforjarc.cl',
+                    telefono: '+56 9 0000 0000',
+                    clave: hashClave('Admin123'),
+                    rol: 'administrador',
+                    estado: 'Activo',
+                    direcciones: ['Santiago, Chile']
+                },
+                {
+                    id: 2,
+                    nombre: 'Hermenegildo González',
+                    rut: '12.345.678-9',
+                    correo: 'hermenegildo.gonzalez@correo.cl',
+                    telefono: '+56 9 1234 5678',
+                    clave: hashClave('Clave1234'),
+                    rol: 'cliente',
+                    estado: 'Activo',
+                    direcciones: ['Av. Siempre Viva 123, Santiago Centro, Región Metropolitana']
+                }
+            ]);
             return;
         }
-        guardarUsuarios([
-            {
-                id: 1,
-                nombre: 'Administrador',
-                rut: '11.111.111-1',
-                correo: 'admin@bioforjarc.cl',
-                telefono: '+56 9 0000 0000',
-                clave: hashClave('Admin123'),
-                rol: 'administrador',
-                estado: 'Activo',
-                direcciones: ['Santiago, Chile']
-            },
-            {
-                id: 2,
-                nombre: 'Hermenegildo González',
-                rut: '12.345.678-9',
-                correo: 'hermenegildo.gonzalez@correo.cl',
-                telefono: '+56 9 1234 5678',
-                clave: hashClave('Clave1234'),
-                rol: 'cliente',
-                estado: 'Activo',
-                direcciones: ['Av. Siempre Viva 123, Santiago Centro, Región Metropolitana']
+
+        // Actualiza cuentas de demostración antiguas (p. ej. nombre/correo de prueba)
+        var usuarios = leerUsuarios();
+        var cambios = false;
+        for (var i = 0; i < usuarios.length; i++) {
+            var u = usuarios[i];
+            if (u.rol === 'administrador') {
+                if (u.nombre !== 'Administrador' || String(u.correo).toLowerCase() !== 'admin@bioforjarc.cl') {
+                    u.nombre = 'Administrador';
+                    u.correo = 'admin@bioforjarc.cl';
+                    cambios = true;
+                }
+            } else if (u.rol === 'cliente' && String(u.correo).toLowerCase() === 'juan@correo.cl') {
+                u.nombre = 'Hermenegildo González';
+                u.correo = 'hermenegildo.gonzalez@correo.cl';
+                cambios = true;
             }
-        ]);
+        }
+        if (cambios) {
+            guardarUsuarios(usuarios);
+            var sesion = leerSesion();
+            if (sesion) {
+                var actualizado = buscarPorCorreo(leerUsuarios(), sesion.correo);
+                if (actualizado) {
+                    guardarSesion(actualizado);
+                } else {
+                    cerrarSesion();
+                }
+            }
+        }
     }
 
     /* -----------------------------------------------------
@@ -541,7 +571,7 @@
                 aviso.classList.add('d-none');
                 return;
             }
-            mostrarAviso(seccion.querySelector('form') || seccion, 'Demostración: la recuperación por correo no está operativa. Usa admin@bioforjarc.cl / Admin123 (admin) o juan@correo.cl / Clave1234 (cliente).');
+            mostrarAviso(seccion.querySelector('form') || seccion, 'Demostración: la recuperación por correo no está operativa. Usa admin@bioforjarc.cl / Admin123 (admin) o hermenegildo.gonzalez@correo.cl / Clave1234 (cliente).');
         });
     }
 

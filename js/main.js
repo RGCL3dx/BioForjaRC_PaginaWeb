@@ -203,7 +203,7 @@
         var articulo = document.createElement('article');
 
         var imagen = document.createElement('img');
-        imagen.src = producto.imagen;
+        imagen.src = producto.imagen || '../assets/imagenes/SINIMAGEN.png';
         imagen.alt = producto.titulo;
 
         var titulo = document.createElement('h3');

@@ -3,7 +3,16 @@
    ========================================================= */
 
 .card-cotizacion {
+    border: 0;
     border-top: 4px solid var(--color-acento);
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra);
+    transition: box-shadow var(--transicion), transform var(--transicion);
+}
+
+.card-cotizacion:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-fuerte);
 }
 
 /* ---------------------------------------------------------

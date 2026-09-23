@@ -6,6 +6,8 @@
 .card-formulario {
     max-width: 600px;
     margin: 0 auto;
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra-fuerte);
 }
 
 @media (min-width: 768px) {
