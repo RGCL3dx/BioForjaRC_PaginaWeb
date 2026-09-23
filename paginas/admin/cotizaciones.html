@@ -78,15 +78,25 @@
             </div>
         </section>
 
-        <section class="py-4">
-            <div class="container">
-                <div class="card card-formulario p-4 p-md-5" id="detalle-cotizacion">
-                    <p class="mb-0">Selecciona una solicitud para ver su detalle.</p>
+    </main>
+
+    <div class="modal fade" id="modal-detalle-cotizacion" tabindex="-1" aria-labelledby="titulo-modal-cotizacion" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-cotizacion">
+                        <i class="bi bi-envelope-paper me-2 text-marca"></i>Detalle de la solicitud
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="detalle-cotizacion">
+                        <p class="mb-0">Selecciona una solicitud para ver su detalle.</p>
+                    </div>
                 </div>
             </div>
-        </section>
-
-    </main>
+        </div>
+    </div>
 
     <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
         <div class="container">

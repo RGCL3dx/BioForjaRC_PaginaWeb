@@ -427,7 +427,8 @@ a:hover {
     background-color: #b71c1c;
 }
 
-.tabla-admin button[data-detalle] {
+.tabla-admin button[data-detalle],
+.tabla-admin button[data-detalle-cotizacion] {
     color: var(--color-primario-oscuro);
     background-color: var(--color-acento);
     border: 1px solid var(--color-acento);
@@ -436,9 +437,107 @@ a:hover {
     border-radius: 50px;
 }
 
+.tabla-admin button[data-activar]:not(.peligro),
+.tabla-admin button[data-editar],
+.tabla-admin button[data-estado] {
+    color: var(--color-primario);
+    background-color: transparent;
+    border: 1px solid var(--color-primario);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-activar]:not(.peligro):hover,
+.tabla-admin button[data-editar]:hover,
+.tabla-admin button[data-estado]:hover {
+    color: #fff;
+    background-color: var(--color-primario);
+}
+
 .tabla-admin button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* Tablas de administración: ancho mínimo con scroll horizontal
+   dentro de .table-responsive (móvil) y acciones sin encimar */
+.tabla-admin {
+    min-width: 700px;
+    margin-bottom: 0;
+}
+
+.tabla-admin th:last-child,
+.tabla-admin td:last-child {
+    white-space: nowrap;
+}
+
+.tabla-admin td:last-child button + button {
+    margin-left: 6px;
+}
+
+/* Fila de un producto recién agregado (resaltado tras guardar) */
+.fila-nueva td {
+    animation: resaltar-fila 2.6s ease;
+}
+
+@keyframes resaltar-fila {
+    0% { background-color: rgba(255, 179, 0, 0.55); }
+    100% { background-color: transparent; }
+}
+
+/* Descripción de la tarjeta de producto: empuja los botones al pie
+   para que todas las cards midan igual (js/productos.js) */
+.card-descripcion {
+    flex-grow: 1;
+}
+
+/* ---------------------------------------------------------
+   Modales de administración (Bootstrap)
+   --------------------------------------------------------- */
+.modal-content {
+    border: 0;
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra-fuerte);
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--color-gris-claro);
+    background-color: var(--color-blanco);
+}
+
+.modal-title {
+    color: var(--color-primario-oscuro);
+}
+
+.modal-body {
+    color: var(--color-tinta);
+}
+
+.modal-body .fieldset-marca:last-child {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--color-gris-claro);
+}
+
+/* Avatar con iniciales en el modal de edición de usuarios */
+.avatar-usuario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-claro));
+    color: var(--color-blanco);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: var(--sombra);
 }
 
 /* ---------------------------------------------------------
@@ -465,5 +564,29 @@ a:hover {
         left: 16px;
         right: 16px;
         max-width: none;
+    }
+
+    .tabla-admin {
+        min-width: 640px;
+    }
+
+    .tabla-admin button[data-guardar],
+    .tabla-admin button[data-guardar-estado],
+    .tabla-admin button.peligro,
+    .tabla-admin button[data-detalle],
+    .tabla-admin button[data-detalle-cotizacion],
+    .tabla-admin button[data-activar]:not(.peligro),
+    .tabla-admin button[data-editar],
+    .tabla-admin button[data-estado] {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+    }
+
+    .modal-dialog {
+        margin: 8px;
+    }
+
+    .modal-body {
+        padding: 16px;
     }
 }

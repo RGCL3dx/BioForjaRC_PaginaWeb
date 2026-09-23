@@ -78,6 +78,10 @@
         return datos;
     }
 
+    function esActivo(producto) {
+        return producto && producto.activo !== false;
+    }
+
     function actualizar(id, cambios) {
         var lista = leer();
         for (var i = 0; i < lista.length; i++) {
@@ -137,7 +141,7 @@
         titulo.textContent = producto.titulo;
 
         var descripcion = document.createElement('p');
-        descripcion.className = 'card-text';
+        descripcion.className = 'card-text card-descripcion';
         descripcion.textContent = producto.descripcion || '';
 
         var precio = document.createElement('p');
@@ -193,6 +197,9 @@
         }
 
         for (var j = 0; j < lista.length; j++) {
+            if (!esActivo(lista[j])) {
+                continue;
+            }
             var contenedor = document.querySelector('[data-categoria="' + lista[j].categoria + '"]');
             if (contenedor) {
                 contenedor.appendChild(crearTarjeta(lista[j]));
@@ -216,6 +223,7 @@
         actualizar: actualizar,
         eliminar: eliminar,
         buscar: buscar,
+        esActivo: esActivo,
         renderizarCatalogo: renderizarCatalogo,
         formatearPrecio: formatearPrecio
     };

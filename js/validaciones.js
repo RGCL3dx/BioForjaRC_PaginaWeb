@@ -73,8 +73,11 @@
         if (campo.hasAttribute('required') && !valor) {
             return 'El teléfono es obligatorio para avanzar.';
         }
-        if (valor && !/^\+?[0-9 ]{8,12}$/.test(valor)) {
-            return 'Ingresa un teléfono válido (ej: +56 9 1234 5678).';
+        if (valor) {
+            var soloDigitos = valor.replace(/[\s-]/g, '');
+            if (!/^\+?\d{8,12}$/.test(soloDigitos)) {
+                return 'Ingresa un teléfono válido (ej: +56 9 1234 5678).';
+            }
         }
         return '';
     }

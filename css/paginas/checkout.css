@@ -41,3 +41,50 @@ main section:nth-of-type(3) h2::after {
     max-width: 780px;
     margin: 0 auto;
 }
+
+/* Los fieldsets nunca se desbordan del formulario */
+.formulario-checkout fieldset {
+    min-width: 0;
+}
+
+.formulario-checkout .form-label,
+.formulario-checkout .form-control,
+.formulario-checkout .form-select {
+    width: 100%;
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+    .tabla-checkout {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .formulario-checkout {
+        padding: 20px 16px;
+    }
+
+    .formulario-checkout .fieldset-marca {
+        padding: 14px 14px;
+        margin-bottom: 18px;
+    }
+
+    .formulario-checkout .fieldset-marca legend {
+        font-size: 1rem;
+    }
+
+    .tabla-checkout {
+        font-size: 0.88rem;
+    }
+
+    .tabla-checkout tfoot tr:last-child th {
+        font-size: 1.1rem;
+    }
+
+    .formulario-checkout .btn-lg {
+        width: 100%;
+    }
+}

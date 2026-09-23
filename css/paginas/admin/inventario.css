@@ -13,5 +13,33 @@
 }
 
 .fila-actual {
-    background-color: var(--color-claro) !important;
+    background-color: var(--color-gris-claro) !important;
+}
+
+/* Botón "Agregar producto" en el encabezado de la tarjeta */
+.boton-agregar-producto {
+    flex-shrink: 0;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+    .campo-precio,
+    .campo-stock {
+        width: 90px;
+    }
+}
+
+@media (max-width: 576px) {
+    .boton-agregar-producto {
+        width: 100%;
+    }
+
+    .campo-precio,
+    .campo-stock {
+        width: 80px;
+        font-size: 0.9rem;
+    }
 }

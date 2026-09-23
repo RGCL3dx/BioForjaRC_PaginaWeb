@@ -83,6 +83,18 @@ main section:nth-of-type(2) article a[data-eliminar]:hover {
     margin-top: 24px;
 }
 
+@media (max-width: 768px) {
+    main section:nth-of-type(2) article {
+        grid-template-columns: 96px 1fr;
+        gap: 14px;
+    }
+
+    main section:nth-of-type(2) article img {
+        width: 96px;
+        height: 96px;
+    }
+}
+
 @media (max-width: 640px) {
     main section:nth-of-type(2) article {
         grid-template-columns: 1fr;
@@ -95,5 +107,9 @@ main section:nth-of-type(2) article a[data-eliminar]:hover {
 
     main section:nth-of-type(2) article a[data-eliminar] {
         justify-self: center;
+    }
+
+    #tabla-carrito {
+        min-width: 480px;
     }
 }

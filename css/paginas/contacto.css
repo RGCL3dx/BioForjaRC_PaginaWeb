@@ -5,3 +5,20 @@
 .tarjeta-datos-contacto {
     border-top: 4px solid var(--color-acento);
 }
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 576px) {
+    main form .btn {
+        width: 100%;
+    }
+
+    main form textarea {
+        min-height: 120px;
+    }
+
+    .enlace-marca {
+        word-break: break-all;
+    }
+}

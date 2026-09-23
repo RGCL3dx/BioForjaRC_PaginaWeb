@@ -19,3 +19,27 @@
 .tarjeta-direccion {
     padding: 12px;
 }
+
+/* Correos/datos largos no rompen la ficha */
+.datos-cuenta dd {
+    word-break: break-word;
+}
+
+/* Historial con scroll horizontal en móvil */
+#tabla-historial {
+    min-width: 540px;
+    margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 576px) {
+    .datos-cuenta dt {
+        font-size: 0.85rem;
+    }
+
+    .datos-cuenta dd {
+        font-size: 0.95rem;
+    }
+}

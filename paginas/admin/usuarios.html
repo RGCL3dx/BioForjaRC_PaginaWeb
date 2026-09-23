@@ -81,11 +81,19 @@
             </div>
         </section>
 
-        <section class="py-4" id="seccion-editar-usuario">
-            <div class="container">
-                <div class="card card-formulario p-4 p-md-5">
-                    <h2 class="h5 fw-bold mb-3"><i class="bi bi-pencil-square me-2 pie-icono text-marca"></i>Editar usuario</h2>
+    </main>
 
+    <div class="modal fade" id="modal-editar-usuario" tabindex="-1" aria-labelledby="titulo-modal-usuario" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="avatar-usuario" id="avatar-usuario" aria-hidden="true">?</span>
+                        <h2 class="modal-title h5 fw-bold mb-0" id="titulo-modal-usuario">Editar usuario</h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
                     <form id="form-editar-usuario" action="#" method="post">
                         <input type="hidden" id="edit-id" name="edit-id">
 
@@ -133,9 +141,8 @@
                     </form>
                 </div>
             </div>
-        </section>
-
-    </main>
+        </div>
+    </div>
 
     <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
         <div class="container">

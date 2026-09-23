@@ -3,10 +3,54 @@
    ========================================================= */
 
 .fila-pedido:hover {
-    background-color: var(--color-claro);
+    background-color: var(--color-gris-claro);
     cursor: pointer;
 }
 
 .select-estado-pedido {
     min-width: 170px;
+    max-width: 100%;
+}
+
+/* Fila de cambio de estado (inline-flex desde admin.js): permitir salto de línea */
+#detalle-pedido p {
+    flex-wrap: wrap;
+}
+
+#detalle-pedido h3 {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+}
+
+#detalle-pedido ul {
+    padding-left: 1.2rem;
+    margin-bottom: 12px;
+}
+
+#detalle-pedido li {
+    margin-bottom: 4px;
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+    .select-estado-pedido {
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 576px) {
+    #detalle-pedido {
+        padding: 20px 16px;
+    }
+
+    #detalle-pedido p {
+        font-size: 0.95rem;
+    }
+
+    #detalle-pedido select,
+    #detalle-pedido button {
+        flex: 1 1 auto;
+    }
 }

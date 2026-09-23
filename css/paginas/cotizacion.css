@@ -5,3 +5,22 @@
 .card-cotizacion {
     border-top: 4px solid var(--color-acento);
 }
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+    .card-formulario .form-label {
+        margin-bottom: 6px;
+    }
+}
+
+@media (max-width: 576px) {
+    main form .d-flex.flex-wrap .btn {
+        width: 100%;
+    }
+
+    main form textarea {
+        min-height: 120px;
+    }
+}

@@ -19,3 +19,29 @@
 .tarjeta-categoria:hover .card-img-top {
     transform: scale(1.06);
 }
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+    .hero-contenido {
+        padding: 28px 22px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-contenido {
+        padding: 22px 16px;
+        backdrop-filter: none;
+    }
+
+    .hero-contenido .btn {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+    }
+
+    .tarjeta-categoria .card-body h3 {
+        font-size: 1.15rem;
+    }
+}

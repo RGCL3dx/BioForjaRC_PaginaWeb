@@ -48,11 +48,58 @@
             </div>
         </section>
 
-        <section class="py-4">
+        <section class="py-4" id="seccion-productos">
             <div class="container">
-                <div class="card card-formulario p-4 p-md-5">
-                    <h2 class="h5 fw-bold mb-3"><i class="bi bi-plus-circle me-2 pie-icono text-marca"></i>Agregar producto</h2>
+                <div class="card card-formulario p-4">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+                        <h2 class="h5 fw-bold mb-0"><i class="bi bi-cube me-2 pie-icono text-marca"></i>Productos registrados</h2>
+                        <button type="button" class="btn btn-acento rounded-pill px-4 boton-agregar-producto"
+                            data-bs-toggle="modal" data-bs-target="#modal-agregar-producto">
+                            <i class="bi bi-plus-circle me-1"></i>Agregar producto
+                        </button>
+                    </div>
 
+                    <div class="mb-3">
+                        <label class="form-label visually-hidden" for="buscar-producto">Buscar producto</label>
+                        <input type="search" class="form-control" id="buscar-producto" placeholder="Buscar por nombre de producto...">
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle tabla-marca tabla-admin" id="tabla-inventario">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Categoría</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Stock</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7">Cargando inventario...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="modal fade" id="modal-agregar-producto" tabindex="-1" aria-labelledby="titulo-modal-agregar" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-agregar">
+                        <i class="bi bi-plus-circle me-2 text-marca"></i>Agregar producto
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
                     <form id="form-agregar-producto" action="#" method="post">
                         <div class="row g-3">
 
@@ -101,45 +148,8 @@
                     </form>
                 </div>
             </div>
-        </section>
-
-        <section class="py-4">
-            <div class="container">
-                <div class="card card-formulario p-4">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-                        <h2 class="h5 fw-bold mb-0"><i class="bi bi-cube me-2 pie-icono text-marca"></i>Productos registrados</h2>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label visually-hidden" for="buscar-producto">Buscar producto</label>
-                        <input type="search" class="form-control" id="buscar-producto" placeholder="Buscar por nombre de producto...">
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle tabla-marca tabla-admin" id="tabla-inventario">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Producto</th>
-                                    <th scope="col">Categoría</th>
-                                    <th scope="col">Precio</th>
-                                    <th scope="col">Stock</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="7">Cargando inventario...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
+        </div>
+    </div>
 
     <footer class="bg-marca text-light pt-5 pb-3 pie-pagina">
         <div class="container">

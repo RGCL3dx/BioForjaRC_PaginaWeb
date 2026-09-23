@@ -13,3 +13,9 @@
         font-size: 0.95rem;
     }
 }
+
+@media (max-width: 576px) {
+    .card-formulario .btn {
+        width: 100%;
+    }
+}

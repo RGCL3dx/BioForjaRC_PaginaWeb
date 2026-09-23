@@ -154,6 +154,12 @@
     function agregarAlCarrito(producto) {
         var carrito = leerCarrito();
         var catalogo = stockProducto(producto);
+
+        if (catalogo && catalogo.activo === false) {
+            mostrarNotificacion(producto.titulo + ' está desactivado del catálogo y no se puede agregar.');
+            return;
+        }
+
         var stock = catalogo ? (parseInt(catalogo.stock, 10) || 0) : Infinity;
 
         if (stock <= 0) {
@@ -310,7 +316,11 @@
         var cambio = false;
         for (var i = 0; i < carrito.length; i++) {
             var catalogo = stockProducto(carrito[i]);
-            if (catalogo) {
+            if (catalogo && catalogo.activo === false) {
+                carrito.splice(i, 1);
+                i--;
+                cambio = true;
+            } else if (catalogo) {
                 var stock = parseInt(catalogo.stock, 10) || 0;
                 carrito[i].maxStock = stock;
                 var cantidad = parseInt(carrito[i].cantidad, 10) || 0;
@@ -587,19 +597,29 @@
                     var bloqueados = [];
                     for (var b = 0; b < carrito.length; b++) {
                         var catalogo = stockProducto(carrito[b]);
+                        if (catalogo && catalogo.activo === false) {
+                            bloqueados.push({ titulo: carrito[b].titulo, stock: 0, inactivo: true });
+                            continue;
+                        }
                         if (catalogo && (parseInt(catalogo.stock, 10) || 0) < parseInt(carrito[b].cantidad, 10)) {
                             bloqueados.push({ titulo: carrito[b].titulo, stock: parseInt(catalogo.stock, 10) || 0 });
                         }
                     }
                     if (bloqueados.length) {
                         evento.preventDefault();
-                        var mensaje = 'No hay stock suficiente para completar la compra:\n';
+                        var mensaje = 'No es posible completar la compra:\n';
                         for (var m = 0; m < bloqueados.length; m++) {
-                            mensaje += '- ' + bloqueados[m].titulo + ' (quedan ' + bloqueados[m].stock + ' unidades)\n';
+                            if (bloqueados[m].inactivo) {
+                                mensaje += '- ' + bloqueados[m].titulo + ' (producto desactivado del catálogo)\n';
+                            } else {
+                                mensaje += '- ' + bloqueados[m].titulo + ' (quedan ' + bloqueados[m].stock + ' unidades)\n';
+                            }
                         }
                         alert(mensaje);
                         return;
                     }
+
+                    evento.preventDefault();
 
                     var orden = construirComprobante();
 
@@ -614,6 +634,7 @@
                     alert('¡Compra confirmada!\nN° de orden: ' + orden.orden + '\n\n' + orden.detalle +
                         '\n\nTotal: ' + formatearPrecio(orden.total) +
                         '\n\nGracias por reciclar con BioForjaRC.');
+                    window.location.href = 'mi-cuenta.html#historial-compras';
                 });
             }
         }

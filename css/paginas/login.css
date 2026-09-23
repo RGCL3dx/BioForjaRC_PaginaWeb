@@ -8,6 +8,6 @@
 }
 
 .aviso-demo {
-    background-color: var(--color-claro);
-    border: 1px dashed var(--color-marca-outline);
+    background-color: var(--color-gris-claro);
+    border: 1px dashed var(--color-primario);
 }
