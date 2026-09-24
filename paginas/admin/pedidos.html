@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../css/base/global.css">
     <link rel="stylesheet" href="../../css/base/estructura.css">
     <link rel="stylesheet" href="../../css/paginas/admin/pedidos.css">
+    <link rel="stylesheet" href="../../css/paginas/boleta.css">
 </head>
 <body>
 
@@ -91,6 +92,27 @@
                     <div id="detalle-pedido">
                         <p class="mb-0">Selecciona un pedido para ver su detalle.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-boleta" tabindex="-1" aria-labelledby="titulo-modal-boleta" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-boleta">
+                        <i class="bi bi-receipt-cutoff me-2 text-marca"></i>Boleta de venta
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="contenido-boleta">
+                        <p class="mb-0">Selecciona un pedido para ver su boleta.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-acento rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

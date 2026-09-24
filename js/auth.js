@@ -82,6 +82,19 @@
         return null;
     }
 
+    /* Une nombre y apellido para mostrarlos como un solo campo.
+       Es compatible con registros antiguos que solo guardan "nombre". */
+    function nombreCompleto(datos) {
+        if (!datos) {
+            return '';
+        }
+        var completo = String(datos.nombre || '').trim();
+        if (datos.apellido) {
+            completo = (completo + ' ' + String(datos.apellido).trim()).trim();
+        }
+        return completo;
+    }
+
     /* -----------------------------------------------------
         3. Cuentas de demostración
        ----------------------------------------------------- */
@@ -92,6 +105,7 @@
                 {
                     id: 1,
                     nombre: 'Administrador',
+                    apellido: '',
                     rut: '11.111.111-1',
                     correo: 'admin@bioforjarc.cl',
                     telefono: '+56 9 0000 0000',
@@ -102,7 +116,8 @@
                 },
                 {
                     id: 2,
-                    nombre: 'Hermenegildo González',
+                    nombre: 'Hermenegildo',
+                    apellido: 'González',
                     rut: '12.345.678-9',
                     correo: 'hermenegildo.gonzalez@correo.cl',
                     telefono: '+56 9 1234 5678',
@@ -120,6 +135,19 @@
         var cambios = false;
         for (var i = 0; i < usuarios.length; i++) {
             var u = usuarios[i];
+
+            // Compatibilidad: separa el "nombre completo" guardado en nombre + apellido
+            if (typeof u.apellido === 'undefined') {
+                var partesNombre = String(u.nombre || '').trim().split(/\s+/);
+                if (partesNombre.length > 1) {
+                    u.apellido = partesNombre.pop();
+                    u.nombre = partesNombre.join(' ');
+                } else {
+                    u.apellido = '';
+                }
+                cambios = true;
+            }
+
             if (u.rol === 'administrador') {
                 if (u.nombre !== 'Administrador' || String(u.correo).toLowerCase() !== 'admin@bioforjarc.cl') {
                     u.nombre = 'Administrador';
@@ -127,7 +155,8 @@
                     cambios = true;
                 }
             } else if (u.rol === 'cliente' && String(u.correo).toLowerCase() === 'juan@correo.cl') {
-                u.nombre = 'Hermenegildo González';
+                u.nombre = 'Hermenegildo';
+                u.apellido = 'González';
                 u.correo = 'hermenegildo.gonzalez@correo.cl';
                 cambios = true;
             }
@@ -309,7 +338,7 @@
         saludo.className = 'saludo-usuario';
         saludo.appendChild(document.createTextNode('Hola, '));
         var fuerte = document.createElement('strong');
-        fuerte.textContent = usuario.nombre;
+        fuerte.textContent = nombreCompleto(usuario);
         saludo.appendChild(fuerte);
         ingresar.parentNode.parentNode.insertBefore(saludo, ingresar.parentNode);
 
@@ -434,6 +463,7 @@
             var enlace = document.createElement('a');
             enlace.href = '#';
             enlace.textContent = 'Ver boleta';
+            enlace.setAttribute('data-boleta', pedido.id);
             celdaBoleta.appendChild(enlace);
             fila.appendChild(celdaBoleta);
 
@@ -444,11 +474,11 @@
     function rellenarMiCuenta(usuario) {
         var saludo = document.getElementById('saludo-cuenta');
         if (saludo) {
-            saludo.textContent = 'Hola, ' + usuario.nombre + '. Estos son tus datos y el historial de tus compras.';
+            saludo.textContent = 'Hola, ' + nombreCompleto(usuario) + '. Estos son tus datos y el historial de tus compras.';
         }
 
         var campos = {
-            'cuenta-nombre': usuario.nombre,
+            'cuenta-nombre': nombreCompleto(usuario),
             'cuenta-rut': usuario.rut,
             'cuenta-correo': usuario.correo,
             'cuenta-telefono': usuario.telefono || '—'
@@ -538,6 +568,9 @@
             var nuevo = {
                 id: idMayor + 1,
                 nombre: (form.querySelector('[name="nombre"]').value || '').trim(),
+                apellido: form.querySelector('[name="apellido"]')
+                    ? (form.querySelector('[name="apellido"]').value || '').trim()
+                    : '',
                 rut: (form.querySelector('[name="rut"]').value || '').trim(),
                 correo: correo,
                 telefono: (form.querySelector('[name="telefono"]').value || '').trim(),
@@ -587,11 +620,191 @@
     }
 
     /* -----------------------------------------------------
+        10.1 Boletas de compra / venta
+       ----------------------------------------------------- */
+
+    var DESPACHO_BOLETA = {
+        estandar: 'Envío estándar',
+        express: 'Envío express',
+        retiro: 'Retiro en tienda'
+    };
+
+    var PAGO_BOLETA = {
+        tarjeta: 'Tarjeta de crédito o débito',
+        transferencia: 'Transferencia bancaria'
+    };
+
+    function buscarPedido(id) {
+        var pedidos = leerPedidos();
+        for (var i = 0; i < pedidos.length; i++) {
+            if (String(pedidos[i].id) === String(id)) {
+                return pedidos[i];
+            }
+        }
+        return null;
+    }
+
+    function datoBoleta(contenedor, etiqueta, valor) {
+        var fila = document.createElement('p');
+        fila.className = 'boleta-dato';
+        var rotulo = document.createElement('span');
+        rotulo.textContent = etiqueta + ': ';
+        var contenido = document.createElement('strong');
+        contenido.textContent = valor || '—';
+        fila.appendChild(rotulo);
+        fila.appendChild(contenido);
+        contenedor.appendChild(fila);
+    }
+
+    function celdaBoleta(fila, texto) {
+        var celda = document.createElement('td');
+        celda.textContent = texto;
+        fila.appendChild(celda);
+    }
+
+    function lineaBoleta(contenedor, etiqueta, valor, fuerte) {
+        var fila = document.createElement('p');
+        fila.className = 'boleta-linea' + (fuerte ? ' boleta-linea-total' : '');
+        var rotulo = document.createElement('span');
+        rotulo.textContent = etiqueta;
+        var monto = document.createElement(fuerte ? 'strong' : 'span');
+        monto.textContent = valor;
+        fila.appendChild(rotulo);
+        fila.appendChild(monto);
+        contenedor.appendChild(fila);
+    }
+
+    function renderBoleta(pedido) {
+        var contenedor = document.getElementById('contenido-boleta');
+        if (!contenedor || !pedido) {
+            return false;
+        }
+        contenedor.innerHTML = '';
+        contenedor.className = 'boleta';
+
+        var cabecera = document.createElement('div');
+        cabecera.className = 'boleta-cabecera';
+
+        var marca = document.createElement('p');
+        marca.className = 'boleta-marca';
+        marca.appendChild(document.createTextNode('BioForja'));
+        var marcaFuerte = document.createElement('strong');
+        marcaFuerte.textContent = 'RC';
+        marca.appendChild(marcaFuerte);
+        cabecera.appendChild(marca);
+
+        var titulo = document.createElement('p');
+        titulo.className = 'boleta-titulo';
+        titulo.textContent = 'Boleta de compra';
+        cabecera.appendChild(titulo);
+
+        var orden = document.createElement('p');
+        orden.className = 'boleta-orden';
+        orden.textContent = 'N° ' + (pedido.orden || '—');
+        cabecera.appendChild(orden);
+
+        contenedor.appendChild(cabecera);
+
+        var datos = document.createElement('div');
+        datos.className = 'boleta-datos';
+        datoBoleta(datos, 'Fecha', pedido.fecha);
+        datoBoleta(datos, 'Cliente', nombreCompleto(pedido) || pedido.correo);
+        datoBoleta(datos, 'Correo', pedido.correo);
+        datoBoleta(datos, 'Despacho', DESPACHO_BOLETA[pedido.despacho] || pedido.despacho);
+        datoBoleta(datos, 'Pago', PAGO_BOLETA[pedido.pago] || pedido.pago);
+        datoBoleta(datos, 'Estado', pedido.estado);
+        contenedor.appendChild(datos);
+
+        var tabla = document.createElement('table');
+        tabla.className = 'table tabla-marca boleta-tabla';
+
+        var cabeceraTabla = document.createElement('thead');
+        var filaTitulos = document.createElement('tr');
+        ['Producto', 'Cantidad', 'P. unitario', 'Subtotal'].forEach(function (texto) {
+            var celda = document.createElement('th');
+            celda.scope = 'col';
+            celda.textContent = texto;
+            filaTitulos.appendChild(celda);
+        });
+        cabeceraTabla.appendChild(filaTitulos);
+        tabla.appendChild(cabeceraTabla);
+
+        var cuerpo = document.createElement('tbody');
+        var items = pedido.items || [];
+        for (var i = 0; i < items.length; i++) {
+            var fila = document.createElement('tr');
+            celdaBoleta(fila, items[i].titulo);
+            celdaBoleta(fila, String(items[i].cantidad));
+            celdaBoleta(fila, formatearPrecio(items[i].precio));
+            celdaBoleta(fila, formatearPrecio(items[i].subtotal));
+            cuerpo.appendChild(fila);
+        }
+        if (!items.length && pedido.detalle) {
+            var filaDetalle = document.createElement('tr');
+            var celdaDetalle = document.createElement('td');
+            celdaDetalle.colSpan = 4;
+            celdaDetalle.textContent = pedido.detalle;
+            filaDetalle.appendChild(celdaDetalle);
+            cuerpo.appendChild(filaDetalle);
+        }
+        tabla.appendChild(cuerpo);
+
+        var contenedorTabla = document.createElement('div');
+        contenedorTabla.className = 'table-responsive';
+        contenedorTabla.appendChild(tabla);
+        contenedor.appendChild(contenedorTabla);
+
+        var totales = document.createElement('div');
+        totales.className = 'boleta-totales';
+        lineaBoleta(totales, 'Subtotal productos', formatearPrecio(pedido.subtotal));
+        lineaBoleta(totales, 'Costo de envío', formatearPrecio(pedido.costoEnvio));
+        lineaBoleta(totales, 'Total a pagar', formatearPrecio(pedido.total), true);
+        contenedor.appendChild(totales);
+
+        var pie = document.createElement('p');
+        pie.className = 'boleta-pie';
+        pie.textContent = 'Gracias por reciclar con BioForjaRC.';
+        contenedor.appendChild(pie);
+
+        return true;
+    }
+
+    function mostrarBoleta(id) {
+        var pedido = buscarPedido(id);
+        var modal = document.getElementById('modal-boleta');
+        if (!pedido || !modal || !renderBoleta(pedido)) {
+            return false;
+        }
+        if (window.bootstrap) {
+            window.bootstrap.Modal.getOrCreateInstance(modal).show();
+        } else {
+            modal.classList.add('show');
+            modal.style.display = 'block';
+        }
+        return true;
+    }
+
+    function enlazarBoletas() {
+        document.addEventListener('click', function (evento) {
+            if (!evento.target || !evento.target.closest) {
+                return;
+            }
+
+            var disparador = evento.target.closest('[data-boleta]');
+            if (disparador) {
+                evento.preventDefault();
+                mostrarBoleta(disparador.getAttribute('data-boleta'));
+            }
+        });
+    }
+
+    /* -----------------------------------------------------
         11. Inicialización
        ----------------------------------------------------- */
 
     function inicializar() {
         sembrarUsuarios();
+        enlazarBoletas();
 
         if (RUTA_ADMIN) {
             protegerAdmin();
@@ -630,6 +843,9 @@
         estaLogueado: estaLogueado,
         esAdmin: esAdmin,
         usuarioActual: usuarioActual,
+        nombreCompleto: nombreCompleto,
+        buscarPedido: buscarPedido,
+        mostrarBoleta: mostrarBoleta,
         guardarPedido: guardarPedido,
         pedidosDe: pedidosDe,
         leerPedidos: leerPedidos,

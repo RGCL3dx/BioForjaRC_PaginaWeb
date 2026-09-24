@@ -53,6 +53,24 @@
                 <div class="card card-formulario p-4">
                     <h2 class="h5 fw-bold mb-3"><i class="bi bi-envelope-paper me-2 pie-icono text-marca"></i>Listado de solicitudes</h2>
 
+                    <div class="row g-3 mb-3 filtros-cotizaciones">
+                        <div class="col-md-4">
+                            <label class="form-label" for="buscar-cotizacion">Buscar por nombre</label>
+                            <input type="search" class="form-control" id="buscar-cotizacion" placeholder="Ej: Hermenegildo...">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="cotizacion-desde">Fecha desde</label>
+                            <input type="date" class="form-control" id="cotizacion-desde">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="cotizacion-hasta">Fecha hasta</label>
+                            <input type="date" class="form-control" id="cotizacion-hasta">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-marca-outline rounded-pill w-100" id="limpiar-filtros-cotizacion">Limpiar</button>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-hover align-middle tabla-marca tabla-admin" id="tabla-cotizaciones">
                             <thead>

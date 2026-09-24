@@ -355,6 +355,7 @@
 
         renderizarTabla(carrito);
         ocultarSiVacio(carrito);
+        actualizarResumenFlotante();
     }
 
     function manejarCambioCantidad(evento) {
@@ -411,6 +412,7 @@
         }
         renderizarTabla(carrito);
         actualizarBadge();
+        actualizarResumenFlotante();
     }
 
     function manejarEliminar(evento) {
@@ -474,6 +476,173 @@
             '<tr><th colspan="2">Subtotal productos</th><th>' + formatearPrecio(subtotalProductos) + '</th></tr>' +
             '<tr><th colspan="2">Costo de envío</th><th>' + formatearPrecio(costoEnvio) + '</th></tr>' +
             '<tr><th colspan="2">Total a pagar</th><th>' + formatearPrecio(subtotalProductos + costoEnvio) + '</th></tr>';
+
+        actualizarResumenFlotante();
+    }
+
+    /* -----------------------------------------------------
+       Resumen flotante (carrito y checkout)
+       Barra fija al pie con el detalle rápido de ítems y total
+       ----------------------------------------------------- */
+    function esCheckout() {
+        return !!document.querySelector('.tabla-checkout');
+    }
+
+    function crearResumenFlotante() {
+        if (document.getElementById('resumen-flotante')) {
+            return;
+        }
+
+        var barra = document.createElement('aside');
+        barra.className = 'resumen-flotante';
+        barra.id = 'resumen-flotante';
+        barra.setAttribute('aria-label', 'Resumen rápido de la compra');
+
+        var detalle = document.createElement('div');
+        detalle.className = 'resumen-flotante-detalle';
+        detalle.id = 'resumen-flotante-detalle';
+
+        var lista = document.createElement('ul');
+        lista.className = 'resumen-flotante-items';
+        lista.id = 'resumen-flotante-items';
+        detalle.appendChild(lista);
+
+        var pieBarra = document.createElement('div');
+        pieBarra.className = 'resumen-flotante-pie';
+
+        var alternar = document.createElement('button');
+        alternar.type = 'button';
+        alternar.className = 'resumen-flotante-toggle';
+        alternar.id = 'resumen-flotante-toggle';
+        alternar.setAttribute('aria-expanded', 'false');
+        alternar.setAttribute('aria-controls', 'resumen-flotante-detalle');
+        alternar.textContent = 'Ver detalle';
+
+        var totales = document.createElement('div');
+        totales.className = 'resumen-flotante-totales';
+        totales.id = 'resumen-flotante-totales';
+
+        var accion = document.createElement(esCheckout() ? 'button' : 'a');
+        accion.className = 'btn btn-acento rounded-pill px-4 resumen-flotante-accion';
+        accion.id = 'resumen-flotante-accion';
+        if (esCheckout()) {
+            accion.type = 'button';
+            accion.textContent = 'Confirmar compra';
+        } else {
+            accion.href = 'checkout.html';
+            accion.textContent = 'Continuar compra';
+        }
+
+        alternar.addEventListener('click', function () {
+            var abierto = barra.classList.toggle('resumen-flotante-expandido');
+            detalle.hidden = !abierto;
+            alternar.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+            alternar.textContent = abierto ? 'Ocultar detalle' : 'Ver detalle';
+        });
+
+        if (esCheckout()) {
+            accion.addEventListener('click', function () {
+                var form = document.querySelector('.formulario-checkout');
+                if (!form) {
+                    return;
+                }
+                if (typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                } else {
+                    var boton = form.querySelector('button[type="submit"]');
+                    if (boton) { boton.click(); }
+                }
+            });
+        }
+
+        pieBarra.appendChild(alternar);
+        pieBarra.appendChild(totales);
+        pieBarra.appendChild(accion);
+
+        barra.appendChild(detalle);
+        barra.appendChild(pieBarra);
+        document.body.appendChild(barra);
+        document.body.classList.add('con-resumen-flotante');
+    }
+
+    function actualizarResumenFlotante() {
+        var barra = document.getElementById('resumen-flotante');
+        if (!barra) {
+            return;
+        }
+
+        var carrito = leerCarrito();
+        if (!carrito.length) {
+            barra.classList.add('resumen-flotante-oculto');
+            return;
+        }
+        barra.classList.remove('resumen-flotante-oculto');
+
+        var lista = document.getElementById('resumen-flotante-items');
+        var totales = document.getElementById('resumen-flotante-totales');
+        var alternar = document.getElementById('resumen-flotante-toggle');
+        if (!lista || !totales || !alternar) {
+            return;
+        }
+
+        lista.innerHTML = '';
+        var subtotal = 0;
+        var unidades = 0;
+
+        for (var i = 0; i < carrito.length; i++) {
+            var producto = carrito[i];
+            var subtotalItem = producto.precio * producto.cantidad;
+            subtotal += subtotalItem;
+            unidades += parseInt(producto.cantidad, 10) || 0;
+
+            var item = document.createElement('li');
+
+            var titulo = document.createElement('span');
+            titulo.className = 'resumen-flotante-item-titulo';
+            titulo.textContent = producto.titulo;
+
+            var cantidad = document.createElement('span');
+            cantidad.className = 'resumen-flotante-item-cantidad';
+            cantidad.textContent = 'x' + producto.cantidad;
+
+            var monto = document.createElement('span');
+            monto.className = 'resumen-flotante-item-monto';
+            monto.textContent = formatearPrecio(subtotalItem);
+
+            item.appendChild(titulo);
+            item.appendChild(cantidad);
+            item.appendChild(monto);
+            lista.appendChild(item);
+        }
+
+        var costoEnvio = 0;
+        if (esCheckout()) {
+            var despachoActivo = document.querySelector('input[name="despacho"]:checked');
+            costoEnvio = despachoActivo ? COSTOS_ENVIO[despachoActivo.value] : COSTOS_ENVIO.estandar;
+        }
+
+        totales.innerHTML = '';
+
+        var cantidadItems = document.createElement('span');
+        cantidadItems.className = 'resumen-flotante-cuenta';
+        cantidadItems.textContent = carrito.length + (carrito.length === 1 ? ' producto' : ' productos') +
+            ' · ' + unidades + (unidades === 1 ? ' unidad' : ' unidades');
+
+        var subtotalTexto = document.createElement('span');
+        subtotalTexto.className = 'resumen-flotante-subtotal';
+        subtotalTexto.textContent = 'Subtotal: ' + formatearPrecio(subtotal);
+
+        var totalTexto = document.createElement('strong');
+        totalTexto.className = 'resumen-flotante-total';
+        totalTexto.textContent = 'Total: ' + formatearPrecio(subtotal + costoEnvio);
+
+        totales.appendChild(cantidadItems);
+        totales.appendChild(subtotalTexto);
+        totales.appendChild(totalTexto);
+
+        alternar.textContent = barra.classList.contains('resumen-flotante-expandido')
+            ? 'Ocultar detalle'
+            : 'Ver detalle (' + carrito.length + (carrito.length === 1 ? ' ítem)' : ' ítems)');
     }
 
     function construirComprobante() {
@@ -500,10 +669,15 @@
         var pagoActivo = document.querySelector('input[name="pago"]:checked');
         var costoEnvio = despachoActivo ? COSTOS_ENVIO[despachoActivo.value] : COSTOS_ENVIO.estandar;
 
+        var campoNombre = document.querySelector('.formulario-checkout [name="nombre"]');
+        var campoApellido = document.querySelector('.formulario-checkout [name="apellido"]');
+
         return {
             orden: numeroOrden,
             detalle: filas.join('\n'),
             items: items,
+            nombre: campoNombre ? (campoNombre.value || '').trim() : '',
+            apellido: campoApellido ? (campoApellido.value || '').trim() : '',
             fecha: new Date().toLocaleDateString('es-CL'),
             subtotal: subtotal,
             costoEnvio: costoEnvio,
@@ -538,6 +712,7 @@
 
             BioForjaAuth.agregarCotizacion({
                 nombre: valor('nombre'),
+                apellido: valor('apellido'),
                 correo: valor('correo'),
                 telefono: valor('telefono'),
                 categoria: valor('categoria'),
@@ -555,6 +730,13 @@
 
     function inicializar() {
         actualizarBadge();
+
+        if (document.querySelector('.productos-carrito') ||
+            document.getElementById('tabla-carrito') ||
+            document.querySelector('.tabla-checkout')) {
+            crearResumenFlotante();
+            actualizarResumenFlotante();
+        }
 
         manejarFormularioCotizacion();
 

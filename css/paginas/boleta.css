@@ -1,0 +1,102 @@
+/* =========================================================
+   BioForjaRC - boleta.css
+   Boleta de compra/venta en ventana flotante
+   Se usa en mi-cuenta.html y admin/pedidos.html (js/auth.js)
+   ========================================================= */
+
+.boleta {
+    color: var(--color-tinta);
+}
+
+.boleta-cabecera {
+    text-align: center;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 2px dashed var(--color-gris-claro);
+}
+
+.boleta-marca {
+    margin: 0;
+    font-family: var(--fuente-principal);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-primario-oscuro);
+}
+
+.boleta-marca strong {
+    color: var(--color-acento-oscuro);
+}
+
+.boleta-titulo {
+    margin: 6px 0 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-gris);
+}
+
+.boleta-orden {
+    margin: 4px 0 0;
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    color: var(--color-tinta);
+}
+
+.boleta-datos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 4px 18px;
+    margin-bottom: 18px;
+}
+
+.boleta-dato {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--color-gris);
+}
+
+.boleta-dato strong {
+    color: var(--color-tinta);
+}
+
+.boleta-tabla {
+    margin-bottom: 18px;
+    font-size: 0.92rem;
+}
+
+.boleta-tabla th:last-child,
+.boleta-tabla td:last-child {
+    text-align: right;
+}
+
+.boleta-totales {
+    max-width: 320px;
+    margin-left: auto;
+    padding-top: 12px;
+    border-top: 2px solid var(--color-gris-claro);
+}
+
+.boleta-linea {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+    color: var(--color-gris);
+}
+
+.boleta-linea-total {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-gris-claro);
+    font-size: 1.2rem;
+    color: var(--color-primario-oscuro);
+}
+
+.boleta-pie {
+    margin: 18px 0 0;
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--color-gris);
+}

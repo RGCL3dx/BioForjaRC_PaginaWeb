@@ -22,6 +22,31 @@
     font-weight: 600;
 }
 
+/* Filtros por nombre y rango de fechas */
+.filtros-inventario .form-label {
+    font-size: 0.85rem;
+}
+
+/* Columna de fecha de registro */
+#tabla-inventario {
+    min-width: 900px;
+}
+
+/* Botón "Editar" que abre la ventana flotante del producto */
+.tabla-admin button[data-editar-producto] {
+    color: var(--color-primario);
+    background-color: transparent;
+    border: 1px solid var(--color-primario);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-editar-producto]:hover {
+    color: #fff;
+    background-color: var(--color-primario);
+}
+
 /* ---------------------------------------------------------
    Responsive
    --------------------------------------------------------- */
@@ -29,6 +54,17 @@
     .campo-precio,
     .campo-stock {
         width: 90px;
+    }
+
+    #tabla-inventario {
+        min-width: 820px;
+    }
+}
+
+@media (max-width: 640px) {
+    .tabla-admin button[data-editar-producto] {
+        padding: 6px 10px;
+        font-size: 0.78rem;
     }
 }
 

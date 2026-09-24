@@ -73,6 +73,9 @@
         if (isNaN(datos.precio) || datos.precio < 0) {
             datos.precio = 0;
         }
+        if (!datos.fechaRegistro) {
+            datos.fechaRegistro = new Date().toISOString();
+        }
         lista.push(datos);
         guardar(lista);
         return datos;

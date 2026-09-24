@@ -77,6 +77,69 @@
         return ETIQUETAS_PAGO[valor] || valor || '—';
     }
 
+    /* Nombre y apellido guardados por separado, mostrados juntos */
+    function nombreDe(datos) {
+        if (window.BioForjaAuth && BioForjaAuth.nombreCompleto) {
+            return BioForjaAuth.nombreCompleto(datos);
+        }
+        return (datos && datos.nombre) || '';
+    }
+
+    function clienteDe(pedido) {
+        return nombreDe(pedido) || (pedido && pedido.correo) || '—';
+    }
+
+    /* Lectura de fechas: acepta ISO (aaaa-mm-dd) y formato local (dd-mm-aaaa) */
+    function parseFecha(cadena) {
+        if (!cadena) { return null; }
+        var texto = String(cadena).trim();
+
+        var iso = texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (iso) {
+            return new Date(parseInt(iso[1], 10), parseInt(iso[2], 10) - 1, parseInt(iso[3], 10));
+        }
+
+        var local = texto.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+        if (local) {
+            return new Date(parseInt(local[3], 10), parseInt(local[2], 10) - 1, parseInt(local[1], 10));
+        }
+
+        var fecha = new Date(texto);
+        return isNaN(fecha.getTime()) ? null : fecha;
+    }
+
+    function fechaCorta(cadena) {
+        var fecha = parseFecha(cadena);
+        if (!fecha) { return '—'; }
+        var dia = ('0' + fecha.getDate()).slice(-2);
+        var mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+        return dia + '-' + mes + '-' + fecha.getFullYear();
+    }
+
+    /* Devuelve true cuando la fecha está dentro del rango elegido.
+       Los registros sin fecha solo se muestran si no hay filtro de fechas. */
+    function dentroDeRango(cadena, desde, hasta) {
+        if (!desde && !hasta) { return true; }
+
+        var fecha = parseFecha(cadena);
+        if (!fecha) { return false; }
+
+        if (desde) {
+            var inicio = parseFecha(desde);
+            if (inicio && fecha.getTime() < inicio.getTime()) { return false; }
+        }
+
+        if (hasta) {
+            var fin = parseFecha(hasta);
+            if (fin) {
+                fin.setHours(23, 59, 59, 999);
+                if (fecha.getTime() > fin.getTime()) { return false; }
+            }
+        }
+
+        return true;
+    }
+
     function esMesActual(fecha) {
         var partes = String(fecha || '').split('-');
         if (partes.length < 3) { return false; }
@@ -196,9 +259,32 @@
        ----------------------------------------------------- */
 
     var filtroInventario = '';
+    var filtroInventarioDesde = '';
+    var filtroInventarioHasta = '';
+
+    /* Los productos antiguos no tienen fecha de registro: se completa una sola vez
+       para que el filtro por rango de fechas pueda aplicarse sobre ellos. */
+    function asegurarFechaRegistro(productos) {
+        var cambio = false;
+        var hoy = new Date().toISOString();
+        for (var i = 0; i < productos.length; i++) {
+            if (!productos[i].fechaRegistro) {
+                productos[i].fechaRegistro = hoy;
+                cambio = true;
+            }
+        }
+        if (cambio) {
+            BioForjaProductos.guardar(productos);
+        }
+    }
+
+    function hayFiltrosInventario() {
+        return !!(filtroInventario || filtroInventarioDesde || filtroInventarioHasta);
+    }
 
     function renderInventario() {
         var products = BioForjaProductos.leer() || [];
+        asegurarFechaRegistro(products);
         var cuerpo = cuerpoDe('tabla-inventario');
         if (!cuerpo) { return; }
         cuerpo.innerHTML = '';
@@ -206,7 +292,9 @@
         var sinonimo = filtroInventario.toLowerCase();
         var visibles = [];
         for (var i = 0; i < products.length; i++) {
-            if (!sinonimo || products[i].titulo.toLowerCase().indexOf(sinonimo) !== -1) {
+            var coincideNombre = !sinonimo || products[i].titulo.toLowerCase().indexOf(sinonimo) !== -1;
+            var coincideFecha = dentroDeRango(products[i].fechaRegistro, filtroInventarioDesde, filtroInventarioHasta);
+            if (coincideNombre && coincideFecha) {
                 visibles.push(products[i]);
             }
         }
@@ -214,8 +302,14 @@
         if (!visibles.length) {
             var fila = document.createElement('tr');
             var celda = document.createElement('td');
-            celda.colSpan = 7;
-            celda.textContent = filtroInventario ? 'Sin coincidencias para tu búsqueda.' : 'No hay productos registrados. Agrega el primero con el botón «Agregar producto».';
+            celda.colSpan = 8;
+            if (hayFiltrosInventario()) {
+                celda.textContent = filtroInventario
+                    ? 'Sin coincidencias para tu búsqueda y el rango de fechas seleccionado.'
+                    : 'No hay productos registrados en el rango de fechas seleccionado.';
+            } else {
+                celda.textContent = 'No hay productos registrados. Agrega el primero con el botón «Agregar producto».';
+            }
             fila.appendChild(celda);
             cuerpo.appendChild(fila);
             return;
@@ -266,6 +360,10 @@
             }
             filaProd.appendChild(celdaEstado);
 
+            var celdaFecha = document.createElement('td');
+            celdaFecha.textContent = fechaCorta(producto.fechaRegistro);
+            filaProd.appendChild(celdaFecha);
+
             var celdaAcciones = document.createElement('td');
             var botonGuardar = document.createElement('button');
             botonGuardar.type = 'button';
@@ -281,6 +379,12 @@
             if (estaActivo) { botonActivar.className = 'peligro'; }
             celdaAcciones.appendChild(botonActivar);
 
+            var botonEditar = document.createElement('button');
+            botonEditar.type = 'button';
+            botonEditar.textContent = 'Editar';
+            botonEditar.setAttribute('data-editar-producto', producto.id);
+            celdaAcciones.appendChild(botonEditar);
+
             filaProd.appendChild(celdaAcciones);
             cuerpo.appendChild(filaProd);
         }
@@ -294,6 +398,38 @@
                 renderInventario();
             });
         }
+
+        var campoDesde = document.getElementById('inventario-desde');
+        var campoHasta = document.getElementById('inventario-hasta');
+
+        if (campoDesde) {
+            campoDesde.addEventListener('change', function () {
+                filtroInventarioDesde = campoDesde.value;
+                renderInventario();
+            });
+        }
+
+        if (campoHasta) {
+            campoHasta.addEventListener('change', function () {
+                filtroInventarioHasta = campoHasta.value;
+                renderInventario();
+            });
+        }
+
+        var limpiar = document.getElementById('limpiar-filtros-inventario');
+        if (limpiar) {
+            limpiar.addEventListener('click', function () {
+                filtroInventario = '';
+                filtroInventarioDesde = '';
+                filtroInventarioHasta = '';
+                if (buscador) { buscador.value = ''; }
+                if (campoDesde) { campoDesde.value = ''; }
+                if (campoHasta) { campoHasta.value = ''; }
+                renderInventario();
+            });
+        }
+
+        enlazarFormularioEdicionProducto();
 
         var form = document.getElementById('form-agregar-producto');
         if (form) {
@@ -353,6 +489,12 @@
         }
 
         document.body.addEventListener('click', function (evento) {
+            var editarProducto = evento.target.closest('[data-editar-producto]');
+            if (editarProducto) {
+                cargarProductoEnModal(parseInt(editarProducto.getAttribute('data-editar-producto'), 10));
+                return;
+            }
+
             var guardar = evento.target.closest('[data-guardar]');
             if (guardar) {
                 var idGuardar = parseInt(guardar.getAttribute('data-guardar'), 10);
@@ -386,6 +528,96 @@
                 renderInventario();
                 notificar(productoActivar.titulo + (nuevoEstado ? ' fue activado.' : ' fue desactivado.'));
             }
+        });
+    }
+
+    /* -----------------------------------------------------
+       Edición completa de producto en ventana flotante
+       ----------------------------------------------------- */
+
+    var IMAGEN_DEFECTO = '../assets/imagenes/SINIMAGEN.png';
+
+    function cargarProductoEnModal(id) {
+        var producto = BioForjaProductos.buscar(id);
+        var form = document.getElementById('form-editar-producto');
+        if (!producto || !form) { return false; }
+
+        form.querySelector('#edit-id-producto').value = producto.id;
+        form.querySelector('[name="edit-nombre"]').value = producto.titulo || '';
+        form.querySelector('[name="edit-categoria"]').value = producto.categoria || '';
+        form.querySelector('[name="edit-descripcion"]').value = producto.descripcion || '';
+        form.querySelector('[name="edit-precio"]').value = producto.precio;
+        form.querySelector('[name="edit-stock"]').value = producto.stock;
+        form.querySelector('[name="edit-estado"]').value = producto.activo === false ? 'desactivado' : 'activo';
+        form.querySelector('[name="edit-imagen"]').value =
+            producto.imagen && producto.imagen !== IMAGEN_DEFECTO ? producto.imagen : '';
+
+        var titulo = document.getElementById('titulo-producto-editar');
+        if (titulo) {
+            titulo.textContent = 'Editar: ' + producto.titulo;
+        }
+
+        if (!mostrarModal('modal-editar-producto')) {
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return true;
+    }
+
+    function enlazarFormularioEdicionProducto() {
+        var form = document.getElementById('form-editar-producto');
+        if (!form) { return; }
+
+        form.addEventListener('submit', function (evento) {
+            evento.preventDefault();
+
+            var id = parseInt(form.querySelector('#edit-id-producto').value, 10);
+            var nombre = (form.querySelector('[name="edit-nombre"]').value || '').trim();
+            var categoria = form.querySelector('[name="edit-categoria"]').value;
+            var descripcion = (form.querySelector('[name="edit-descripcion"]').value || '').trim();
+            var precio = parseFloat(form.querySelector('[name="edit-precio"]').value);
+            var stock = parseInt(form.querySelector('[name="edit-stock"]').value, 10);
+            var estado = form.querySelector('[name="edit-estado"]').value;
+            var imagen = (form.querySelector('[name="edit-imagen"]').value || '').trim();
+
+            if (!nombre) {
+                alert('Debes indicar el nombre del producto.');
+                return;
+            }
+            if (!categoria) {
+                alert('Selecciona una categoría.');
+                return;
+            }
+            if (descripcion.length < 10) {
+                alert('La descripción debe tener al menos 10 caracteres.');
+                return;
+            }
+            if (isNaN(precio) || precio < 0) {
+                alert('Indica un precio válido (mayor o igual a 0).');
+                return;
+            }
+            if (isNaN(stock) || stock < 0) {
+                alert('Indica un stock válido (mayor o igual a 0).');
+                return;
+            }
+
+            var actualizado = BioForjaProductos.actualizar(id, {
+                titulo: nombre,
+                categoria: categoria,
+                descripcion: descripcion,
+                precio: precio,
+                stock: stock,
+                imagen: imagen || IMAGEN_DEFECTO,
+                activo: estado !== 'desactivado'
+            });
+
+            if (!actualizado) {
+                alert('No se encontró el producto a editar.');
+                return;
+            }
+
+            renderInventario();
+            ocultarModal('modal-editar-producto');
+            notificar('Producto actualizado correctamente.');
         });
     }
 
@@ -430,7 +662,7 @@
             }
 
             crearCelda(filaUsuario, String(usuario.id));
-            crearCelda(filaUsuario, usuario.nombre);
+            crearCelda(filaUsuario, nombreDe(usuario) || usuario.nombre);
             crearCelda(filaUsuario, usuario.correo);
             crearCelda(filaUsuario, usuario.rol);
             crearCelda(filaUsuario, usuario.estado);
@@ -521,7 +753,7 @@
 
         var avatar = document.getElementById('avatar-usuario');
         if (avatar) {
-            var partes = String(usuario.nombre || '').trim().split(/\s+/);
+            var partes = String(nombreDe(usuario) || usuario.nombre || '').trim().split(/\s+/);
             var iniciales = (partes[0] ? partes[0].charAt(0) : '?');
             if (partes.length > 1) {
                 iniciales += partes[partes.length - 1].charAt(0);
@@ -531,7 +763,7 @@
 
         var titulo = document.getElementById('titulo-modal-usuario');
         if (titulo) {
-            titulo.textContent = 'Editar: ' + usuario.nombre;
+            titulo.textContent = 'Editar: ' + (nombreDe(usuario) || usuario.nombre);
         }
 
         if (!mostrarModal('modal-editar-usuario')) {
@@ -620,7 +852,7 @@
             var filaPedido = document.createElement('tr');
 
             crearCelda(filaPedido, pedido.orden);
-            crearCelda(filaPedido, pedido.correo || '—');
+            crearCelda(filaPedido, clienteDe(pedido));
             crearCelda(filaPedido, pedido.fecha || '—');
             crearCelda(filaPedido, formatearPrecio(pedido.total));
             crearCelda(filaPedido, pedido.estado || 'En preparación');
@@ -662,7 +894,10 @@
         titulo.textContent = 'Orden N° ' + pedido.orden;
         detalle.appendChild(titulo);
 
-        crearParrafo(detalle, 'Cliente: ' + (pedido.correo || '—'));
+        crearParrafo(detalle, 'Cliente: ' + clienteDe(pedido));
+        if (nombreDe(pedido) && pedido.correo) {
+            crearParrafo(detalle, 'Correo: ' + pedido.correo);
+        }
         crearParrafo(detalle, 'Fecha: ' + (pedido.fecha || '—'));
         crearParrafo(detalle, 'Despacho: ' + etiquetaDespacho(pedido.despacho));
         crearParrafo(detalle, 'Pago: ' + etiquetaPago(pedido.pago));
@@ -713,6 +948,16 @@
         filaEstado.appendChild(select);
         filaEstado.appendChild(boton);
         detalle.appendChild(filaEstado);
+
+        var filaBoleta = document.createElement('p');
+        filaBoleta.className = 'mt-3 mb-0';
+        var botonBoleta = document.createElement('button');
+        botonBoleta.type = 'button';
+        botonBoleta.className = 'btn btn-marca-outline rounded-pill px-4';
+        botonBoleta.innerHTML = '<i class="bi bi-receipt-cutoff me-1"></i>Ver boleta del pedido';
+        botonBoleta.setAttribute('data-boleta', pedido.id);
+        filaBoleta.appendChild(botonBoleta);
+        detalle.appendChild(filaBoleta);
     }
 
     function crearParrafo(contenedor, texto) {
@@ -770,6 +1015,14 @@
         return ETIQUETAS_PLAZO[valor] || valor || '—';
     }
 
+    var filtroCotizacionNombre = '';
+    var filtroCotizacionDesde = '';
+    var filtroCotizacionHasta = '';
+
+    function hayFiltrosCotizacion() {
+        return !!(filtroCotizacionNombre || filtroCotizacionDesde || filtroCotizacionHasta);
+    }
+
     function renderCotizaciones() {
         var cotizaciones = BioForjaAuth.leerCotizaciones() || [];
         var cuerpo = cuerpoDe('tabla-cotizaciones');
@@ -787,23 +1040,48 @@
             return;
         }
 
+        var visibles = [];
         for (var i = cotizaciones.length - 1; i >= 0; i--) {
             var cotizacion = cotizaciones[i];
+            var coincideNombre = !filtroCotizacionNombre ||
+                nombreDe(cotizacion).toLowerCase().indexOf(filtroCotizacionNombre) !== -1;
+            var coincideFecha = dentroDeRango(cotizacion.fechaISO || cotizacion.fecha,
+                filtroCotizacionDesde, filtroCotizacionHasta);
+
+            if (coincideNombre && coincideFecha) {
+                visibles.push(cotizacion);
+            }
+        }
+
+        if (!visibles.length) {
+            var filaVacia = document.createElement('tr');
+            var celdaVacia = document.createElement('td');
+            celdaVacia.colSpan = 8;
+            celdaVacia.textContent = hayFiltrosCotizacion()
+                ? 'Sin coincidencias para el nombre o el rango de fechas seleccionado.'
+                : 'No hay solicitudes de cotización todavía. Cuando un cliente envíe el formulario, aparecerá aquí.';
+            filaVacia.appendChild(celdaVacia);
+            cuerpo.appendChild(filaVacia);
+            vaciarDetalleCotizacion();
+            return;
+        }
+
+        for (var j = 0; j < visibles.length; j++) {
             var filaCot = document.createElement('tr');
 
-            crearCelda(filaCot, '#' + cotizacion.id);
-            crearCelda(filaCot, cotizacion.nombre || '—');
-            crearCelda(filaCot, cotizacion.correo || '—');
-            crearCelda(filaCot, cotizacion.telefono || '—');
-            crearCelda(filaCot, etiquetaCategoriaCotizacion(cotizacion.categoria));
-            crearCelda(filaCot, cotizacion.cantidad || '—');
-            crearCelda(filaCot, cotizacion.fecha || '—');
+            crearCelda(filaCot, '#' + visibles[j].id);
+            crearCelda(filaCot, nombreDe(visibles[j]) || '—');
+            crearCelda(filaCot, visibles[j].correo || '—');
+            crearCelda(filaCot, visibles[j].telefono || '—');
+            crearCelda(filaCot, etiquetaCategoriaCotizacion(visibles[j].categoria));
+            crearCelda(filaCot, visibles[j].cantidad || '—');
+            crearCelda(filaCot, visibles[j].fecha || '—');
 
             var celdaAccion = document.createElement('td');
             var boton = document.createElement('button');
             boton.type = 'button';
             boton.textContent = 'Ver detalle';
-            boton.setAttribute('data-detalle-cotizacion', cotizacion.id);
+            boton.setAttribute('data-detalle-cotizacion', visibles[j].id);
             celdaAccion.appendChild(boton);
             filaCot.appendChild(celdaAccion);
 
@@ -836,7 +1114,7 @@
         titulo.textContent = 'Solicitud N° ' + cotizacion.id;
         detalle.appendChild(titulo);
 
-        crearParrafo(detalle, 'Nombre: ' + (cotizacion.nombre || '—'));
+        crearParrafo(detalle, 'Nombre: ' + (nombreDe(cotizacion) || '—'));
         crearParrafo(detalle, 'Correo: ' + (cotizacion.correo || '—'));
         crearParrafo(detalle, 'Teléfono: ' + (cotizacion.telefono || '—'));
         crearParrafo(detalle, 'Fecha de solicitud: ' + (cotizacion.fecha || '—'));
@@ -855,6 +1133,44 @@
     }
 
     function enlazarCotizaciones() {
+        var buscador = document.getElementById('buscar-cotizacion');
+        var campoDesde = document.getElementById('cotizacion-desde');
+        var campoHasta = document.getElementById('cotizacion-hasta');
+        var limpiar = document.getElementById('limpiar-filtros-cotizacion');
+
+        if (buscador) {
+            buscador.addEventListener('input', function () {
+                filtroCotizacionNombre = buscador.value.trim().toLowerCase();
+                renderCotizaciones();
+            });
+        }
+
+        if (campoDesde) {
+            campoDesde.addEventListener('change', function () {
+                filtroCotizacionDesde = campoDesde.value;
+                renderCotizaciones();
+            });
+        }
+
+        if (campoHasta) {
+            campoHasta.addEventListener('change', function () {
+                filtroCotizacionHasta = campoHasta.value;
+                renderCotizaciones();
+            });
+        }
+
+        if (limpiar) {
+            limpiar.addEventListener('click', function () {
+                filtroCotizacionNombre = '';
+                filtroCotizacionDesde = '';
+                filtroCotizacionHasta = '';
+                if (buscador) { buscador.value = ''; }
+                if (campoDesde) { campoDesde.value = ''; }
+                if (campoHasta) { campoHasta.value = ''; }
+                renderCotizaciones();
+            });
+        }
+
         document.body.addEventListener('click', function (evento) {
             var detalle = evento.target.closest('[data-detalle-cotizacion]');
             if (detalle) {

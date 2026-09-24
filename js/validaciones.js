@@ -2,9 +2,77 @@
     'use strict';
 
 
-    var patronRut = /^\d{1,2}(\.\d{3}){2}-[0-9kK]$/;
+    var patronRut = /^\d{1,2}(\.\d{3}){1,2}-[0-9kK]$/;
     var patronCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     var patronLetras = /^[a-zA-ZáéíóúñÁÉÍÓÚÑüÜ ]+$/;
+
+    /* -----------------------------------------------------
+       Formateo automático de RUT
+       El usuario escribe solo números y guion (12345678-9)
+       y el campo los muestra con puntos (12.345.678-9).
+       ----------------------------------------------------- */
+    function formatearRut(valor) {
+        var texto = String(valor || '');
+        var partes = texto.split('-');
+        var cuerpo = partes[0].replace(/[^0-9]/g, '');
+        var verificador = partes.length > 1
+            ? partes.slice(1).join('').replace(/[^0-9kK]/g, '').slice(0, 1)
+            : '';
+
+        if (!cuerpo && !verificador && partes.length < 2) {
+            return '';
+        }
+
+        var formateado = '';
+        var contador = 0;
+        for (var i = cuerpo.length - 1; i >= 0; i--) {
+            formateado = cuerpo[i] + formateado;
+            contador++;
+            if (contador % 3 === 0 && i > 0) {
+                formateado = '.' + formateado;
+            }
+        }
+
+        if (partes.length > 1 && !verificador) {
+            return formateado + '-';
+        }
+        return verificador ? formateado + '-' + verificador : formateado;
+    }
+
+    function activarFormatoRut(form) {
+        var campos = form.querySelectorAll('input[name="rut"], input[data-rut]');
+        if (!campos.length) {
+            return;
+        }
+
+        var formatear = function (evento) {
+            var campo = evento.target;
+            var posicion = campo.selectionStart;
+            var largoAnterior = campo.value.length;
+            campo.value = formatearRut(campo.value);
+
+            if (document.activeElement === campo && posicion !== null &&
+                typeof campo.setSelectionRange === 'function') {
+                var correccion = campo.value.length - largoAnterior;
+                var destino = Math.max(0, posicion + correccion);
+                try {
+                    campo.setSelectionRange(destino, destino);
+                } catch (error) { /* navegadores que no lo permiten */ }
+            }
+        };
+
+        for (var i = 0; i < campos.length; i++) {
+            campos[i].addEventListener('input', formatear);
+            campos[i].addEventListener('blur', formatear);
+        }
+
+        // Antes de validar el envío, el RUT queda con su formato definitivo
+        form.addEventListener('submit', function () {
+            for (var j = 0; j < campos.length; j++) {
+                campos[j].value = formatearRut(campos[j].value);
+            }
+        });
+    }
 
     function definirError(campo, mensaje) {
         var contenedor = campo.closest('p') || campo.parentNode;
@@ -149,7 +217,7 @@
     function obtenerMensajeError(campo) {
         var nombre = campo.name || campo.id || '';
 
-        if (nombre === 'nombre') return validarNombre(campo);
+        if (nombre === 'nombre' || nombre === 'apellido') return validarNombre(campo);
         if (nombre === 'rut') return validarRut(campo);
         if (nombre === 'correo') return validarCorreo(campo);
         if (nombre === 'telefono') return validarTelefono(campo);
@@ -194,6 +262,8 @@
 
 
     function iniciarValidacion(form) {
+        activarFormatoRut(form);
+
         var campos = form.querySelectorAll('input, select, textarea');
         var campo;
 

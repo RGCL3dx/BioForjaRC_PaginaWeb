@@ -59,9 +59,22 @@
                         </button>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label visually-hidden" for="buscar-producto">Buscar producto</label>
-                        <input type="search" class="form-control" id="buscar-producto" placeholder="Buscar por nombre de producto...">
+                    <div class="row g-3 mb-3 filtros-inventario">
+                        <div class="col-md-4">
+                            <label class="form-label visually-hidden" for="buscar-producto">Buscar producto</label>
+                            <input type="search" class="form-control" id="buscar-producto" placeholder="Buscar por nombre de producto...">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="inventario-desde">Fecha desde</label>
+                            <input type="date" class="form-control" id="inventario-desde">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="inventario-hasta">Fecha hasta</label>
+                            <input type="date" class="form-control" id="inventario-hasta">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-marca-outline rounded-pill w-100" id="limpiar-filtros-inventario">Limpiar</button>
+                        </div>
                     </div>
 
                     <div class="table-responsive">
@@ -74,12 +87,13 @@
                                     <th scope="col">Precio</th>
                                     <th scope="col">Stock</th>
                                     <th scope="col">Estado</th>
+                                    <th scope="col">Registro</th>
                                     <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="7">Cargando inventario...</td>
+                                    <td colspan="8">Cargando inventario...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -144,6 +158,76 @@
                         <div class="d-flex flex-wrap gap-3 mt-2">
                             <button type="submit" class="btn btn-acento rounded-pill px-4">Guardar producto</button>
                             <button type="reset" class="btn btn-marca-outline rounded-pill px-4">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-editar-producto" tabindex="-1" aria-labelledby="titulo-modal-editar" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 fw-bold" id="titulo-modal-editar">
+                        <i class="bi bi-pencil-square me-2 text-marca"></i><span id="titulo-producto-editar">Editar producto</span>
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-editar-producto" action="#" method="post">
+                        <input type="hidden" id="edit-id-producto" name="edit-id-producto">
+                        <div class="row g-3">
+
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label" for="edit-nombre-producto">Nombre del producto *</label>
+                                <input type="text" class="form-control" id="edit-nombre-producto" name="edit-nombre" placeholder="Ej: Macetero clásico 15cm" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="edit-categoria-producto">Categoría *</label>
+                                <select class="form-select" id="edit-categoria-producto" name="edit-categoria" required>
+                                    <option value="">-- Selecciona --</option>
+                                    <option value="maceteros">Maceteros</option>
+                                    <option value="articulados">Animales articulados</option>
+                                    <option value="sensorial">Juguetes sensoriales</option>
+                                    <option value="figuras">Figuras ecológicas</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="edit-descripcion-producto">Descripción *</label>
+                                <textarea class="form-control" id="edit-descripcion-producto" name="edit-descripcion" rows="3" placeholder="Describe el producto, su material y medidas (mínimo 10 caracteres)..." required></textarea>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="edit-precio-producto">Precio ($) *</label>
+                                <input type="number" class="form-control" id="edit-precio-producto" name="edit-precio" min="0" step="any" placeholder="Ej: 8990" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="edit-stock-producto">Stock (unidades) *</label>
+                                <input type="number" class="form-control" id="edit-stock-producto" name="edit-stock" min="0" placeholder="Ej: 10" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="edit-estado-producto">Estado *</label>
+                                <select class="form-select" id="edit-estado-producto" name="edit-estado" required>
+                                    <option value="activo">Activo (visible en la tienda)</option>
+                                    <option value="desactivado">Desactivado (oculto del catálogo)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label" for="edit-imagen-producto">URL de la imagen</label>
+                                <input type="text" class="form-control" id="edit-imagen-producto" name="edit-imagen" placeholder="Opcional. Si queda vacío se usa SINIMAGEN.png">
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3 mt-2">
+                            <button type="submit" class="btn btn-acento rounded-pill px-4">Guardar cambios</button>
+                            <button type="button" class="btn btn-marca-outline rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
                         </div>
                     </form>
                 </div>
