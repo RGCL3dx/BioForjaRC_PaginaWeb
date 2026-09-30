@@ -57,9 +57,15 @@
 
                         <form class="card card-formulario p-4 p-md-5" action="#" method="post">
 
-                            <div class="mb-3">
-                                <label class="form-label" for="nombre">Nombre completo *</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" autocomplete="name" required>
+                            <div class="row g-3 mb-0">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="nombre">Nombre *</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan" autocomplete="given-name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="apellido">Apellido *</label>
+                                    <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ej: Pérez" autocomplete="family-name" required>
+                                </div>
                             </div>
 
                             <div class="mb-3">
