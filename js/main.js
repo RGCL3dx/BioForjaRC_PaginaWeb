@@ -486,13 +486,15 @@
         for (var i = 0; i < carrito.length; i++) {
             var producto = carrito[i];
             var subtotalFila = producto.precio * producto.cantidad;
+            var catalogo = stockProducto(producto);
             subtotal += subtotalFila;
             filas.push(producto.titulo + ' x' + producto.cantidad + ' = ' + formatearPrecio(subtotalFila));
             items.push({
                 titulo: producto.titulo,
                 cantidad: parseInt(producto.cantidad, 10),
                 precio: producto.precio,
-                subtotal: subtotalFila
+                subtotal: subtotalFila,
+                categoria: catalogo ? catalogo.categoria : ''
             });
         }
 

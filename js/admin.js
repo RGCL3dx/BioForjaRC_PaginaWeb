@@ -77,6 +77,44 @@
         return ETIQUETAS_PAGO[valor] || valor || '—';
     }
 
+    function parseFecha(valor) {
+        if (!valor) { return null; }
+        var texto = String(valor).trim();
+        var iso = texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (iso) {
+            return new Date(parseInt(iso[1], 10), parseInt(iso[2], 10) - 1, parseInt(iso[3], 10));
+        }
+        var partes = texto.split(/[\/-]/);
+        if (partes.length >= 3) {
+            var dia = parseInt(partes[0], 10);
+            var mes = parseInt(partes[1], 10);
+            var anio = parseInt(partes[2], 10);
+            if (!isNaN(dia) && !isNaN(mes) && !isNaN(anio)) {
+                return new Date(anio, mes - 1, dia);
+            }
+        }
+        var fecha = new Date(texto);
+        return isNaN(fecha.getTime()) ? null : fecha;
+    }
+
+    function dentroDeRango(valor, desde, hasta) {
+        if (!desde && !hasta) { return true; }
+        var fecha = parseFecha(valor);
+        if (!fecha) { return false; }
+        if (desde) {
+            var limiteInferior = parseFecha(desde);
+            if (limiteInferior && fecha < limiteInferior) { return false; }
+        }
+        if (hasta) {
+            var limiteSuperior = parseFecha(hasta);
+            if (limiteSuperior) {
+                limiteSuperior = new Date(limiteSuperior.getFullYear(), limiteSuperior.getMonth(), limiteSuperior.getDate() + 1);
+                if (fecha >= limiteSuperior) { return false; }
+            }
+        }
+        return true;
+    }
+
     function esMesActual(fecha) {
         var partes = String(fecha || '').split('-');
         if (partes.length < 3) { return false; }
@@ -598,6 +636,38 @@
        Pedidos (admin/pedidos.html)
        ----------------------------------------------------- */
 
+    var filtroPedidoCliente = '';
+    var filtroPedidoCategoria = '';
+    var filtroPedidoEstado = '';
+    var filtroPedidoDesde = '';
+    var filtroPedidoHasta = '';
+
+    function hayFiltrosPedido() {
+        return !!(filtroPedidoCliente || filtroPedidoCategoria || filtroPedidoEstado ||
+            filtroPedidoDesde || filtroPedidoHasta);
+    }
+
+    function categoriasDePedido(pedido, catalogo) {
+        var categorias = [];
+        var items = pedido.items || [];
+        catalogo = catalogo || [];
+        for (var i = 0; i < items.length; i++) {
+            var categoria = items[i].categoria;
+            if (!categoria) {
+                for (var j = 0; j < catalogo.length; j++) {
+                    if (String(catalogo[j].titulo).toLowerCase() === String(items[i].titulo).toLowerCase()) {
+                        categoria = catalogo[j].categoria;
+                        break;
+                    }
+                }
+            }
+            if (categoria && categorias.indexOf(categoria) === -1) {
+                categorias.push(categoria);
+            }
+        }
+        return categorias;
+    }
+
     function renderPedidos() {
         var pedidos = BioForjaAuth.leerPedidos() || [];
         var cuerpo = cuerpoDe('tabla-pedidos');
@@ -615,8 +685,43 @@
             return;
         }
 
-        for (var i = pedidos.length - 1; i >= 0; i--) {
-            var pedido = pedidos[i];
+        var usuarios = BioForjaAuth.leerUsuarios() || [];
+        var catalogo = BioForjaProductos.leer() || [];
+        var visibles = [];
+        for (var f = 0; f < pedidos.length; f++) {
+            var candidato = pedidos[f];
+            var nombreCliente = '';
+            for (var u = 0; u < usuarios.length; u++) {
+                if (String(usuarios[u].correo).toLowerCase() === String(candidato.correo || '').toLowerCase()) {
+                    nombreCliente = usuarios[u].nombre || '';
+                    break;
+                }
+            }
+            var coincideCliente = !filtroPedidoCliente ||
+                String(nombreCliente).toLowerCase().indexOf(filtroPedidoCliente) !== -1 ||
+                String(candidato.correo || '').toLowerCase().indexOf(filtroPedidoCliente) !== -1;
+            var coincideCategoria = !filtroPedidoCategoria ||
+                categoriasDePedido(candidato, catalogo).indexOf(filtroPedidoCategoria) !== -1;
+            var coincideEstado = !filtroPedidoEstado ||
+                (candidato.estado || 'En preparación') === filtroPedidoEstado;
+            var coincideFecha = dentroDeRango(candidato.fechaISO || candidato.fecha, filtroPedidoDesde, filtroPedidoHasta);
+            if (coincideCliente && coincideCategoria && coincideEstado && coincideFecha) {
+                visibles.push(candidato);
+            }
+        }
+
+        if (!visibles.length) {
+            var filaVacia = document.createElement('tr');
+            var celdaVacia = document.createElement('td');
+            celdaVacia.colSpan = 6;
+            celdaVacia.textContent = hayFiltrosPedido() ? 'Sin coincidencias para los filtros aplicados.' : 'No hay pedidos todavía. Cuando un cliente confirme una compra, aparecerá aquí.';
+            filaVacia.appendChild(celdaVacia);
+            cuerpo.appendChild(filaVacia);
+            return;
+        }
+
+        for (var i = visibles.length - 1; i >= 0; i--) {
+            var pedido = visibles[i];
             var filaPedido = document.createElement('tr');
 
             crearCelda(filaPedido, pedido.orden);
@@ -723,6 +828,63 @@
     }
 
     function enlazarPedidos() {
+        var buscadorCliente = document.getElementById('pedido-cliente');
+        if (buscadorCliente) {
+            buscadorCliente.addEventListener('input', function () {
+                filtroPedidoCliente = buscadorCliente.value.trim().toLowerCase();
+                renderPedidos();
+            });
+        }
+
+        var selectorCategoria = document.getElementById('pedido-categoria');
+        if (selectorCategoria) {
+            selectorCategoria.addEventListener('change', function () {
+                filtroPedidoCategoria = selectorCategoria.value;
+                renderPedidos();
+            });
+        }
+
+        var selectorEstado = document.getElementById('pedido-estado');
+        if (selectorEstado) {
+            selectorEstado.addEventListener('change', function () {
+                filtroPedidoEstado = selectorEstado.value;
+                renderPedidos();
+            });
+        }
+
+        var campoDesde = document.getElementById('pedido-desde');
+        if (campoDesde) {
+            campoDesde.addEventListener('change', function () {
+                filtroPedidoDesde = campoDesde.value;
+                renderPedidos();
+            });
+        }
+
+        var campoHasta = document.getElementById('pedido-hasta');
+        if (campoHasta) {
+            campoHasta.addEventListener('change', function () {
+                filtroPedidoHasta = campoHasta.value;
+                renderPedidos();
+            });
+        }
+
+        var botonLimpiar = document.getElementById('limpiar-filtros-pedido');
+        if (botonLimpiar) {
+            botonLimpiar.addEventListener('click', function () {
+                filtroPedidoCliente = '';
+                filtroPedidoCategoria = '';
+                filtroPedidoEstado = '';
+                filtroPedidoDesde = '';
+                filtroPedidoHasta = '';
+                if (buscadorCliente) { buscadorCliente.value = ''; }
+                if (selectorCategoria) { selectorCategoria.value = ''; }
+                if (selectorEstado) { selectorEstado.value = ''; }
+                if (campoDesde) { campoDesde.value = ''; }
+                if (campoHasta) { campoHasta.value = ''; }
+                renderPedidos();
+            });
+        }
+
         document.body.addEventListener('click', function (evento) {
             var detalle = evento.target.closest('[data-detalle]');
             if (detalle) {
@@ -770,6 +932,17 @@
         return ETIQUETAS_PLAZO[valor] || valor || '—';
     }
 
+    var filtroCotizacionNombre = '';
+    var filtroCotizacionCorreo = '';
+    var filtroCotizacionCategoria = '';
+    var filtroCotizacionDesde = '';
+    var filtroCotizacionHasta = '';
+
+    function hayFiltrosCotizacion() {
+        return !!(filtroCotizacionNombre || filtroCotizacionCorreo || filtroCotizacionCategoria ||
+            filtroCotizacionDesde || filtroCotizacionHasta);
+    }
+
     function renderCotizaciones() {
         var cotizaciones = BioForjaAuth.leerCotizaciones() || [];
         var cuerpo = cuerpoDe('tabla-cotizaciones');
@@ -787,8 +960,33 @@
             return;
         }
 
-        for (var i = cotizaciones.length - 1; i >= 0; i--) {
-            var cotizacion = cotizaciones[i];
+        var visibles = [];
+        for (var f = 0; f < cotizaciones.length; f++) {
+            var candidata = cotizaciones[f];
+            var coincideNombre = !filtroCotizacionNombre ||
+                String(candidata.nombre || '').toLowerCase().indexOf(filtroCotizacionNombre) !== -1;
+            var coincideCorreo = !filtroCotizacionCorreo ||
+                String(candidata.correo || '').toLowerCase().indexOf(filtroCotizacionCorreo) !== -1;
+            var coincideCategoria = !filtroCotizacionCategoria || candidata.categoria === filtroCotizacionCategoria;
+            var coincideFecha = dentroDeRango(candidata.fechaISO || candidata.fecha, filtroCotizacionDesde, filtroCotizacionHasta);
+            if (coincideNombre && coincideCorreo && coincideCategoria && coincideFecha) {
+                visibles.push(candidata);
+            }
+        }
+
+        if (!visibles.length) {
+            var filaVacia = document.createElement('tr');
+            var celdaVacia = document.createElement('td');
+            celdaVacia.colSpan = 8;
+            celdaVacia.textContent = hayFiltrosCotizacion() ? 'Sin coincidencias para los filtros aplicados.' : 'No hay solicitudes de cotización todavía. Cuando un cliente envíe el formulario, aparecerá aquí.';
+            filaVacia.appendChild(celdaVacia);
+            cuerpo.appendChild(filaVacia);
+            vaciarDetalleCotizacion();
+            return;
+        }
+
+        for (var i = visibles.length - 1; i >= 0; i--) {
+            var cotizacion = visibles[i];
             var filaCot = document.createElement('tr');
 
             crearCelda(filaCot, '#' + cotizacion.id);
@@ -855,6 +1053,63 @@
     }
 
     function enlazarCotizaciones() {
+        var buscadorNombre = document.getElementById('buscar-cotizacion');
+        if (buscadorNombre) {
+            buscadorNombre.addEventListener('input', function () {
+                filtroCotizacionNombre = buscadorNombre.value.trim().toLowerCase();
+                renderCotizaciones();
+            });
+        }
+
+        var buscadorCorreo = document.getElementById('cotizacion-correo');
+        if (buscadorCorreo) {
+            buscadorCorreo.addEventListener('input', function () {
+                filtroCotizacionCorreo = buscadorCorreo.value.trim().toLowerCase();
+                renderCotizaciones();
+            });
+        }
+
+        var selectorCategoria = document.getElementById('cotizacion-categoria');
+        if (selectorCategoria) {
+            selectorCategoria.addEventListener('change', function () {
+                filtroCotizacionCategoria = selectorCategoria.value;
+                renderCotizaciones();
+            });
+        }
+
+        var campoDesde = document.getElementById('cotizacion-desde');
+        if (campoDesde) {
+            campoDesde.addEventListener('change', function () {
+                filtroCotizacionDesde = campoDesde.value;
+                renderCotizaciones();
+            });
+        }
+
+        var campoHasta = document.getElementById('cotizacion-hasta');
+        if (campoHasta) {
+            campoHasta.addEventListener('change', function () {
+                filtroCotizacionHasta = campoHasta.value;
+                renderCotizaciones();
+            });
+        }
+
+        var botonLimpiar = document.getElementById('limpiar-filtros-cotizacion');
+        if (botonLimpiar) {
+            botonLimpiar.addEventListener('click', function () {
+                filtroCotizacionNombre = '';
+                filtroCotizacionCorreo = '';
+                filtroCotizacionCategoria = '';
+                filtroCotizacionDesde = '';
+                filtroCotizacionHasta = '';
+                if (buscadorNombre) { buscadorNombre.value = ''; }
+                if (buscadorCorreo) { buscadorCorreo.value = ''; }
+                if (selectorCategoria) { selectorCategoria.value = ''; }
+                if (campoDesde) { campoDesde.value = ''; }
+                if (campoHasta) { campoHasta.value = ''; }
+                renderCotizaciones();
+            });
+        }
+
         document.body.addEventListener('click', function (evento) {
             var detalle = evento.target.closest('[data-detalle-cotizacion]');
             if (detalle) {
