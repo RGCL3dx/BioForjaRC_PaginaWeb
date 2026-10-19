@@ -1,0 +1,78 @@
+﻿# =====================================================================
+#  API Gateway - BioForjaRC
+#  Punto único de entrada del frontend hacia los microservicios.
+#  Sin Eureka: las rutas apuntan a URLs explícitas.
+#
+#  Rango de puertos 8090-8096 (el 8080 está ocupado por un proceso
+#  ajeno y el 8082 está excluido por Windows/Hyper-V en este equipo).
+# =====================================================================
+server:
+  port: 8090
+
+spring:
+  application:
+    name: api-gateway
+
+  # Timeouts del cliente HTTP que usa el Gateway para reenviar peticiones.
+  # Evita que una petición quede colgada si un microservicio no responde.
+  http:
+    client:
+      connect-timeout: 3s
+      read-timeout: 10s
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            # ----------------------- ms-usuarios (EP-02) -----------------------
+            - id: ms-usuarios
+              uri: http://localhost:8091
+              predicates:
+                - Path=/api/auth/**,/api/usuarios/**
+
+            # ----------------------- ms-catalogo (EP-01, EP-08) ----------------
+            - id: ms-catalogo
+              uri: http://localhost:8092
+              predicates:
+                - Path=/api/productos/**,/api/categorias/**
+
+            # ----------------------- ms-envios (EP-06) -------------------------
+            - id: ms-envios
+              uri: http://localhost:8093
+              predicates:
+                - Path=/api/envios/**,/api/zonas/**,/api/metodos-despacho/**,/api/tarifas/**
+
+            # ----------------------- ms-pedidos (EP-03, EP-09) -----------------
+            - id: ms-pedidos
+              uri: http://localhost:8094
+              predicates:
+                - Path=/api/pedidos/**,/api/reportes/**
+
+            # ----------------------- ms-cotizaciones (EP-04) -------------------
+            - id: ms-cotizaciones
+              uri: http://localhost:8095
+              predicates:
+                - Path=/api/cotizaciones/**
+
+            # ----------------------- ms-consultas (EP-05) ----------------------
+            - id: ms-consultas
+              uri: http://localhost:8096
+              predicates:
+                - Path=/api/consultas/**
+
+# ---------------------------------------------------------------------
+#  Actuator: expone /actuator/health del propio Gateway
+# ---------------------------------------------------------------------
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
