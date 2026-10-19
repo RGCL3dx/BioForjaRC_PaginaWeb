@@ -54,9 +54,7 @@ bioforja:
     habilitada: ${BIOFORJA_SEMILLA_HABILITADA:true}
   correo:
     # En local no hay servidor SMTP: el enlace de confirmación se escribe
-    # en el log. Para envío real se configurará BIOFORJA_CORREO_MODO=smtp
-    # en la fase de integración.
-    modo: ${BIOFORJA_CORREO_MODO:consola}
+    # en el log. El envío real se conectará en la fase de integración.
     remitente: ${BIOFORJA_CORREO_REMITENTE:no-reply@bioforjarc.cl}
     url-base: ${BIOFORJA_URL_BASE:http://localhost:8090}
 

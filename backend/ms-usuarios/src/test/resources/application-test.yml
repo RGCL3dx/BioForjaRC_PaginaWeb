@@ -18,8 +18,6 @@ bioforja:
     expiracion-segundos: 3600
   semilla:
     habilitada: true
-  correo:
-    modo: consola
 
 logging:
   level:
