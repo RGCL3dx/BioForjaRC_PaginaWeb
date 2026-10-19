@@ -1,0 +1,27 @@
+# Perfil exclusivo para pruebas automatizadas.
+# Usa la base bioforja_usuarios_test y un secreto JWT de prueba (no productivo).
+server:
+  port: 0
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:5432}/${BIOFORJA_DB_TEST_NAME:bioforja_usuarios_test}
+    username: ${BIOFORJA_DB_USERNAME:bioforja}
+    password: ${BIOFORJA_DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+bioforja:
+  jwt:
+    secret: secreto-de-pruebas-ms-usuarios-bioforjarc-2026-no-usar-en-produccion
+    expiracion-segundos: 3600
+  semilla:
+    habilitada: true
+  correo:
+    modo: consola
+
+logging:
+  level:
+    cl.bioforjarc.usuarios: WARN
+    org.springframework: WARN
