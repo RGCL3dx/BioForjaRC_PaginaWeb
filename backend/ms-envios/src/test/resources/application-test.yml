@@ -1,0 +1,22 @@
+# Perfil exclusivo para pruebas automatizadas.
+# Usa la base bioforja_envios_test.
+server:
+  port: 0
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:5432}/${BIOFORJA_ENVIOS_TEST_DB_NAME:bioforja_envios_test}
+    username: ${BIOFORJA_DB_USERNAME:bioforja}
+    password: ${BIOFORJA_DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+bioforja:
+  semilla:
+    habilitada: true
+
+logging:
+  level:
+    cl.bioforjarc.envios: WARN
+    org.springframework: WARN
