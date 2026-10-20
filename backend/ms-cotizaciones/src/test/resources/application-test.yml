@@ -1,0 +1,31 @@
+# Perfil exclusivo para pruebas automatizadas.
+# Usa la base bioforja_cotizaciones_test y un directorio temporal de archivos.
+server:
+  port: 0
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:5432}/${BIOFORJA_COTIZACIONES_TEST_DB_NAME:bioforja_cotizaciones_test}
+    username: ${BIOFORJA_DB_USERNAME:bioforja}
+    password: ${BIOFORJA_DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+bioforja:
+  jwt:
+    secret: clave-de-prueba-bioforjarc-1234567890
+    emisor: bioforjarc-ms-usuarios
+  archivos:
+    directorio: ${java.io.tmpdir}/bioforja-cotizaciones-test
+    max-archivos: 5
+    tamano-maximo-bytes: 52428800
+  correo:
+    remitente: no-reply@bioforjarc.cl
+  pago:
+    url-base: http://localhost:5173/pago-cotizacion
+
+logging:
+  level:
+    cl.bioforjarc.cotizaciones: WARN
+    org.springframework: WARN
