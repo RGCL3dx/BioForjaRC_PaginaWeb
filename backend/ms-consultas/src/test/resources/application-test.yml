@@ -1,0 +1,23 @@
+# Perfil exclusivo para pruebas automatizadas.
+# Usa la base bioforja_consultas_test.
+server:
+  port: 0
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:5432}/${BIOFORJA_CONSULTAS_TEST_DB_NAME:bioforja_consultas_test}
+    username: ${BIOFORJA_DB_USERNAME:bioforja}
+    password: ${BIOFORJA_DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+bioforja:
+  correo:
+    remitente: no-reply@bioforjarc.cl
+    admin: admin@bioforjarc.cl
+
+logging:
+  level:
+    cl.bioforjarc.consultas: WARN
+    org.springframework: WARN
