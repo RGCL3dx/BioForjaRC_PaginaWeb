@@ -42,7 +42,7 @@ El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 - [x] **Fase 2** — `ms-catalogo` (8092): catálogo, búsqueda, filtros, inventario y stock.
 - [x] **Fase 3** — `ms-envios` (8093): regiones, comunas, métodos de despacho, tarifas y cotización.
 - [x] **Fase 4** — `ms-pedidos` (8094): checkout, pago simulado, comprobante, historial y reportes.
-- [ ] Fase 5 — `ms-cotizaciones` (8095).
+- [x] **Fase 5** — `ms-cotizaciones` (8095): solicitudes con archivos 3D, presupuesto y enlace de pago.
 - [ ] Fase 6 — `ms-consultas` (8096).
 - [ ] Fase 7 — frontend React + TypeScript + Vite.
 
@@ -258,3 +258,80 @@ cd backend\ms-pedidos
 .\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
+
+## ms-cotizaciones (EP-04)
+
+Base de datos: `bioforja_cotizaciones` (PostgreSQL 18).
+Pruebas: `bioforja_cotizaciones_test`.
+Paquete base: `cl.bioforjarc.cotizaciones`.
+
+Cubre HU-04.1 (formulario público con archivos 3D y ticket en estado
+`Pendiente`), HU-04.2 (descarga del archivo y detalle de especificaciones por
+el administrador) y HU-04.3 (monto, plazo de entrega y envío del enlace de pago).
+No se adelantó la aprobación o el pago de la cotización: solo se generan los
+datos que exige la plantilla.
+
+### Variables de entorno
+
+```powershell
+$env:BIOFORJA_DB_HOST="localhost"
+$env:BIOFORJA_DB_PORT="5432"
+$env:BIOFORJA_COTIZACIONES_DB_NAME="bioforja_cotizaciones"
+$env:BIOFORJA_DB_USERNAME="bioforja"
+$env:BIOFORJA_DB_PASSWORD="<clave-local>"
+$env:BIOFORJA_JWT_SECRET="<mismo-secreto-que-ms-usuarios>"
+```
+
+Variables opcionales:
+
+- `BIOFORJA_COTIZACIONES_TEST_DB_NAME` (por defecto `bioforja_cotizaciones_test`).
+- `BIOFORJA_ARCHIVOS_DIRECTORIO` (por defecto `%USERPROFILE%\.bioforjarc\cotizaciones-archivos`).
+- `BIOFORJA_ARCHIVOS_MAX` (por defecto `5` archivos por solicitud).
+- `BIOFORJA_ARCHIVOS_TAMANO_MAX` (por defecto `52428800` bytes = 50 MB por archivo).
+- `BIOFORJA_PAGO_URL_BASE` (por defecto `http://localhost:5173/pago-cotizacion`).
+- `BIOFORJA_CORREO_REMITENTE` (por defecto `no-reply@bioforjarc.cl`).
+
+Los archivos 3D se guardan **fuera del repositorio** y nunca se versionan en
+Git. La base de datos solo conserva la ruta relativa y los metadatos.
+
+### Endpoints
+
+| Método | Ruta | Acceso |
+|---|---|---|
+| POST | `/api/cotizaciones` | Público (`multipart/form-data`) |
+| GET | `/api/cotizaciones?q=&estado=&desde=&hasta=&pagina=&tamano=` | Administrador |
+| GET | `/api/cotizaciones/{id}` | Administrador |
+| GET | `/api/cotizaciones/archivos/{archivoId}` | Administrador (descarga) |
+| POST | `/api/cotizaciones/{id}/presupuesto` | Administrador |
+
+El formulario acepta `nombre`, `apellido`, `correo`, `telefono`, `categoria`,
+`cantidad`, `plazo`, `descripcion` y uno o más archivos en el campo
+`archivos`. Solo se aceptan `.STL` y `.OBJ` de hasta 50 MB cada uno; la
+cantidad máxima de archivos es configurable (5 por defecto). El ticket se
+genera con el formato `COT-AAAAMMDD-XXXXXX` y nace en estado `Pendiente`.
+
+Al presupuestar se guardan `montoTotal`, `plazoEntregaDias` y
+`observaciones`, el estado pasa a `Presupuestada` y se genera un enlace
+`.../pago-cotizacion?ticket=COT-...`. En este entorno no hay SMTP: el correo
+con el presupuesto y el enlace se escribe en el log mediante
+`CorreoConsolaServiceImpl`; la interfaz permite sustituirlo por un adaptador
+SMTP real sin cambiar el servicio.
+
+La descarga responde con `Content-Disposition: attachment` y el nombre
+original del archivo. El frontend actual (`paginas/cotizacion.html`) todavía
+no tiene `input type="file"` ni consume estos endpoints; su migración a React
+queda para la Fase 7, sin modificar el sitio estático en esta fase.
+
+### Ejecutar y probar
+
+```powershell
+cd backend\ms-cotizaciones
+.\mvnw.cmd test
+.\mvnw.cmd spring-boot:run
+```
+
+Pruebas: 25 en total (9 de integración con MockMvc, 7 unitarias del servicio,
+8 del almacenamiento de archivos y 1 de contexto). El E2E por el gateway
+verificó creación pública con dos archivos, listado y detalle administrativo,
+descarga autenticada, presupuesto con enlace y correo simulado, filtros,
+401/403/400/404, límite de extensión y CORS.

@@ -53,7 +53,7 @@ spring:
             - id: ms-cotizaciones
               uri: http://localhost:8095
               predicates:
-                - Path=/api/cotizaciones/**
+                - Path=/api/cotizaciones,/api/cotizaciones/**
 
             # ----------------------- ms-consultas (EP-05) ----------------------
             - id: ms-consultas
