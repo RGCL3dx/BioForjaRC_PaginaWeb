@@ -1,0 +1,64 @@
+# =====================================================================
+#  ms-pedidos - BioForjaRC (EP-03, EP-09)
+#  Base de datos propia: bioforja_pedidos
+#  Las credenciales se leen SIEMPRE desde variables de entorno.
+# =====================================================================
+server:
+  port: 8094
+
+spring:
+  application:
+    name: ms-pedidos
+
+  datasource:
+    url: jdbc:postgresql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:5432}/${BIOFORJA_PEDIDOS_DB_NAME:bioforja_pedidos}
+    username: ${BIOFORJA_DB_USERNAME:bioforja}
+    password: ${BIOFORJA_DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 5000
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: America/Santiago
+        format_sql: false
+
+  jackson:
+    time-zone: America/Santiago
+    default-property-inclusion: non_null
+
+  # Timeouts de las llamadas sincronicas a otros microservicios.
+  http:
+    client:
+      connect-timeout: 3s
+      read-timeout: 7s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+bioforja:
+  jwt:
+    secret: ${BIOFORJA_JWT_SECRET:}
+    emisor: ${BIOFORJA_JWT_EMISOR:bioforjarc-ms-usuarios}
+  clientes:
+    usuarios-url: ${BIOFORJA_USUARIOS_URL:http://localhost:8091}
+    catalogo-url: ${BIOFORJA_CATALOGO_URL:http://localhost:8092}
+    envios-url: ${BIOFORJA_ENVIOS_URL:http://localhost:8093}
+
+logging:
+  level:
+    cl.bioforjarc.pedidos: INFO
+    org.springframework.security: WARN
