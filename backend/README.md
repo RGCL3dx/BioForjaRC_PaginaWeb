@@ -40,7 +40,7 @@ El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 - [x] **Fase 0** — `api-gateway` (8090): rutas, CORS, timeouts y actuator.
 - [x] **Fase 1** — `ms-usuarios` (8091): registro, login JWT, administración de cuentas y direcciones.
 - [x] **Fase 2** — `ms-catalogo` (8092): catálogo, búsqueda, filtros, inventario y stock.
-- [ ] Fase 3 — `ms-envios` (8093).
+- [x] Fase 3 — `ms-envios` (8093).
 - [ ] Fase 4 — `ms-pedidos` (8094).
 - [ ] Fase 5 — `ms-cotizaciones` (8095).
 - [ ] Fase 6 — `ms-consultas` (8096).
@@ -145,6 +145,56 @@ La semilla carga las 4 categorías y los 18 productos que ya muestra el sitio.
 
 ```powershell
 cd backend\ms-catalogo
+.\mvnw.cmd test
+.\mvnw.cmd spring-boot:run
+```
+
+## ms-envios (EP-06)
+
+Base de datos: `bioforja_envios` (PostgreSQL 18).
+Pruebas: `bioforja_envios_test`.
+Paquete base: `cl.bioforjarc.envios`.
+
+### Variables de entorno
+
+```powershell
+$env:BIOFORJA_DB_HOST="localhost"
+$env:BIOFORJA_DB_PORT="5432"
+$env:BIOFORJA_ENVIOS_DB_NAME="bioforja_envios"
+$env:BIOFORJA_DB_USERNAME="bioforja"
+$env:BIOFORJA_DB_PASSWORD="<clave-local>"
+```
+
+Variables opcionales: `BIOFORJA_ENVIOS_TEST_DB_NAME`, `BIOFORJA_SEMILLA_HABILITADA`.
+
+### Endpoints
+
+| Método | Ruta | Acceso |
+|---|---|---|
+| GET | `/api/envios/regiones` | Público |
+| GET | `/api/envios/regiones/{codigo}` | Público |
+| GET | `/api/envios/regiones/{codigo}/comunas` | Público |
+| GET | `/api/envios/metodos-despacho` | Público |
+| POST | `/api/envios/cotizar` | Público |
+| GET | `/api/envios/opciones?regionCodigo=&comuna=&subtotal=` | Público |
+
+La cotización recibe `regionCodigo`, `comuna`, `metodoCodigo` y `subtotal`.
+La región puede reemplazarse por la comuna cuando su nombre es único.
+El retiro presencial no exige región y siempre cuesta $0.
+
+La semilla carga 16 regiones, 69 comunas, los métodos `estandar`,
+`express` y `retiro`, y 40 tarifas referenciales (32 regionales y 8
+excepciones por comuna). Para la Región Metropolitana el estándar cuesta
+$3.500 y el express $6.500, manteniendo los valores actuales del checkout.
+Se conservan los códigos antiguos `libgral`, `bio` y `araycan` como alias.
+
+Todas las rutas son públicas en esta fase porque las HU-06.1 y HU-06.2 son
+de usuario. No se agregaron endpoints administrativos que la plantilla no exige.
+
+### Ejecutar y probar
+
+```powershell
+cd backend\ms-envios
 .\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
