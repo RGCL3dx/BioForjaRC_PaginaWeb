@@ -40,8 +40,8 @@ El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 - [x] **Fase 0** — `api-gateway` (8090): rutas, CORS, timeouts y actuator.
 - [x] **Fase 1** — `ms-usuarios` (8091): registro, login JWT, administración de cuentas y direcciones.
 - [x] **Fase 2** — `ms-catalogo` (8092): catálogo, búsqueda, filtros, inventario y stock.
-- [x] Fase 3 — `ms-envios` (8093).
-- [ ] Fase 4 — `ms-pedidos` (8094).
+- [x] **Fase 3** — `ms-envios` (8093): regiones, comunas, métodos de despacho, tarifas y cotización.
+- [x] **Fase 4** — `ms-pedidos` (8094): checkout, pago simulado, comprobante, historial y reportes.
 - [ ] Fase 5 — `ms-cotizaciones` (8095).
 - [ ] Fase 6 — `ms-consultas` (8096).
 - [ ] Fase 7 — frontend React + TypeScript + Vite.
@@ -195,6 +195,66 @@ de usuario. No se agregaron endpoints administrativos que la plantilla no exige.
 
 ```powershell
 cd backend\ms-envios
+.\mvnw.cmd test
+.\mvnw.cmd spring-boot:run
+```
+
+## ms-pedidos (EP-03 y EP-09)
+
+Base de datos: `bioforja_pedidos` (PostgreSQL 18).
+Pruebas: `bioforja_pedidos_test`.
+Paquete base: `cl.bioforjarc.pedidos`.
+
+Cubre HU-03.1 (datos de facturación y despacho), HU-03.2 (pago y comprobante
+con número de orden) y HU-09.1 (historial del cliente y reporte comercial).
+No descuenta stock: la validación de producto y stock es de `ms-catalogo`, y
+el ajuste de inventario queda pendiente de una fase posterior.
+
+### Variables de entorno
+
+```powershell
+$env:BIOFORJA_DB_HOST="localhost"
+$env:BIOFORJA_DB_PORT="5432"
+$env:BIOFORJA_PEDIDOS_DB_NAME="bioforja_pedidos"
+$env:BIOFORJA_DB_USERNAME="bioforja"
+$env:BIOFORJA_DB_PASSWORD="<clave-local>"
+$env:BIOFORJA_JWT_SECRET="<mismo-secreto-que-ms-usuarios>"
+```
+
+Variables opcionales: `BIOFORJA_PEDIDOS_TEST_DB_NAME`,
+`BIOFORJA_JWT_EMISOR`, `BIOFORJA_USUARIOS_URL` (8091),
+`BIOFORJA_CATALOGO_URL` (8092) y `BIOFORJA_ENVIOS_URL` (8093).
+
+### Endpoints
+
+| Método | Ruta | Acceso |
+|---|---|---|
+| POST | `/api/pedidos` | Cliente o administrador autenticado |
+| GET | `/api/pedidos/mios` | Cliente autenticado (historial propio) |
+| GET | `/api/pedidos/{id}` | Dueño o administrador |
+| GET | `/api/pedidos/{id}/comprobante` | Dueño o administrador (PDF) |
+| GET | `/api/pedidos?q=&estado=&desde=&hasta=&pagina=&tamano=` | Administrador |
+| PATCH | `/api/pedidos/{id}/estado` | Administrador |
+| GET | `/api/reportes/ventas?desde=&hasta=` | Administrador |
+| GET | `/api/reportes/ventas/exportar?desde=&hasta=&formato=xlsx\|pdf` | Administrador |
+
+El checkout exige nombre, apellido, Boleta o Factura y método de pago; para
+envío a domicilio también dirección, comuna y región. El correo del comprador
+se toma del JWT y nunca del cuerpo. El estado inicial es `En preparación` y los
+demás estados son `Despachado`, `Entregado` y `Cancelado`.
+
+El pago es **simulado** (`pagoSimulado = true`): se registra método, referencia
+y fecha de pago, se emite el número de orden `BF-AAAAMMDD-XXXXXX` y se genera
+el comprobante PDF. La pasarela real queda pendiente por decisión académica.
+
+El reporte entrega total de ventas, ticket promedio, cantidad de pedidos,
+unidades vendidas, ingresos diarios y mensuales, y Top 5 de productos. Solo
+considera pedidos pagados y no cancelados.
+
+### Ejecutar y probar
+
+```powershell
+cd backend\ms-pedidos
 .\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```

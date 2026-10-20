@@ -47,7 +47,7 @@ spring:
             - id: ms-pedidos
               uri: http://localhost:8094
               predicates:
-                - Path=/api/pedidos/**,/api/reportes/**
+                - Path=/api/pedidos,/api/pedidos/**,/api/reportes/**
 
             # ----------------------- ms-cotizaciones (EP-04) -------------------
             - id: ms-cotizaciones
