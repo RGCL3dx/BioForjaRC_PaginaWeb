@@ -1,0 +1,8 @@
+package cl.bioforjarc.envios.exception;
+
+public class SolicitudInvalidaException extends RuntimeException {
+
+    public SolicitudInvalidaException(String mensaje) {
+        super(mensaje);
+    }
+}

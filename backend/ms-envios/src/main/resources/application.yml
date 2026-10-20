@@ -1,0 +1,53 @@
+# =====================================================================
+#  ms-envios - BioForjaRC (EP-06)
+#  Base de datos propia: bioforja_envios
+#  Las credenciales se leen SIEMPRE desde variables de entorno.
+# =====================================================================
+server:
+  port: 8093
+
+spring:
+  application:
+    name: ms-envios
+
+  datasource:
+    url: jdbc:postgresql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:5432}/${BIOFORJA_ENVIOS_DB_NAME:bioforja_envios}
+    username: ${BIOFORJA_DB_USERNAME:bioforja}
+    password: ${BIOFORJA_DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 5000
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: America/Santiago
+        format_sql: false
+
+  jackson:
+    time-zone: America/Santiago
+    default-property-inclusion: non_null
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+bioforja:
+  semilla:
+    habilitada: ${BIOFORJA_SEMILLA_HABILITADA:true}
+
+logging:
+  level:
+    cl.bioforjarc.envios: INFO
+    org.springframework.security: WARN
