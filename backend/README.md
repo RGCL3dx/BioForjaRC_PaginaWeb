@@ -43,7 +43,7 @@ El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 - [x] **Fase 3** — `ms-envios` (8093): regiones, comunas, métodos de despacho, tarifas y cotización.
 - [x] **Fase 4** — `ms-pedidos` (8094): checkout, pago simulado, comprobante, historial y reportes.
 - [x] **Fase 5** — `ms-cotizaciones` (8095): solicitudes con archivos 3D, presupuesto y enlace de pago.
-- [ ] Fase 6 — `ms-consultas` (8096).
+- [x] **Fase 6** — `ms-consultas` (8096): formulario público de contacto y notificación al administrador.
 - [ ] Fase 7 — frontend React + TypeScript + Vite.
 
 ## ms-usuarios (EP-02)
@@ -335,3 +335,67 @@ Pruebas: 25 en total (9 de integración con MockMvc, 7 unitarias del servicio,
 verificó creación pública con dos archivos, listado y detalle administrativo,
 descarga autenticada, presupuesto con enlace y correo simulado, filtros,
 401/403/400/404, límite de extensión y CORS.
+
+## ms-consultas (EP-05)
+
+Base de datos: `bioforja_consultas` (PostgreSQL 18).
+Pruebas: `bioforja_consultas_test`.
+Paquete base: `cl.bioforjarc.consultas`.
+
+Cubre HU-05.1 (enviar mensajes de consulta): valida el correo y el mensaje,
+guarda la consulta y notifica al administrador por correo. La plantilla no
+define historial, respuesta ni administración de consultas, por lo que no se
+agregaron endpoints adicionales.
+
+### Variables de entorno
+
+```powershell
+$env:BIOFORJA_DB_HOST="localhost"
+$env:BIOFORJA_DB_PORT="5432"
+$env:BIOFORJA_CONSULTAS_DB_NAME="bioforja_consultas"
+$env:BIOFORJA_DB_USERNAME="bioforja"
+$env:BIOFORJA_DB_PASSWORD="<clave-local>"
+```
+
+Variables opcionales:
+
+- `BIOFORJA_CONSULTAS_TEST_DB_NAME` (por defecto `bioforja_consultas_test`).
+- `BIOFORJA_CORREO_REMITENTE` (por defecto `no-reply@bioforjarc.cl`).
+- `BIOFORJA_CORREO_ADMIN` (por defecto `admin@bioforjarc.cl`).
+
+No requiere JWT porque el formulario de contacto es público.
+
+### Endpoint
+
+| Método | Ruta | Acceso |
+|---|---|---|
+| POST | `/api/consultas` | Público (`application/json`) |
+
+El cuerpo acepta `nombre`, `correo`, `telefono` (opcional), `asunto` y
+`mensaje`. Se validan los campos obligatorios del formulario: nombre de 3 a
+100 caracteres, correo con formato válido, asunto de 4 a 120 caracteres y
+mensaje de 10 a 2000 caracteres. El teléfono es opcional. Los espacios al
+inicio y al final se eliminan antes de guardar.
+
+La consulta se guarda en `consultas` con su fecha de envío y luego se invoca
+el puerto `CorreoService`. En este entorno no hay SMTP: el aviso al
+administrador se escribe en el log mediante `CorreoConsolaServiceImpl`, con
+el destinatario configurado en `BIOFORJA_CORREO_ADMIN`. El adaptador SMTP real
+queda pendiente de configurar credenciales de correo.
+
+El frontend actual (`paginas/contacto.html`) mantiene su formulario estático
+con `action="#"`; la conexión al endpoint se hará en la Fase 7 al migrar a
+React, sin modificar el sitio estático en esta fase.
+
+### Ejecutar y probar
+
+```powershell
+cd backend\ms-consultas
+.\mvnw.cmd test
+.\mvnw.cmd spring-boot:run
+```
+
+Pruebas: 11 en total (8 de integración con MockMvc, 2 unitarias del servicio y
+1 de contexto). El E2E por el gateway verificó envío público sin token,
+persistencia, normalización de datos, teléfono opcional, correo simulado al
+administrador, validaciones 400, cuerpo mal formado y CORS.

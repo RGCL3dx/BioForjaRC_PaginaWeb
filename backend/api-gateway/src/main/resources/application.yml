@@ -59,7 +59,7 @@ spring:
             - id: ms-consultas
               uri: http://localhost:8096
               predicates:
-                - Path=/api/consultas/**
+                - Path=/api/consultas,/api/consultas/**
 
 # ---------------------------------------------------------------------
 #  Actuator: expone /actuator/health del propio Gateway
