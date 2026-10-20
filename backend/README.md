@@ -39,7 +39,7 @@ El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 
 - [x] **Fase 0** — `api-gateway` (8090): rutas, CORS, timeouts y actuator.
 - [x] **Fase 1** — `ms-usuarios` (8091): registro, login JWT, administración de cuentas y direcciones.
-- [ ] Fase 2 — `ms-catalogo` (8092).
+- [x] **Fase 2** — `ms-catalogo` (8092): catálogo, búsqueda, filtros, inventario y stock.
 - [ ] Fase 3 — `ms-envios` (8093).
 - [ ] Fase 4 — `ms-pedidos` (8094).
 - [ ] Fase 5 — `ms-cotizaciones` (8095).
@@ -100,3 +100,51 @@ Cuentas semilla (solo si `BIOFORJA_SEMILLA_HABILITADA=true`):
 
 - `admin@bioforjarc.cl` / `Admin123` (administrador)
 - `hermenegildo.gonzalez@correo.cl` / `Clave1234` (cliente)
+
+## ms-catalogo (EP-01 y EP-08)
+
+Base de datos: `bioforja_catalogo` (PostgreSQL 18).
+Pruebas: `bioforja_catalogo_test`.
+Paquete base: `cl.bioforjarc.catalogo`.
+
+### Variables de entorno
+
+Comparte las credenciales de PostgreSQL y el secreto JWT con `ms-usuarios`:
+
+```powershell
+$env:BIOFORJA_DB_HOST="localhost"
+$env:BIOFORJA_DB_PORT="5432"
+$env:BIOFORJA_CATALOGO_DB_NAME="bioforja_catalogo"
+$env:BIOFORJA_DB_USERNAME="bioforja"
+$env:BIOFORJA_DB_PASSWORD="<clave-local>"
+$env:BIOFORJA_JWT_SECRET="<mismo-secreto-que-ms-usuarios>"
+```
+
+Variables opcionales: `BIOFORJA_CATALOGO_TEST_DB_NAME`, `BIOFORJA_SEMILLA_HABILITADA`.
+
+### Endpoints
+
+| Método | Ruta | Acceso |
+|---|---|---|
+| GET | `/api/categorias` | Público |
+| GET | `/api/productos?q=&categorias=&material=&pagina=&tamano=` | Público (solo activos) |
+| GET | `/api/productos/{id}` | Público (solo activo) |
+| GET | `/api/productos/{id}/validar?cantidad=` | Público (uso interno de ms-pedidos) |
+| GET | `/api/productos/inventario` | Administrador |
+| GET | `/api/productos/inventario/resumen` | Administrador |
+| GET | `/api/productos/inventario/{id}` | Administrador |
+| POST | `/api/productos` | Administrador |
+| PUT | `/api/productos/{id}` | Administrador |
+| PATCH | `/api/productos/{id}/estado` | Administrador |
+
+La baja de productos es lógica (`activo = false`); nunca se eliminan.
+El stock bajo se informa con `stockBajo = true` cuando hay menos de 5 unidades.
+La semilla carga las 4 categorías y los 18 productos que ya muestra el sitio.
+
+### Ejecutar y probar
+
+```powershell
+cd backend\ms-catalogo
+.\mvnw.cmd test
+.\mvnw.cmd spring-boot:run
+```
