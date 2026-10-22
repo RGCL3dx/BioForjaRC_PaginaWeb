@@ -8,18 +8,20 @@ import { cotizacionService } from '../../services/cotizaciones'
 import { reporteService } from '../../services/reportes'
 import { usuarioService } from '../../services/usuarios'
 import type { ReporteVentas, ResumenInventario, Usuario } from '../../types/api'
-import { formatCLP, formatDate, formatNumber } from '../../utils/format'
+import { formatCLP, formatDate, formatNumber, hoyISO } from '../../utils/format'
 
 function fechaHaceDias(dias: number): string {
   const fecha = new Date()
   fecha.setDate(fecha.getDate() - dias)
-  return fecha.toISOString().slice(0, 10)
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0')
+  const dia = String(fecha.getDate()).padStart(2, '0')
+  return `${fecha.getFullYear()}-${mes}-${dia}`
 }
 
 export function AdminDashboardPage() {
   const { mostrar } = useNotification()
   const [desde, setDesde] = useState(() => fechaHaceDias(30))
-  const [hasta, setHasta] = useState(() => new Date().toISOString().slice(0, 10))
+  const [hasta, setHasta] = useState(() => hoyISO())
   const [reporte, setReporte] = useState<ReporteVentas | null>(null)
   const [inventario, setInventario] = useState<ResumenInventario | null>(null)
   const [usuarios, setUsuarios] = useState<Usuario[]>([])

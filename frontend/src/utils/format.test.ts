@@ -38,6 +38,11 @@ describe('formatDate', () => {
   it('conserva un texto que no es una fecha válida', () => {
     expect(formatDate('sin-fecha')).toBe('sin-fecha')
   })
+
+  it('interpreta las fechas sin hora en horario local', () => {
+    expect(formatDate('2026-10-22')).toBe('22-10-2026')
+    expect(formatDate('2026-01-01')).toBe('01-01-2026')
+  })
 })
 
 describe('estados', () => {
@@ -57,7 +62,10 @@ describe('estados', () => {
 })
 
 describe('hoyISO', () => {
-  it('entrega una fecha en formato ISO corto', () => {
-    expect(hoyISO()).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+  it('entrega la fecha local en formato ISO corto', () => {
+    const ahora = new Date()
+    const mes = String(ahora.getMonth() + 1).padStart(2, '0')
+    const dia = String(ahora.getDate()).padStart(2, '0')
+    expect(hoyISO()).toBe(`${ahora.getFullYear()}-${mes}-${dia}`)
   })
 })

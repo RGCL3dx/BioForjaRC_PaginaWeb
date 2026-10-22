@@ -16,7 +16,10 @@ export function formatNumber(value: number | null | undefined): string {
 
 export function formatDate(value: string | null | undefined): string {
   if (!value) return '—'
-  const date = new Date(value)
+  const soloFecha = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value)
+  const date = soloFecha
+    ? new Date(Number(soloFecha[1]), Number(soloFecha[2]) - 1, Number(soloFecha[3]))
+    : new Date(value)
   if (Number.isNaN(date.getTime())) return value
   return date.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
@@ -67,5 +70,8 @@ export function estadoUsuarioClass(estado: string): string {
 }
 
 export function hoyISO(): string {
-  return new Date().toISOString().slice(0, 10)
+  const ahora = new Date()
+  const mes = String(ahora.getMonth() + 1).padStart(2, '0')
+  const dia = String(ahora.getDate()).padStart(2, '0')
+  return `${ahora.getFullYear()}-${mes}-${dia}`
 }
