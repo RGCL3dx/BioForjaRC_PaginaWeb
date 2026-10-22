@@ -35,6 +35,21 @@ cd backend\<servicio>
 
 El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 
+## Frontend
+
+El cliente React está en `frontend/` y se ejecuta con Vite en `http://localhost:5173`.
+Requiere el Gateway y los microservicios activos. Instrucciones, rutas y scripts en
+[`frontend/README.md`](../frontend/README.md).
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+La URL del Gateway se configura con `VITE_API_URL` (por defecto `http://localhost:8090`).
+No se versionan secretos ni archivos `.env` reales.
+
 ## Estado de implementación
 
 - [x] **Fase 0** — `api-gateway` (8090): rutas, CORS, timeouts y actuator.
@@ -44,7 +59,17 @@ El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 - [x] **Fase 4** — `ms-pedidos` (8094): checkout, pago simulado, comprobante, historial y reportes.
 - [x] **Fase 5** — `ms-cotizaciones` (8095): solicitudes con archivos 3D, presupuesto y enlace de pago.
 - [x] **Fase 6** — `ms-consultas` (8096): formulario público de contacto y notificación al administrador.
-- [ ] Fase 7 — frontend React + TypeScript + Vite.
+- [x] **Fase 7** — frontend React + TypeScript + Vite en `frontend/`, consumiendo solo el Gateway.
+
+### Verificación de la entrega
+
+- Frontend: `npm run lint` sin errores, 19 pruebas Vitest aprobadas y build de producción correcto.
+- Backend: 121 pruebas Maven aprobadas en los siete servicios (unitarias, integración y contexto).
+- Flujo E2E por el Gateway: catálogo, registro, login, perfil, direcciones, carrito,
+  checkout con boleta/factura, retiro y envíos, pago simulado, comprobantes,
+  cotizaciones con archivos 3D, presupuesto, panel administrativo, reportes,
+  permisos 401/403, 404, validaciones, stock insuficiente y Gateway caído.
+- Responsive revisado a 375 px, 768 px y escritorio.
 
 ## ms-usuarios (EP-02)
 
@@ -67,6 +92,11 @@ $env:BIOFORJA_JWT_SECRET="<secreto-de-al-menos-32-caracteres>"
 
 Variables opcionales: `BIOFORJA_DB_TEST_NAME`, `BIOFORJA_JWT_EXPIRACION_SEGUNDOS`,
 `BIOFORJA_SEMILLA_HABILITADA`, `BIOFORJA_CORREO_REMITENTE`, `BIOFORJA_URL_BASE`.
+
+Para crear las cuentas semilla en una base nueva también se deben definir
+`BIOFORJA_SEMILLA_ADMIN_CLAVE` y `BIOFORJA_SEMILLA_CLIENTE_CLAVE`. Si no se
+definen, las cuentas se omiten y el servicio registra una advertencia. Las
+claves no se guardan en el repositorio.
 
 ### Endpoints
 
@@ -96,10 +126,14 @@ cd backend\ms-usuarios
 .\mvnw.cmd spring-boot:run
 ```
 
-Cuentas semilla (solo si `BIOFORJA_SEMILLA_HABILITADA=true`):
+Cuentas semilla (solo si `BIOFORJA_SEMILLA_HABILITADA=true` y las claves están
+definidas en el entorno):
 
-- `admin@bioforjarc.cl` / `Admin123` (administrador)
-- `hermenegildo.gonzalez@correo.cl` / `Clave1234` (cliente)
+- `admin@bioforjarc.cl` — clave en `BIOFORJA_SEMILLA_ADMIN_CLAVE` (administrador).
+- `hermenegildo.gonzalez@correo.cl` — clave en `BIOFORJA_SEMILLA_CLIENTE_CLAVE` (cliente).
+
+Las contraseñas no se versionan. Define valores locales antes de iniciar el
+servicio sobre una base de datos nueva.
 
 ## ms-catalogo (EP-01 y EP-08)
 
@@ -318,9 +352,10 @@ con el presupuesto y el enlace se escribe en el log mediante
 SMTP real sin cambiar el servicio.
 
 La descarga responde con `Content-Disposition: attachment` y el nombre
-original del archivo. El frontend actual (`paginas/cotizacion.html`) todavía
-no tiene `input type="file"` ni consume estos endpoints; su migración a React
-queda para la Fase 7, sin modificar el sitio estático en esta fase.
+original del archivo. El frontend React implementa la carga múltiple con
+validación de extensión, tamaño y cantidad, y el panel administrativo permite
+descargar cada archivo y guardar el presupuesto. El sitio estático original en
+`paginas/` se conserva sin cambios.
 
 ### Ejecutar y probar
 
@@ -383,9 +418,9 @@ administrador se escribe en el log mediante `CorreoConsolaServiceImpl`, con
 el destinatario configurado en `BIOFORJA_CORREO_ADMIN`. El adaptador SMTP real
 queda pendiente de configurar credenciales de correo.
 
-El frontend actual (`paginas/contacto.html`) mantiene su formulario estático
-con `action="#"`; la conexión al endpoint se hará en la Fase 7 al migrar a
-React, sin modificar el sitio estático en esta fase.
+El frontend React en `frontend/` conecta este formulario con validaciones de
+nombre, correo, asunto y mensaje, y muestra la referencia de la consulta creada.
+El sitio estático original en `paginas/` se conserva sin cambios.
 
 ### Ejecutar y probar
 
