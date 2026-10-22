@@ -1,0 +1,349 @@
+/* =========================================================
+   BioForjaRC - estructura.css
+   Maquetación sobre Bootstrap 5: header sticky, hero,
+   secciones, grids y tarjetas de la tienda.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   HEADER: el navbar Bootstrap queda fijo arriba
+   --------------------------------------------------------- */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+/* ---------------------------------------------------------
+   MAIN y secciones (padding base para todas las páginas)
+   --------------------------------------------------------- */
+main {
+    min-height: 60vh;
+}
+
+main > section {
+    padding: 48px 0;
+}
+
+main > section.seccion-fondo,
+main > section.seccion-clara {
+    background-color: var(--color-gris-claro);
+    background-image:
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 14px,
+            rgba(46, 125, 50, 0.025) 14px,
+            rgba(46, 125, 50, 0.025) 15px
+        );
+}
+
+/* Introducción centrada bajo el título de cada página */
+.pagina-intro {
+    max-width: 720px;
+    margin: 0 auto 8px;
+    text-align: center;
+    color: var(--color-gris);
+    font-size: 1.05rem;
+}
+
+/* ---------------------------------------------------------
+   HERO (portada)
+   Ruta del fondo relativa a este CSS (css/base -> assets)
+   --------------------------------------------------------- */
+.hero {
+    background-image: linear-gradient(
+        135deg,
+        rgba(10, 40, 16, 0.78) 0%,
+        rgba(27, 94, 32, 0.55) 55%,
+        rgba(107, 143, 59, 0.45) 100%
+    ), url('/assets/imagenes/fondo.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--color-blanco);
+    padding: 140px 0;
+    text-align: center;
+    position: relative;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 90px;
+    background: linear-gradient(to top, var(--color-fondo), transparent);
+    pointer-events: none;
+}
+
+.hero h1 {
+    color: var(--color-blanco);
+    font-size: 2.6rem;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1.15rem;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.94);
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero .btn {
+    margin: 4px 6px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ---------------------------------------------------------
+   Grid y tarjetas de categoría (portada)
+   --------------------------------------------------------- */
+.tarjeta-categoria {
+    border: 1px solid rgba(46, 125, 50, 0.08);
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+    background-color: var(--color-blanco);
+}
+
+.tarjeta-categoria:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sombra-fuerte);
+    border-color: rgba(255, 179, 0, 0.45);
+}
+
+.tarjeta-categoria .card-img-top {
+    height: 210px;
+    object-fit: cover;
+}
+
+.tarjeta-categoria .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 18px;
+}
+
+.tarjeta-categoria .card-body h3 {
+    margin-bottom: 8px;
+    color: var(--color-primario-oscuro);
+}
+
+.tarjeta-categoria .card-body p {
+    color: var(--color-gris);
+    font-size: 0.95rem;
+}
+
+/* El botón queda alineado al pie de cada tarjeta */
+.tarjeta-categoria .card-body .btn {
+    margin-top: auto;
+    align-self: center;
+}
+
+/* Línea de acento bajo el título de cada tarjeta */
+.tarjeta-categoria .card-body h3::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    margin: 8px auto 0;
+    background-color: var(--color-acento);
+    border-radius: 2px;
+}
+
+/* ---------------------------------------------------------
+   Proceso de reciclaje (portada)
+   --------------------------------------------------------- */
+.lista-proceso {
+    list-style: none;
+    counter-reset: proceso;
+    max-width: 680px;
+    margin: 0 auto;
+    background-color: var(--color-blanco);
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra);
+    padding: 24px 32px;
+    border: 1px solid rgba(46, 125, 50, 0.08);
+}
+
+.lista-proceso li {
+    counter-increment: proceso;
+    position: relative;
+    padding: 12px 0 12px 52px;
+    font-weight: 600;
+    border-bottom: 1px dashed var(--color-gris-claro);
+}
+
+.lista-proceso li:last-child {
+    border-bottom: none;
+}
+
+.lista-proceso li::before {
+    content: counter(proceso);
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-claro));
+    color: var(--color-blanco);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 8px rgba(46, 125, 50, 0.35);
+}
+
+/* Tarjetas de proceso (nosotros) */
+.tarjeta-proceso {
+    border: 1px solid rgba(46, 125, 50, 0.08);
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    text-align: center;
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+    background-color: var(--color-blanco);
+}
+
+.tarjeta-proceso:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-fuerte);
+    border-color: rgba(255, 179, 0, 0.45);
+}
+
+.tarjeta-proceso .card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+.tarjeta-proceso .card-body h3 {
+    color: var(--color-primario);
+    margin-bottom: 8px;
+}
+
+.tarjeta-proceso .card-body p {
+    color: var(--color-gris);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Contenedor de video embebido con relación 16:9 */
+.contenedor-video {
+    position: relative;
+    max-width: 760px;
+    margin: 0 auto;
+    border-radius: var(--radio-borde);
+    overflow: hidden;
+    box-shadow: var(--sombra-fuerte);
+    aspect-ratio: 16 / 9;
+}
+
+.contenedor-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ---------------------------------------------------------
+   Enlace de cierre de sesión agregado por auth.js
+   --------------------------------------------------------- */
+.navbar-nav a[data-logout] {
+    display: block;
+    padding: 0.5rem 0.25rem;
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    color: var(--color-peligro);
+}
+
+.navbar-nav a[data-logout]:hover {
+    color: #b71c1c;
+    text-decoration: underline;
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 1280px) {
+    .hero {
+        padding: 110px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 88px 0;
+        background-attachment: scroll;
+    }
+
+    .hero h1 {
+        font-size: 2.1rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .tarjeta-categoria .card-img-top {
+        height: 190px;
+    }
+
+    .lista-proceso {
+        padding: 20px 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero {
+        padding: 72px 0;
+    }
+
+    .hero h1 {
+        font-size: 1.9rem;
+    }
+
+    main > section {
+        padding: 36px 0;
+    }
+
+    .pagina-intro {
+        font-size: 0.98rem;
+    }
+
+    .hero-contenido {
+        padding: 24px 18px;
+    }
+
+    .lista-proceso {
+        padding: 16px 14px;
+    }
+
+    .lista-proceso li {
+        padding-left: 46px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+
+    .titulo-seccion {
+        font-size: 1.5rem;
+    }
+}

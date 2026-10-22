@@ -1,0 +1,812 @@
+/* =========================================================
+   BioForjaRC - global.css
+   Capa de marca sobre Bootstrap 5.
+   Mantiene la paleta corporativa y las clases que usa el JS
+   (main.js, auth.js, validaciones.js, productos.js, admin.js)
+   ========================================================= */
+
+/* Fuentes de marca */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap');
+
+/* ---------------------------------------------------------
+   Paleta de colores deducida del logo (reciclaje + tecnología)
+   --------------------------------------------------------- */
+:root {
+    --color-primario:        #2E7D32;
+    --color-primario-oscuro: #1B5E20;
+    --color-primario-claro:  #4CAF50;
+
+    --color-oliva:           #6B8F3B;
+    --color-acento:          #FFB300;
+    --color-acento-oscuro:   #e6a800;
+
+    --color-tinta:           #1B241B;
+    --color-gris:            #5B6B79;
+    --color-gris-claro:      #E8EEE8;
+    --color-fondo:           #F6F9F6;
+    --color-blanco:          #FFFFFF;
+
+    --color-peligro:         #c62828;
+
+    --fuente-principal: 'Montserrat', 'Segoe UI', sans-serif;
+    --fuente-texto: 'Open Sans', 'Segoe UI', sans-serif;
+
+    --radio-borde:    12px;
+    --sombra:         0 4px 14px rgba(27, 36, 27, 0.10);
+    --sombra-fuerte:  0 10px 26px rgba(27, 36, 27, 0.18);
+    --transicion:     0.3s ease;
+    --ancho-maximo:   1200px;
+}
+
+/* ---------------------------------------------------------
+   Tipografía y colores de base
+   --------------------------------------------------------- */
+body {
+    font-family: var(--fuente-texto);
+    color: var(--color-tinta);
+    background-color: var(--color-fondo);
+    background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(46, 125, 50, 0.08), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(255, 179, 0, 0.06), transparent);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background-color: rgba(46, 125, 50, 0.25);
+    color: var(--color-primario-oscuro);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-gris-claro);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-primario), var(--color-primario-claro));
+    border-radius: 8px;
+    border: 2px solid var(--color-gris-claro);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primario-oscuro);
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fuente-principal);
+    color: var(--color-primario-oscuro);
+}
+
+a {
+    color: var(--color-primario);
+    text-decoration: none;
+    transition: color var(--transicion);
+}
+
+a:hover {
+    color: var(--color-primario-oscuro);
+}
+
+/* Foco visible y accesible en todo el sitio */
+:focus-visible {
+    outline: 3px solid rgba(255, 179, 0, 0.65);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Inputs y selects con foco de marca */
+.form-control:focus,
+.form-select:focus,
+.form-control:focus-visible,
+.form-select:focus-visible {
+    border-color: var(--color-primario-claro);
+    box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.18);
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border-color: #d5e0d5;
+    transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--color-tinta);
+    font-size: 0.92rem;
+    margin-bottom: 6px;
+}
+
+/* ---------------------------------------------------------
+   Fondos y textos utilitarios de marca
+   --------------------------------------------------------- */
+.bg-marca {
+    background-color: var(--color-primario-oscuro) !important;
+}
+
+.bg-marca-claro {
+    background-color: var(--color-gris-claro) !important;
+}
+
+.bg-primario {
+    background-color: var(--color-primario) !important;
+}
+
+.texto-marca {
+    color: var(--color-primario) !important;
+}
+
+.texto-acento {
+    color: var(--color-acento) !important;
+}
+
+.text-tinta {
+    color: var(--color-tinta) !important;
+}
+
+.texto-gris {
+    color: var(--color-gris) !important;
+}
+
+/* ---------------------------------------------------------
+   Botones de marca (se usan junto a .btn de Bootstrap)
+   --------------------------------------------------------- */
+.btn-marca {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--color-primario);
+    --bs-btn-border-color: var(--color-primario);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--color-primario-oscuro);
+    --bs-btn-hover-border-color: var(--color-primario-oscuro);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--color-primario-oscuro);
+    --bs-btn-active-border-color: var(--color-primario);
+    --bs-btn-disabled-bg: var(--color-primario);
+    --bs-btn-disabled-border-color: var(--color-primario);
+}
+
+.btn-marca-outline {
+    --bs-btn-color: var(--color-primario);
+    --bs-btn-border-color: var(--color-primario);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--color-primario);
+    --bs-btn-hover-border-color: var(--color-primario);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--color-primario);
+    --bs-btn-active-border-color: var(--color-primario);
+}
+
+.btn-acento {
+    --bs-btn-color: var(--color-primario-oscuro);
+    --bs-btn-bg: var(--color-acento);
+    --bs-btn-border-color: var(--color-acento);
+    --bs-btn-hover-color: var(--color-primario-oscuro);
+    --bs-btn-hover-bg: var(--color-acento-oscuro);
+    --bs-btn-hover-border-color: var(--color-acento-oscuro);
+    --bs-btn-active-color: var(--color-primario-oscuro);
+    --bs-btn-active-bg: var(--color-acento-oscuro);
+    --bs-btn-active-border-color: var(--color-acento);
+}
+
+.btn-peligro {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--color-peligro);
+    --bs-btn-border-color: var(--color-peligro);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #b71c1c;
+    --bs-btn-hover-border-color: #b71c1c;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #b71c1c;
+    --bs-btn-active-border-color: var(--color-peligro);
+}
+
+.btn-marca,
+.btn-marca-outline,
+.btn-acento,
+.btn-peligro,
+.btn-outline-light {
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    transition: transform var(--transicion), box-shadow var(--transicion), background-color var(--transicion), color var(--transicion), border-color var(--transicion);
+    box-shadow: 0 3px 10px rgba(27, 36, 27, 0.12);
+}
+
+.btn-marca:hover,
+.btn-marca-outline:hover,
+.btn-acento:hover,
+.btn-peligro:hover,
+.btn-outline-light:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(27, 36, 27, 0.18);
+}
+
+.btn:active {
+    transform: translateY(0) !important;
+}
+
+/* ---------------------------------------------------------
+   Navbar de marca
+   --------------------------------------------------------- */
+.navbar-marca {
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(46, 125, 50, 0.10);
+    box-shadow: 0 2px 14px rgba(27, 36, 27, 0.06);
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+    transition: box-shadow var(--transicion);
+}
+
+.navbar-marca .navbar-brand,
+.navbar-marca .navbar-brand:hover {
+    color: var(--color-primario-oscuro);
+}
+
+.navbar-marca .navbar-brand img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--color-primario-claro);
+    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+    transition: transform var(--transicion);
+}
+
+.navbar-marca .navbar-brand:hover img {
+    transform: rotate(-8deg) scale(1.05);
+}
+
+.navbar-marca .nav-link {
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    color: var(--color-tinta);
+    position: relative;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.navbar-marca .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.15rem;
+    width: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, var(--color-primario), var(--color-acento));
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: width var(--transicion);
+}
+
+.navbar-marca .nav-link:hover::after,
+.navbar-marca .nav-link.active::after {
+    width: 70%;
+}
+
+.navbar-marca .nav-link:hover,
+.navbar-marca .nav-link.active {
+    color: var(--color-primario);
+}
+
+.navbar-marca .nav-link.active {
+    font-weight: 700;
+}
+
+.navbar-marca a[href*="carrito.html"] {
+    position: relative;
+}
+
+.navbar-marca .navbar-toggler {
+    border-radius: 10px;
+    padding: 6px 10px;
+}
+
+.navbar-marca .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25);
+}
+
+/* ---------------------------------------------------------
+   Títulos de sección con subrayado de acento
+   --------------------------------------------------------- */
+.titulo-seccion {
+    text-align: center;
+    position: relative;
+    padding-bottom: 14px;
+    margin-bottom: 36px;
+}
+
+.titulo-seccion::after {
+    content: '';
+    display: block;
+    width: 72px;
+    height: 4px;
+    margin: 12px auto 0;
+    background: var(--color-acento);
+    border-radius: 2px;
+}
+
+/* ---------------------------------------------------------
+   Tarjetas de formulario (login, registro, contacto, etc.)
+   --------------------------------------------------------- */
+.card-formulario {
+    border: 0;
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra);
+    background-color: var(--color-blanco);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow var(--transicion);
+}
+
+.card-formulario::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primario), var(--color-acento));
+}
+
+.card-formulario:hover {
+    box-shadow: var(--sombra-fuerte);
+}
+
+.fieldset-marca {
+    border: 2px solid rgba(46, 125, 50, 0.20);
+    border-radius: var(--radio-borde);
+    background-color: rgba(246, 249, 246, 0.8);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+}
+
+.fieldset-marca legend {
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    color: var(--color-primario-oscuro);
+    padding: 0 8px;
+    width: auto;
+}
+
+/* ---------------------------------------------------------
+   Tablas de marca (encabezado verde y hover)
+   --------------------------------------------------------- */
+.tabla-marca {
+    --bs-table-striped-bg: rgba(46, 125, 50, 0.04);
+    --bs-table-hover-bg: rgba(46, 125, 50, 0.07);
+    border-color: var(--color-gris-claro);
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.85rem 1rem;
+}
+
+.tabla-marca thead th {
+    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-oscuro));
+    color: var(--color-blanco);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    border: 0;
+    letter-spacing: 0.02em;
+    font-size: 0.92rem;
+    text-transform: uppercase;
+}
+
+.tabla-marca tfoot th {
+    background-color: var(--color-primario-claro);
+    color: var(--color-blanco);
+    border: 0;
+}
+
+/* ---------------------------------------------------------
+   Interacción de la tienda (js/main.js)
+   --------------------------------------------------------- */
+
+/* Contador de productos junto al ícono del carrito */
+.contador-carrito {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    margin-left: 4px;
+    border-radius: 999px;
+    background-color: var(--color-acento);
+    color: var(--color-primario-oscuro);
+    font-family: var(--fuente-principal);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Notificación al agregar/quitar productos */
+.aviso-carrito {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2000;
+    max-width: 320px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--color-primario-oscuro), var(--color-primario));
+    color: var(--color-blanco);
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-left: 4px solid var(--color-acento);
+    box-shadow: var(--sombra-fuerte);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--transicion), transform var(--transicion);
+}
+
+.aviso-carrito-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mensaje de carrito vacío */
+.carrito-vacio {
+    text-align: center;
+    padding: 48px 20px;
+    background-color: var(--color-blanco);
+    border: 2px dashed var(--color-gris-claro);
+    border-radius: var(--radio-borde);
+}
+
+.carrito-vacio a {
+    display: inline-block;
+    margin-left: 8px;
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+/* ---------------------------------------------------------
+   Autenticación (js/auth.js)
+   --------------------------------------------------------- */
+
+/* Saludo de usuario en la navegación */
+.saludo-usuario {
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    color: var(--color-gris);
+    white-space: nowrap;
+    margin-left: 4px;
+}
+
+.saludo-usuario strong {
+    color: var(--color-primario-oscuro);
+}
+
+/* Aviso de credenciales / sesión */
+.aviso-auth {
+    max-width: 640px;
+    margin: 20px auto 0;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background-color: rgba(255, 179, 0, 0.12);
+    border: 1px solid var(--color-acento);
+    color: var(--color-primario-oscuro);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* ---------------------------------------------------------
+   Validaciones (js/validaciones.js y js/auth.js)
+   --------------------------------------------------------- */
+.campo-error .form-control,
+.campo-error .form-select,
+.campo-error textarea {
+    border-color: var(--color-peligro) !important;
+    background-color: rgba(198, 40, 40, 0.05);
+}
+
+.mensaje-error {
+    display: block;
+    margin-top: 6px;
+    color: var(--color-peligro);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Catálogo (js/productos.js)
+   --------------------------------------------------------- */
+.stock-producto {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+.stock-producto.agotado {
+    color: var(--color-peligro);
+}
+
+.etiqueta-agotado {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;
+    background-color: var(--color-gris-claro);
+    color: var(--color-gris);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* ---------------------------------------------------------
+   Panel administrativo (js/admin.js)
+   --------------------------------------------------------- */
+.fila-actual td {
+    background-color: rgba(255, 179, 0, 0.10);
+}
+
+.aviso-sesion {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background-color: rgba(255, 179, 0, 0.12);
+    border: 1px solid var(--color-acento);
+    color: var(--color-primario-oscuro);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Botones generados por admin.js dentro de las tablas */
+.tabla-admin button[data-guardar],
+.tabla-admin button[data-guardar-estado] {
+    color: #fff;
+    background-color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-guardar]:hover,
+.tabla-admin button[data-guardar-estado]:hover {
+    background-color: var(--color-primario-oscuro);
+}
+
+.tabla-admin button.peligro {
+    color: #fff;
+    background-color: var(--color-peligro);
+    border: 1px solid var(--color-peligro);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button.peligro:hover {
+    background-color: #b71c1c;
+}
+
+.tabla-admin button[data-detalle],
+.tabla-admin button[data-detalle-cotizacion] {
+    color: var(--color-primario-oscuro);
+    background-color: var(--color-acento);
+    border: 1px solid var(--color-acento);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-activar]:not(.peligro),
+.tabla-admin button[data-editar],
+.tabla-admin button[data-estado] {
+    color: var(--color-primario);
+    background-color: transparent;
+    border: 1px solid var(--color-primario);
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 50px;
+}
+
+.tabla-admin button[data-activar]:not(.peligro):hover,
+.tabla-admin button[data-editar]:hover,
+.tabla-admin button[data-estado]:hover {
+    color: #fff;
+    background-color: var(--color-primario);
+}
+
+.tabla-admin button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Tablas de administración: ancho mínimo con scroll horizontal
+   dentro de .table-responsive (móvil) y acciones sin encimar */
+.tabla-admin {
+    min-width: 700px;
+    margin-bottom: 0;
+    --bs-table-striped-bg: rgba(46, 125, 50, 0.04);
+    --bs-table-hover-bg: rgba(46, 125, 50, 0.07);
+}
+
+.tabla-admin tbody tr {
+    transition: background-color var(--transicion);
+}
+
+.tabla-admin th:last-child,
+.tabla-admin td:last-child {
+    white-space: nowrap;
+}
+
+.tabla-admin td:last-child button + button {
+    margin-left: 6px;
+}
+
+/* Fila de un producto recién agregado (resaltado tras guardar) */
+.fila-nueva td {
+    animation: resaltar-fila 2.6s ease;
+}
+
+@keyframes resaltar-fila {
+    0% { background-color: rgba(255, 179, 0, 0.55); }
+    100% { background-color: transparent; }
+}
+
+/* Descripción de la tarjeta de producto: empuja los botones al pie
+   para que todas las cards midan igual (js/productos.js) */
+.card-descripcion {
+    flex-grow: 1;
+}
+
+/* ---------------------------------------------------------
+   Modales de administración (Bootstrap)
+   --------------------------------------------------------- */
+.modal-content {
+    border: 0;
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra-fuerte);
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--color-gris-claro);
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.06), rgba(255, 179, 0, 0.08));
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
+}
+
+.modal-title {
+    color: var(--color-primario-oscuro);
+}
+
+.modal-body {
+    color: var(--color-tinta);
+}
+
+.modal-body .fieldset-marca:last-child {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--color-gris-claro);
+}
+
+/* Avatar con iniciales en el modal de edición de usuarios */
+.avatar-usuario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primario), var(--color-primario-claro));
+    color: var(--color-blanco);
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: var(--sombra);
+}
+
+/* ---------------------------------------------------------
+   Footer
+   --------------------------------------------------------- */
+.pie-pagina {
+    background: linear-gradient(160deg, var(--color-primario-oscuro) 0%, #143d18 60%, #0f2e12 100%) !important;
+    position: relative;
+}
+
+.pie-pagina::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primario-claro), var(--color-acento), var(--color-primario-claro));
+}
+
+.pie-pagina h5 {
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+}
+
+.pie-pagina h5::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 36px;
+    height: 3px;
+    background: var(--color-acento);
+    border-radius: 2px;
+}
+
+.pie-pagina a {
+    color: #c8e6c9;
+    transition: color var(--transicion), transform var(--transicion);
+    display: inline-block;
+}
+
+.pie-pagina a:hover {
+    color: var(--color-blanco);
+    transform: translateX(4px);
+}
+
+.pie-pagina .pie-icono {
+    font-size: 1.1rem;
+}
+
+.pie-pagina ul.list-unstyled a:hover {
+    color: var(--color-acento);
+}
+
+.pie-pagina .d-flex.gap-3 a {
+    transition: color var(--transicion), transform var(--transicion);
+}
+
+.pie-pagina .d-flex.gap-3 a:hover {
+    color: var(--color-acento) !important;
+    transform: translateY(-3px) scale(1.15);
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 640px) {
+    .aviso-carrito {
+        left: 16px;
+        right: 16px;
+        max-width: none;
+    }
+
+    .tabla-admin {
+        min-width: 640px;
+    }
+
+    .tabla-admin button[data-guardar],
+    .tabla-admin button[data-guardar-estado],
+    .tabla-admin button.peligro,
+    .tabla-admin button[data-detalle],
+    .tabla-admin button[data-detalle-cotizacion],
+    .tabla-admin button[data-activar]:not(.peligro),
+    .tabla-admin button[data-editar],
+    .tabla-admin button[data-estado] {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+    }
+
+    .modal-dialog {
+        margin: 8px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+}

@@ -1,0 +1,80 @@
+/* =========================================================
+   BioForjaRC - administracion/panel.css
+   Métricas del panel con altura y contenido uniformes
+   ========================================================= */
+
+.tarjeta-metrica {
+    border: 0;
+    border-radius: calc(var(--radio-borde) + 4px);
+    height: 100%;
+    box-shadow: var(--sombra);
+    background: linear-gradient(160deg, var(--color-blanco) 0%, #fafcfa 100%);
+    transition: transform var(--transicion), box-shadow var(--transicion);
+    position: relative;
+    overflow: hidden;
+}
+
+.tarjeta-metrica::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primario), var(--color-acento));
+}
+
+.tarjeta-metrica:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra-fuerte) !important;
+}
+
+.tarjeta-metrica .card-body {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    min-height: 110px;
+}
+
+.tarjeta-metrica .card-body > div {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.tarjeta-metrica h2 {
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+}
+
+.tarjeta-metrica p {
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+.tarjeta-metrica .bi {
+    flex-shrink: 0;
+    margin-left: 12px;
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.12), rgba(255, 179, 0, 0.14));
+    color: var(--color-primario-oscuro);
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 576px) {
+    .tarjeta-metrica .card-body {
+        min-height: 92px;
+        padding: 1rem 1.1rem !important;
+    }
+
+    .tarjeta-metrica p {
+        font-size: 1.25rem !important;
+    }
+}

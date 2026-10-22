@@ -1,0 +1,52 @@
+/* =========================================================
+   BioForjaRC - portada.css
+   Estilos específicos de la página de inicio (index.html)
+   ========================================================= */
+
+/* Panel translúcido del hero (glassmorphism) */
+.hero-contenido {
+    background: linear-gradient(160deg, rgba(8, 28, 12, 0.55), rgba(15, 45, 20, 0.38));
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: calc(var(--radio-borde) + 8px);
+    padding: 44px 40px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+    position: relative;
+    z-index: 1;
+}
+
+/* Zoom sutil de las imágenes de categoría */
+.tarjeta-categoria .card-img-top {
+    transition: transform 0.45s ease;
+}
+
+.tarjeta-categoria:hover .card-img-top {
+    transform: scale(1.07);
+}
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+    .hero-contenido {
+        padding: 28px 22px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-contenido {
+        padding: 22px 16px;
+        backdrop-filter: none;
+    }
+
+    .hero-contenido .btn {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+    }
+
+    .tarjeta-categoria .card-body h3 {
+        font-size: 1.15rem;
+    }
+}

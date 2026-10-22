@@ -1,0 +1,21 @@
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+frontend/.env
+frontend/.env.local
+frontend/build-output.txt
+
+# Backend
+backend/**/target/
+*.log
+
+# Herramientas
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Archivos temporales de Office
+docs/~$*.xlsx

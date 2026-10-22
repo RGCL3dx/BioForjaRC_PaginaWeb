@@ -1,0 +1,23 @@
+/* =========================================================
+   BioForjaRC - registro.css
+   Creación de cuenta de cliente
+   ========================================================= */
+
+.card-formulario {
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra-fuerte);
+}
+
+@media (min-width: 768px) {
+    .card-formulario .form-label {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-formulario .btn {
+        width: 100%;
+    }
+}
