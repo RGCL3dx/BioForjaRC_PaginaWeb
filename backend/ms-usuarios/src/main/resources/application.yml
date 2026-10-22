@@ -52,6 +52,9 @@ bioforja:
     emisor: bioforjarc-ms-usuarios
   semilla:
     habilitada: ${BIOFORJA_SEMILLA_HABILITADA:true}
+    # Las cuentas semilla solo se crean si se define la clave en el entorno.
+    admin-clave: ${BIOFORJA_SEMILLA_ADMIN_CLAVE:}
+    cliente-clave: ${BIOFORJA_SEMILLA_CLIENTE_CLAVE:}
   correo:
     # En local no hay servidor SMTP: el enlace de confirmación se escribe
     # en el log. El envío real se conectará en la fase de integración.

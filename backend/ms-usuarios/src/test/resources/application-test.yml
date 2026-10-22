@@ -18,6 +18,8 @@ bioforja:
     expiracion-segundos: 3600
   semilla:
     habilitada: true
+    admin-clave: Admin123
+    cliente-clave: Clave1234
 
 logging:
   level:

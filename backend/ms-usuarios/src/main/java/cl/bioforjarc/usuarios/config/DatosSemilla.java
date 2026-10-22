@@ -7,6 +7,7 @@ import cl.bioforjarc.usuarios.model.Usuario;
 import cl.bioforjarc.usuarios.repository.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,6 +31,12 @@ public class DatosSemilla implements ApplicationRunner {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${bioforja.semilla.admin-clave:}")
+    private String adminClave;
+
+    @Value("${bioforja.semilla.cliente-clave:}")
+    private String clienteClave;
+
     public DatosSemilla(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
@@ -46,13 +53,17 @@ public class DatosSemilla implements ApplicationRunner {
         if (usuarioRepository.existsByCorreoIgnoreCase("admin@bioforjarc.cl")) {
             return;
         }
+        if (adminClave == null || adminClave.isBlank()) {
+            log.warn("Cuenta semilla de administrador omitida: configure BIOFORJA_SEMILLA_ADMIN_CLAVE");
+            return;
+        }
         Usuario admin = new Usuario();
         admin.setNombre("Administrador");
         admin.setApellido("");
         admin.setRut("11.111.111-1");
         admin.setCorreo("admin@bioforjarc.cl");
         admin.setTelefono("+56 9 0000 0000");
-        admin.setClaveHash(passwordEncoder.encode("Admin123"));
+        admin.setClaveHash(passwordEncoder.encode(adminClave));
         admin.setRol(Rol.ADMINISTRADOR);
         admin.setEstado(EstadoUsuario.ACTIVO);
         admin.setFechaRegistro(LocalDateTime.now());
@@ -66,13 +77,17 @@ public class DatosSemilla implements ApplicationRunner {
         if (existente.isPresent()) {
             return;
         }
+        if (clienteClave == null || clienteClave.isBlank()) {
+            log.warn("Cuenta semilla de cliente omitida: configure BIOFORJA_SEMILLA_CLIENTE_CLAVE");
+            return;
+        }
         Usuario cliente = new Usuario();
         cliente.setNombre("Hermenegildo");
         cliente.setApellido("González");
         cliente.setRut("12.345.678-9");
         cliente.setCorreo("hermenegildo.gonzalez@correo.cl");
         cliente.setTelefono("+56 9 1234 5678");
-        cliente.setClaveHash(passwordEncoder.encode("Clave1234"));
+        cliente.setClaveHash(passwordEncoder.encode(clienteClave));
         cliente.setRol(Rol.CLIENTE);
         cliente.setEstado(EstadoUsuario.ACTIVO);
         cliente.setFechaRegistro(LocalDateTime.now());
