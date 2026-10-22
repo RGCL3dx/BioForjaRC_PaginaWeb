@@ -1,4 +1,4 @@
-﻿# =====================================================================
+# =====================================================================
 #  API Gateway - BioForjaRC
 #  Punto único de entrada del frontend hacia los microservicios.
 #  Sin Eureka: las rutas apuntan a URLs explícitas.
@@ -29,37 +29,61 @@ spring:
             - id: ms-usuarios
               uri: http://localhost:8091
               predicates:
-                - Path=/api/auth/**,/api/usuarios/**
+                - Path=/api/auth/**,/api/usuarios/**
+              filters:
+                - RemoveResponseHeader=Access-Control-Allow-Origin
+                - RemoveResponseHeader=Access-Control-Expose-Headers
+                - RemoveResponseHeader=Access-Control-Allow-Credentials
 
             # ----------------------- ms-catalogo (EP-01, EP-08) ----------------
             - id: ms-catalogo
               uri: http://localhost:8092
               predicates:
-                - Path=/api/productos/**,/api/categorias/**
+                - Path=/api/productos/**,/api/categorias/**
+              filters:
+                - RemoveResponseHeader=Access-Control-Allow-Origin
+                - RemoveResponseHeader=Access-Control-Expose-Headers
+                - RemoveResponseHeader=Access-Control-Allow-Credentials
 
             # ----------------------- ms-envios (EP-06) -------------------------
             - id: ms-envios
               uri: http://localhost:8093
               predicates:
-                - Path=/api/envios/**,/api/zonas/**,/api/metodos-despacho/**,/api/tarifas/**
+                - Path=/api/envios/**,/api/zonas/**,/api/metodos-despacho/**,/api/tarifas/**
+              filters:
+                - RemoveResponseHeader=Access-Control-Allow-Origin
+                - RemoveResponseHeader=Access-Control-Expose-Headers
+                - RemoveResponseHeader=Access-Control-Allow-Credentials
 
             # ----------------------- ms-pedidos (EP-03, EP-09) -----------------
             - id: ms-pedidos
               uri: http://localhost:8094
               predicates:
-                - Path=/api/pedidos,/api/pedidos/**,/api/reportes/**
+                - Path=/api/pedidos,/api/pedidos/**,/api/reportes/**
+              filters:
+                - RemoveResponseHeader=Access-Control-Allow-Origin
+                - RemoveResponseHeader=Access-Control-Expose-Headers
+                - RemoveResponseHeader=Access-Control-Allow-Credentials
 
             # ----------------------- ms-cotizaciones (EP-04) -------------------
             - id: ms-cotizaciones
               uri: http://localhost:8095
               predicates:
-                - Path=/api/cotizaciones,/api/cotizaciones/**
+                - Path=/api/cotizaciones,/api/cotizaciones/**
+              filters:
+                - RemoveResponseHeader=Access-Control-Allow-Origin
+                - RemoveResponseHeader=Access-Control-Expose-Headers
+                - RemoveResponseHeader=Access-Control-Allow-Credentials
 
             # ----------------------- ms-consultas (EP-05) ----------------------
             - id: ms-consultas
               uri: http://localhost:8096
               predicates:
-                - Path=/api/consultas,/api/consultas/**
+                - Path=/api/consultas,/api/consultas/**
+              filters:
+                - RemoveResponseHeader=Access-Control-Allow-Origin
+                - RemoveResponseHeader=Access-Control-Expose-Headers
+                - RemoveResponseHeader=Access-Control-Allow-Credentials
 
 # ---------------------------------------------------------------------
 #  Actuator: expone /actuator/health del propio Gateway

@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Configuración CORS del API Gateway.
  *
- * El frontend (React + Vite) corre en otro puerto/origen que el Gateway, por lo
- * que el navegador enviará peticiones cross-origin. Se registra un CorsFilter
- * de servlet para que aplique a TODAS las rutas del Gateway, incluidas las que
- * se resuelven por RouterFunction.
+ * <p>Las rutas de negocio se reenvían a microservicios que también aplican
+ * CORS. Para evitar que el navegador reciba encabezados CORS duplicados, las
+ * rutas del Gateway eliminan los encabezados CORS que vienen desde el
+ * microservicio y este filtro agrega una sola vez los del origen validado.</p>
  */
 @Configuration
 public class CorsConfig {
