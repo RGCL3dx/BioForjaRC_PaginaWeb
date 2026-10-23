@@ -4,7 +4,7 @@
    ========================================================= */
 
 /* Productos seleccionados: tarjetas horizontales (render de main.js) */
-main section:nth-of-type(2) article {
+.seccion-carrito article {
     display: grid;
     grid-template-columns: 120px 1fr;
     align-items: center;
@@ -17,43 +17,55 @@ main section:nth-of-type(2) article {
     padding: 16px;
 }
 
-main section:nth-of-type(2) article img {
+.seccion-carrito article img {
     width: 120px;
     height: 120px;
     object-fit: cover;
     border-radius: 10px;
 }
 
-main section:nth-of-type(2) article h3 {
+.seccion-carrito article h3 {
     margin: 0 0 4px;
     color: var(--color-primario-oscuro);
 }
 
-main section:nth-of-type(2) article p {
+.seccion-carrito article p {
     margin: 0 0 6px;
     font-size: 0.95rem;
     color: var(--color-gris);
 }
 
-main section:nth-of-type(2) article label {
+.seccion-carrito article label {
     font-weight: 600;
     margin-right: 6px;
     color: var(--color-primario-oscuro);
 }
 
-main section:nth-of-type(2) article input[type="number"] {
+.seccion-carrito article input[type="number"] {
     width: 80px;
     display: inline-block;
 }
 
-main section:nth-of-type(2) article a[data-eliminar] {
+.seccion-carrito article a[data-eliminar] {
     justify-self: start;
     color: var(--color-peligro);
     font-weight: 700;
 }
 
-main section:nth-of-type(2) article a[data-eliminar]:hover {
+.seccion-carrito article a[data-eliminar]:hover {
     text-decoration: underline;
+}
+
+/* Selector de cantidad con botones + y - */
+.cantidad-carrito {
+    width: 132px;
+    min-width: 132px;
+}
+
+.cantidad-carrito .form-control {
+    min-width: 44px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 /* Resumen de la compra */
@@ -84,28 +96,28 @@ main section:nth-of-type(2) article a[data-eliminar]:hover {
 }
 
 @media (max-width: 768px) {
-    main section:nth-of-type(2) article {
+    .seccion-carrito article {
         grid-template-columns: 96px 1fr;
         gap: 14px;
     }
 
-    main section:nth-of-type(2) article img {
+    .seccion-carrito article img {
         width: 96px;
         height: 96px;
     }
 }
 
 @media (max-width: 640px) {
-    main section:nth-of-type(2) article {
+    .seccion-carrito article {
         grid-template-columns: 1fr;
         text-align: center;
     }
 
-    main section:nth-of-type(2) article img {
+    .seccion-carrito article img {
         margin: 0 auto;
     }
 
-    main section:nth-of-type(2) article a[data-eliminar] {
+    .seccion-carrito article a[data-eliminar] {
         justify-self: center;
     }
 

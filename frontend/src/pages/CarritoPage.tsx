@@ -4,6 +4,7 @@ import { ConfirmModal } from '../components/common/ConfirmModal'
 import { EmptyState } from '../components/common/EmptyState'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import type { CartItem } from '../context/CartContext'
 import { useNotification } from '../context/NotificationContext'
 import { assetUrl, formatCLP } from '../utils/format'
 
@@ -12,11 +13,19 @@ export function CarritoPage() {
   const { usuario } = useAuth()
   const { mostrar } = useNotification()
   const [confirmarVaciar, setConfirmarVaciar] = useState(false)
+  const [itemAQuitar, setItemAQuitar] = useState<CartItem | null>(null)
 
   const vaciarCarrito = () => {
     vaciar()
     setConfirmarVaciar(false)
     mostrar('El carrito quedó vacío', 'info')
+  }
+
+  const quitarProducto = () => {
+    if (!itemAQuitar) return
+    eliminar(itemAQuitar.producto.id)
+    mostrar(`${itemAQuitar.producto.nombre} se quitó del carrito`, 'info')
+    setItemAQuitar(null)
   }
 
   return (
@@ -30,7 +39,7 @@ export function CarritoPage() {
         </div>
       </section>
 
-      <section className="py-4">
+      <section className="py-4 seccion-carrito">
         <div className="container">
           {items.length === 0 ? (
             <EmptyState
@@ -104,21 +113,44 @@ export function CarritoPage() {
                             </td>
                             <td>{formatCLP(item.producto.precio)}</td>
                             <td>
-                              <input
-                                type="number"
-                                className="form-control form-control-sm"
-                                min={1}
-                                max={Math.max(1, item.producto.stock)}
-                                value={item.cantidad}
-                                aria-label={`Cantidad de ${item.producto.nombre}`}
-                                onChange={(event) =>
-                                  actualizarCantidad(
-                                    item.producto.id,
-                                    Number(event.target.value) || 1,
-                                  )
-                                }
-                                style={{ width: '80px' }}
-                              />
+                              <div className="input-group input-group-sm cantidad-carrito">
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-secondary"
+                                  aria-label={`Disminuir cantidad de ${item.producto.nombre}`}
+                                  onClick={() =>
+                                    actualizarCantidad(item.producto.id, item.cantidad - 1)
+                                  }
+                                  disabled={item.cantidad <= 1}
+                                >
+                                  -
+                                </button>
+                                <input
+                                  type="number"
+                                  className="form-control form-control-sm text-center"
+                                  min={1}
+                                  max={Math.max(1, item.producto.stock)}
+                                  value={item.cantidad}
+                                  aria-label={`Cantidad de ${item.producto.nombre}`}
+                                  onChange={(event) =>
+                                    actualizarCantidad(
+                                      item.producto.id,
+                                      Number(event.target.value) || 1,
+                                    )
+                                  }
+                                />
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-secondary"
+                                  aria-label={`Aumentar cantidad de ${item.producto.nombre}`}
+                                  onClick={() =>
+                                    actualizarCantidad(item.producto.id, item.cantidad + 1)
+                                  }
+                                  disabled={item.cantidad >= item.producto.stock}
+                                >
+                                  +
+                                </button>
+                              </div>
                             </td>
                             <td className="fw-bold">
                               {formatCLP(Number(item.producto.precio) * item.cantidad)}
@@ -128,10 +160,7 @@ export function CarritoPage() {
                                 type="button"
                                 className="btn btn-sm btn-outline-danger rounded-circle"
                                 aria-label={`Quitar ${item.producto.nombre}`}
-                                onClick={() => {
-                                  eliminar(item.producto.id)
-                                  mostrar(`${item.producto.nombre} se quitó del carrito`, 'info')
-                                }}
+                                onClick={() => setItemAQuitar(item)}
                               >
                                 <i className="bi bi-x-lg" aria-hidden="true" />
                               </button>
@@ -191,6 +220,18 @@ export function CarritoPage() {
         onCancelar={() => setConfirmarVaciar(false)}
       >
         <p className="mb-0">Se quitarán todos los productos del carrito. Esta acción no se puede deshacer.</p>
+      </ConfirmModal>
+
+      <ConfirmModal
+        abierto={Boolean(itemAQuitar)}
+        titulo="Quitar producto"
+        textoConfirmar="Quitar"
+        onConfirmar={quitarProducto}
+        onCancelar={() => setItemAQuitar(null)}
+      >
+        <p className="mb-0">
+          ¿Quitar <strong>{itemAQuitar?.producto.nombre}</strong> del carrito?
+        </p>
       </ConfirmModal>
     </>
   )
