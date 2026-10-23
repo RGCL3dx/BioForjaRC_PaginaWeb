@@ -777,6 +777,37 @@ a:hover {
 }
 
 /* ---------------------------------------------------------
+   Paginación con la paleta de marca
+   --------------------------------------------------------- */
+.pagination {
+    --bs-pagination-color: var(--color-primario);
+    --bs-pagination-bg: var(--color-blanco);
+    --bs-pagination-border-color: rgba(46, 125, 50, 0.28);
+    --bs-pagination-hover-color: var(--color-primario-oscuro);
+    --bs-pagination-hover-bg: rgba(46, 125, 50, 0.10);
+    --bs-pagination-hover-border-color: var(--color-primario);
+    --bs-pagination-focus-color: var(--color-primario-oscuro);
+    --bs-pagination-focus-bg: rgba(46, 125, 50, 0.12);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.18);
+    --bs-pagination-active-color: var(--color-blanco);
+    --bs-pagination-active-bg: var(--color-primario);
+    --bs-pagination-active-border-color: var(--color-primario);
+    --bs-pagination-disabled-color: var(--color-gris);
+    --bs-pagination-disabled-bg: var(--color-fondo);
+    --bs-pagination-disabled-border-color: rgba(46, 125, 50, 0.12);
+}
+
+.pagination .page-link {
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    transition: color var(--transicion), background-color var(--transicion), border-color var(--transicion), box-shadow var(--transicion);
+}
+
+.pagination .page-item:not(.disabled) .page-link:hover {
+    box-shadow: 0 3px 10px rgba(27, 36, 27, 0.12);
+}
+
+/* ---------------------------------------------------------
    Responsive
    --------------------------------------------------------- */
 @media (max-width: 640px) {

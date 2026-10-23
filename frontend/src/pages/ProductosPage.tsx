@@ -161,7 +161,7 @@ export function ProductosPage() {
 
       <section className="py-4">
         <div className="container-xl">
-          <div className="card card-formulario p-3 p-md-4 mb-4">
+          <div className="card card-filtros p-3 p-md-4 mb-4">
             <form className="row g-2 align-items-end" onSubmit={aplicarBusqueda}>
               <div className="col-lg-5">
                 <label htmlFor="buscar-producto" className="form-label">
@@ -200,7 +200,7 @@ export function ProductosPage() {
                   }}
                 />
               </div>
-              <div className="col-lg-3 d-flex gap-2">
+              <div className="col-lg-3 d-flex gap-2 acciones-filtros">
                 <button type="submit" className="btn btn-marca rounded-pill flex-grow-1">
                   Buscar
                 </button>

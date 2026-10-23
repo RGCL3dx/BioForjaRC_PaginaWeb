@@ -21,6 +21,32 @@ main section[id] > h2::after {
     border-radius: 2px;
 }
 
+/* Panel de filtros: ocupa todo el ancho del catálogo.
+   No usa .card-formulario porque esa clase está limitada a 600 px. */
+.card-filtros {
+    border: 0;
+    border-radius: calc(var(--radio-borde) + 4px);
+    box-shadow: var(--sombra);
+    background-color: var(--color-blanco);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow var(--transicion);
+}
+
+.card-filtros::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primario), var(--color-acento));
+}
+
+.card-filtros:hover {
+    box-shadow: var(--sombra-fuerte);
+}
+
 /* Tarjetas de producto (generadas por productos.js) */
 .card-producto {
     display: flex;
@@ -136,5 +162,13 @@ main section[id] > h2::after {
 
     .card-producto .card-text strong {
         font-size: 1.1rem;
+    }
+
+    .acciones-filtros {
+        flex-direction: column;
+    }
+
+    .acciones-filtros .btn {
+        width: 100%;
     }
 }
