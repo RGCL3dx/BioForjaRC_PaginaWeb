@@ -1,6 +1,6 @@
 # Frontend BioForjaRC
 
-Cliente web en **React 19 + TypeScript + Vite** que consume exclusivamente el API Gateway de BioForjaRC en `http://localhost:8090`.
+Cliente web en **React 19 + TypeScript + Vite + SWC + Bootstrap 5** que consume exclusivamente el API Gateway de BioForjaRC en `http://localhost:8090`.
 
 ## Requisitos
 
@@ -77,7 +77,7 @@ No guardes credenciales, tokens ni secretos en `.env` ni en el repositorio.
 - `src/services/http.ts`: cliente HTTP, JWT, manejo de errores, descargas y URL del Gateway.
 - `src/services/`: un servicio por dominio del backend.
 - `src/context/`: autenticación, carrito, notificaciones y catálogo.
-- `src/components/`: layouts, guards y componentes reutilizables.
+- `src/components/`: layouts, guards y componentes reutilizables (`Navbar`, `ProductList`, `ProductCard`, `ConfirmModal`, etc.).
 - `src/pages/`: páginas públicas, de cuenta y de administración.
 - `src/types/api.ts`: contratos TypeScript de las respuestas y solicitudes.
 - `src/utils/format.ts`: formato de moneda, fechas, números y rutas de imágenes.
@@ -89,8 +89,9 @@ El diseño y los estilos se reutilizan del sitio original copiado a `public/asse
 Estado de la última ejecución:
 
 - `npm run lint`: sin errores.
-- `npm test -- --run`: 4 archivos y 19 pruebas aprobadas.
+- `npm test`: 11 archivos y 42 pruebas aprobadas.
 - `npm run build`: correcto.
+- Trazabilidad HU/CA: [`../docs/Matriz_Pruebas_Frontend.md`](../docs/Matriz_Pruebas_Frontend.md).
 - Flujo probado en navegador real: catálogo, búsqueda, filtros, registro, login, perfil, direcciones, carrito, checkout con boleta/factura, retiro, envío estándar/express, pago simulado, comprobantes, cotizaciones con archivos, presupuesto y panel administrativo.
 - Permisos y errores probados: rutas protegidas, cliente en `/admin`, 401, 403, 404, sesión expirada, credenciales inválidas, correo duplicado, stock insuficiente y Gateway caído.
 - Responsive revisado a 375 px, 768 px y escritorio.
