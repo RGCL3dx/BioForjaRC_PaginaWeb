@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ProductCard } from '../components/catalog/ProductCard'
+import { ProductList } from '../components/catalog/ProductList'
 import { EmptyState } from '../components/common/EmptyState'
 import { ErrorAlert } from '../components/common/ErrorAlert'
 import { Loading } from '../components/common/Loading'
@@ -286,13 +286,7 @@ export function ProductosPage() {
                   {productos.totalPaginas}
                 </p>
               </div>
-              <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                {productos.contenido.map((producto) => (
-                  <div className="col" key={producto.id}>
-                    <ProductCard producto={producto} onAgregar={agregarAlCarrito} />
-                  </div>
-                ))}
-              </div>
+              <ProductList productos={productos.contenido} onAgregar={agregarAlCarrito} />
               <Pagination
                 pagina={productos.pagina}
                 totalPaginas={productos.totalPaginas}

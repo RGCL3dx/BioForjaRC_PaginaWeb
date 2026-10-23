@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ProductCard } from '../components/catalog/ProductCard'
+import { ProductList } from '../components/catalog/ProductList'
 import { ErrorAlert } from '../components/common/ErrorAlert'
 import { Loading } from '../components/common/Loading'
 import { useCart } from '../context/CartContext'
@@ -152,13 +152,11 @@ export function HomePage() {
               para agregar el primero.
             </div>
           ) : (
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
-              {productos.map((producto) => (
-                <div className="col" key={producto.id}>
-                  <ProductCard producto={producto} onAgregar={agregarAlCarrito} />
-                </div>
-              ))}
-            </div>
+            <ProductList
+              productos={productos}
+              onAgregar={agregarAlCarrito}
+              columnas="row-cols-1 row-cols-sm-2 row-cols-lg-4"
+            />
           )}
         </div>
       </section>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ProductCard } from '../components/catalog/ProductCard'
+import { ProductList } from '../components/catalog/ProductList'
 import { ErrorAlert } from '../components/common/ErrorAlert'
 import { Loading } from '../components/common/Loading'
 import { useCart } from '../context/CartContext'
@@ -253,13 +253,11 @@ export function ProductoDetallePage() {
         <section className="py-5 seccion-clara">
           <div className="container">
             <h2 className="titulo-seccion">También te puede interesar</h2>
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
-              {relacionados.map((item) => (
-                <div className="col" key={item.id}>
-                  <ProductCard producto={item} onAgregar={agregarRelacionado} />
-                </div>
-              ))}
-            </div>
+            <ProductList
+              productos={relacionados}
+              onAgregar={agregarRelacionado}
+              columnas="row-cols-1 row-cols-sm-2 row-cols-lg-4"
+            />
           </div>
         </section>
       )}

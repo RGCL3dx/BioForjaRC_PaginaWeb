@@ -1,122 +1,15 @@
-import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { useCart } from '../../context/CartContext'
+import { Navbar } from './Navbar'
 import { ScrollToTop } from './ScrollToTop'
 
-const enlaces = [
-  { to: '/', label: 'Inicio', end: true },
-  { to: '/productos', label: 'Productos' },
-  { to: '/nosotros', label: 'Nosotros' },
-  { to: '/cotizacion', label: 'Cotización' },
-  { to: '/contacto', label: 'Contacto' },
-]
-
 export function Layout() {
-  const { usuario, esAdmin, logout } = useAuth()
-  const { cantidadTotal } = useCart()
-  const [menuAbierto, setMenuAbierto] = useState(false)
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    setMenuAbierto(false)
-  }, [location.pathname])
-
-  const cerrarSesion = () => {
-    logout()
-    navigate('/')
-  }
+  const { esAdmin } = useAuth()
 
   return (
     <div className="d-flex min-vh-100 flex-column">
       <ScrollToTop />
-      <header>
-        <nav className="navbar navbar-expand-lg bg-white shadow-sm navbar-marca" aria-label="Navegación principal">
-          <div className="container">
-            <Link className="navbar-brand d-flex align-items-center gap-2 py-2" to="/" aria-label="Ir al inicio de BioForjaRC">
-              <img src="/assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" width="46" height="46" className="rounded-circle" />
-              <span className="fw-bold fs-5 text-tinta">
-                BioForja<strong className="texto-acento">RC</strong>
-              </span>
-            </Link>
-            <button
-              className="navbar-toggler border-0"
-              type="button"
-              aria-controls="menuPrincipal"
-              aria-expanded={menuAbierto}
-              aria-label="Abrir menú"
-              onClick={() => setMenuAbierto((abierto) => !abierto)}
-            >
-              <span className="navbar-toggler-icon" />
-            </button>
-            <div className={`collapse navbar-collapse ${menuAbierto ? 'show' : ''}`} id="menuPrincipal">
-              <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-                {enlaces.map((enlace) => (
-                  <li className="nav-item" key={enlace.to}>
-                    <NavLink
-                      to={enlace.to}
-                      end={enlace.end}
-                      className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
-                    >
-                      {enlace.label}
-                    </NavLink>
-                  </li>
-                ))}
-                {usuario ? (
-                  <>
-                    {esAdmin && (
-                      <li className="nav-item">
-                        <NavLink to="/admin" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-                          Administración
-                        </NavLink>
-                      </li>
-                    )}
-                    <li className="nav-item">
-                      <NavLink to="/mi-cuenta" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-                        Mi cuenta
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <button type="button" className="nav-link btn btn-link" onClick={cerrarSesion}>
-                        Salir
-                      </button>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li className="nav-item">
-                      <NavLink to="/login" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-                        Ingresar
-                      </NavLink>
-                    </li>
-                    <li className="nav-item">
-                      <NavLink to="/registro" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
-                        Registrarse
-                      </NavLink>
-                    </li>
-                  </>
-                )}
-                <li className="nav-item">
-                  <Link
-                    className="btn btn-marca-outline rounded-pill px-3 mt-2 mb-2 mt-lg-0 mb-lg-0 ms-lg-2 position-relative"
-                    to="/carrito"
-                    aria-label="Ir al carrito de compras"
-                  >
-                    <i className="bi bi-cart3 me-1" aria-hidden="true" /> Carrito
-                    {cantidadTotal > 0 && (
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {cantidadTotal}
-                        <span className="visually-hidden">productos en el carrito</span>
-                      </span>
-                    )}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </header>
+      <Navbar />
 
       <main className="flex-grow-1">
         <Outlet />
