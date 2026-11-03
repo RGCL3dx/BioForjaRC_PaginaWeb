@@ -1,3 +1,7 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
 interface PaginationProps {
   pagina: number
   totalPaginas: number
@@ -11,37 +15,50 @@ export function Pagination({ pagina, totalPaginas, onChange }: PaginationProps) 
   )
 
   return (
-    <nav className="mt-4" aria-label="Paginación">
-      <ul className="pagination justify-content-center flex-wrap">
-        <li className={`page-item ${pagina === 0 ? 'disabled' : ''}`}>
-          <button type="button" className="page-link" onClick={() => onChange(pagina - 1)}>
-            Anterior
-          </button>
-        </li>
+    <nav className="mt-6 flex justify-center" aria-label="Paginación">
+      <div className="flex flex-wrap items-center gap-1.5">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => onChange(pagina - 1)}
+          disabled={pagina === 0}
+        >
+          <ChevronLeft className="size-4" aria-hidden="true" />
+          Anterior
+        </Button>
         {paginas.map((indice, posicion) => {
           const anterior = paginas[posicion - 1]
           return (
-            <li key={indice} className="page-item d-flex align-items-center">
+            <span key={indice} className="flex items-center gap-1.5">
               {anterior !== undefined && indice - anterior > 1 && (
-                <span className="px-2 text-muted">…</span>
+                <span className="px-1 text-muted-foreground">…</span>
               )}
-              <button
+              <Button
                 type="button"
-                className={`page-link ${pagina === indice ? 'active' : ''}`}
+                variant={pagina === indice ? 'default' : 'outline'}
+                size="icon"
                 onClick={() => onChange(indice)}
                 aria-current={pagina === indice ? 'page' : undefined}
+                aria-label={`Ir a la página ${indice + 1}`}
+                className={cn('size-9', pagina === indice && 'pointer-events-none')}
               >
                 {indice + 1}
-              </button>
-            </li>
+              </Button>
+            </span>
           )
         })}
-        <li className={`page-item ${pagina >= totalPaginas - 1 ? 'disabled' : ''}`}>
-          <button type="button" className="page-link" onClick={() => onChange(pagina + 1)}>
-            Siguiente
-          </button>
-        </li>
-      </ul>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => onChange(pagina + 1)}
+          disabled={pagina >= totalPaginas - 1}
+        >
+          Siguiente
+          <ChevronRight className="size-4" aria-hidden="true" />
+        </Button>
+      </div>
     </nav>
   )
 }

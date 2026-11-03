@@ -1,11 +1,35 @@
 import { useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { FileDown, MapPin, PackageCheck, Plus, ShoppingBag, UserRound } from 'lucide-react'
 import { ConfirmModal } from '../components/common/ConfirmModal'
 import { EmptyState } from '../components/common/EmptyState'
 import { ErrorAlert, mensajeDeError } from '../components/common/ErrorAlert'
 import { Loading } from '../components/common/Loading'
 import { PedidoBadge, UsuarioBadge } from '../components/common/StatusBadge'
+import { Badge } from '../components/ui/badge'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../components/ui/dialog'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Spinner } from '../components/ui/spinner'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { useAuth } from '../context/AuthContext'
 import { useNotification } from '../context/NotificationContext'
 import { envioService } from '../services/envios'
@@ -31,6 +55,9 @@ const direccionInicial: DireccionRequest = {
   referencia: '',
   principal: false,
 }
+
+const selectClase =
+  'flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-sm shadow-xs outline-none transition-colors focus-visible:border-brand-light focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-70 aria-invalid:border-destructive'
 
 export function MiCuentaPage() {
   const { usuario, logout, actualizarUsuario, refrescarUsuario } = useAuth()
@@ -114,8 +141,8 @@ export function MiCuentaPage() {
 
   if (!usuario) {
     return (
-      <section className="py-5">
-        <div className="container">
+      <section className="py-12">
+        <div className="container-page">
           <Loading texto="Cargando tu cuenta..." />
         </div>
       </section>
@@ -275,192 +302,162 @@ export function MiCuentaPage() {
     }
   }
 
+  const mensajeCampo = (campo: string) =>
+    erroresDireccion[campo] ? <p className="field-error">{erroresDireccion[campo]}</p> : null
+
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
-            <span className="avatar-usuario fs-4" aria-hidden="true">
+      <section className="py-8">
+        <div className="container-page">
+          <div className="mb-5 flex flex-wrap items-center gap-4">
+            <span
+              className="flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-brand to-olive font-display text-2xl font-bold text-white shadow-md"
+              aria-hidden="true"
+            >
               {iniciales}
             </span>
             <div>
-              <h1 className="h2 mb-0">
+              <h1 className="text-2xl font-extrabold text-brand-dark">
                 {usuario.nombre} {usuario.apellido}
               </h1>
-              <p className="texto-gris mb-0">{usuario.correo}</p>
+              <p className="text-sm text-muted-foreground">{usuario.correo}</p>
             </div>
-            <div className="ms-sm-auto d-flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 sm:ml-auto">
               <UsuarioBadge estado={usuario.estado} />
-              <span className="badge rounded-pill text-bg-light border">
+              <Badge variant="outline">
                 {usuario.rol === 'administrador' ? 'Administrador' : 'Cliente'}
-              </span>
+              </Badge>
             </div>
           </div>
 
-          <ul className="nav nav-pills flex-wrap gap-2 mb-4" role="tablist">
-            <li className="nav-item" role="presentation">
-              <button
-                type="button"
-                className={`nav-link rounded-pill ${tab === 'perfil' ? 'active bg-marca' : 'text-marca'}`}
-                onClick={() => setTab('perfil')}
-                role="tab"
-                aria-selected={tab === 'perfil'}
-              >
-                <i className="bi bi-person me-1" aria-hidden="true" />
+          <Tabs value={tab} onValueChange={(valor) => setTab(valor as Tab)}>
+            <TabsList className="mb-5">
+              <TabsTrigger value="perfil">
+                <UserRound className="size-4" aria-hidden="true" />
                 Datos personales
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button
-                type="button"
-                className={`nav-link rounded-pill ${
-                  tab === 'direcciones' ? 'active bg-marca' : 'text-marca'
-                }`}
-                onClick={() => setTab('direcciones')}
-                role="tab"
-                aria-selected={tab === 'direcciones'}
-              >
-                <i className="bi bi-geo-alt me-1" aria-hidden="true" />
+              </TabsTrigger>
+              <TabsTrigger value="direcciones">
+                <MapPin className="size-4" aria-hidden="true" />
                 Direcciones
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button
-                type="button"
-                className={`nav-link rounded-pill ${tab === 'pedidos' ? 'active bg-marca' : 'text-marca'}`}
-                onClick={() => setTab('pedidos')}
-                role="tab"
-                aria-selected={tab === 'pedidos'}
-              >
-                <i className="bi bi-bag-check me-1" aria-hidden="true" />
+              </TabsTrigger>
+              <TabsTrigger value="pedidos">
+                <ShoppingBag className="size-4" aria-hidden="true" />
                 Mis pedidos
-              </button>
-            </li>
-          </ul>
+              </TabsTrigger>
+            </TabsList>
 
-          {tab === 'perfil' && (
-            <div className="row g-4">
-              <div className="col-lg-8">
-                <form className="card card-formulario p-4" onSubmit={guardarPerfil}>
-                  <h2 className="h5 fw-bold mb-3">Datos personales</h2>
-                  {Boolean(errorPerfil) && (
-                    <ErrorAlert error={errorPerfil} onClose={() => setErrorPerfil(null)} />
-                  )}
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <label htmlFor="nombre" className="form-label">
-                        Nombre *
-                      </label>
-                      <input
-                        id="nombre"
-                        name="nombre"
-                        className="form-control"
-                        value={perfil.nombre}
-                        onChange={actualizarPerfil}
-                        maxLength={80}
-                        required
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="apellido" className="form-label">
-                        Apellido *
-                      </label>
-                      <input
-                        id="apellido"
-                        name="apellido"
-                        className="form-control"
-                        value={perfil.apellido}
-                        onChange={actualizarPerfil}
-                        maxLength={80}
-                        required
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="rut-perfil" className="form-label">
-                        RUT *
-                      </label>
-                      <input
-                        id="rut-perfil"
-                        name="rut"
-                        className="form-control"
-                        value={perfil.rut}
-                        onChange={actualizarPerfil}
-                        maxLength={20}
-                        required
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="telefono-perfil" className="form-label">
-                        Teléfono
-                      </label>
-                      <input
-                        id="telefono-perfil"
-                        name="telefono"
-                        type="tel"
-                        className="form-control"
-                        value={perfil.telefono ?? ''}
-                        onChange={actualizarPerfil}
-                        maxLength={25}
-                      />
-                    </div>
-                    <div className="col-12">
-                      <label htmlFor="correo-perfil" className="form-label">
-                        Correo electrónico *
-                      </label>
-                      <input
-                        id="correo-perfil"
-                        name="correo"
-                        type="email"
-                        className="form-control"
-                        value={perfil.correo}
-                        onChange={actualizarPerfil}
-                        maxLength={150}
-                        required
-                      />
-                      <div className="form-text">
-                        Si cambias el correo deberás iniciar sesión nuevamente.
+            <TabsContent value="perfil">
+              <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+                <form onSubmit={guardarPerfil}>
+                  <Card className="gap-4 p-5 sm:p-6">
+                    <h2 className="text-lg font-bold">Datos personales</h2>
+                    {Boolean(errorPerfil) && (
+                      <ErrorAlert error={errorPerfil} onClose={() => setErrorPerfil(null)} />
+                    )}
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <Label htmlFor="nombre">Nombre *</Label>
+                        <Input
+                          id="nombre"
+                          name="nombre"
+                          value={perfil.nombre}
+                          onChange={actualizarPerfil}
+                          maxLength={80}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="apellido">Apellido *</Label>
+                        <Input
+                          id="apellido"
+                          name="apellido"
+                          value={perfil.apellido}
+                          onChange={actualizarPerfil}
+                          maxLength={80}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="rut-perfil">RUT *</Label>
+                        <Input
+                          id="rut-perfil"
+                          name="rut"
+                          value={perfil.rut}
+                          onChange={actualizarPerfil}
+                          maxLength={20}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="telefono-perfil">Teléfono</Label>
+                        <Input
+                          id="telefono-perfil"
+                          name="telefono"
+                          type="tel"
+                          value={perfil.telefono ?? ''}
+                          onChange={actualizarPerfil}
+                          maxLength={25}
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="correo-perfil">Correo electrónico *</Label>
+                        <Input
+                          id="correo-perfil"
+                          name="correo"
+                          type="email"
+                          value={perfil.correo}
+                          onChange={actualizarPerfil}
+                          maxLength={150}
+                          required
+                        />
+                        <p className="mt-1.5 text-xs text-muted-foreground">
+                          Si cambias el correo deberás iniciar sesión nuevamente.
+                        </p>
                       </div>
                     </div>
-                  </div>
-                  <button
-                    type="submit"
-                    className="btn btn-marca rounded-pill px-4 mt-4 align-self-start"
-                    disabled={guardandoPerfil}
-                  >
-                    {guardandoPerfil ? 'Guardando...' : 'Guardar cambios'}
-                  </button>
+                    <Button type="submit" className="self-start" disabled={guardandoPerfil}>
+                      {guardandoPerfil ? (
+                        <>
+                          <Spinner className="size-4" />
+                          Guardando...
+                        </>
+                      ) : (
+                        'Guardar cambios'
+                      )}
+                    </Button>
+                  </Card>
                 </form>
-              </div>
-              <div className="col-lg-4">
-                <div className="card card-formulario p-4">
-                  <h2 className="h6 fw-bold">Información de la cuenta</h2>
-                  <dl className="row small mb-0">
-                    <dt className="col-5 texto-gris">Registro</dt>
-                    <dd className="col-7">{formatDate(usuario.fechaRegistro)}</dd>
-                    <dt className="col-5 texto-gris">Rol</dt>
-                    <dd className="col-7">
-                      {usuario.rol === 'administrador' ? 'Administrador' : 'Cliente'}
-                    </dd>
-                    <dt className="col-5 texto-gris">Estado</dt>
-                    <dd className="col-7">{usuario.estado}</dd>
-                    <dt className="col-5 texto-gris">Correo</dt>
-                    <dd className="col-7">
-                      {usuario.correoConfirmado ? 'Confirmado' : 'Pendiente de confirmación'}
-                    </dd>
+                <Card className="h-fit gap-3 p-5">
+                  <h2 className="text-sm font-bold">Información de la cuenta</h2>
+                  <dl className="space-y-2 text-sm">
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-muted-foreground">Registro</dt>
+                      <dd>{formatDate(usuario.fechaRegistro)}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-muted-foreground">Rol</dt>
+                      <dd>{usuario.rol === 'administrador' ? 'Administrador' : 'Cliente'}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-muted-foreground">Estado</dt>
+                      <dd>{usuario.estado}</dd>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <dt className="text-muted-foreground">Correo</dt>
+                      <dd>{usuario.correoConfirmado ? 'Confirmado' : 'Pendiente de confirmación'}</dd>
+                    </div>
                   </dl>
-                </div>
+                </Card>
               </div>
-            </div>
-          )}
+            </TabsContent>
 
-          {tab === 'direcciones' && (
-            <div>
-              <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                <h2 className="h5 fw-bold mb-0">Mis direcciones</h2>
-                <button type="button" className="btn btn-acento rounded-pill px-4" onClick={abrirNuevaDireccion}>
-                  <i className="bi bi-plus-circle me-1" aria-hidden="true" />
+            <TabsContent value="direcciones">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-lg font-bold">Mis direcciones</h2>
+                <Button type="button" variant="accent" onClick={abrirNuevaDireccion}>
+                  <Plus className="size-4" aria-hidden="true" />
                   Agregar dirección
-                </button>
+                </Button>
               </div>
               {Boolean(errorRegiones) && <ErrorAlert error={errorRegiones} />}
               {usuario.direcciones.length === 0 ? (
@@ -468,74 +465,74 @@ export function MiCuentaPage() {
                   titulo="Aún no tienes direcciones"
                   descripcion="Agrega una dirección para agilizar tus próximas compras."
                   accion={
-                    <button type="button" className="btn btn-marca rounded-pill" onClick={abrirNuevaDireccion}>
+                    <Button type="button" onClick={abrirNuevaDireccion}>
                       Agregar mi primera dirección
-                    </button>
+                    </Button>
                   }
                 />
               ) : (
-                <div className="row g-4">
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {usuario.direcciones.map((direccion) => (
-                    <div className="col-md-6 col-xl-4" key={direccion.id}>
-                      <article className="card card-formulario p-4 h-100">
-                        <div className="d-flex justify-content-between align-items-start mb-2">
-                          <h3 className="h6 fw-bold mb-0">
-                            <i className="bi bi-geo-alt me-1 texto-marca" aria-hidden="true" />
-                            {direccion.calle} {direccion.numero}
-                          </h3>
-                          {direccion.principal && (
-                            <span className="badge text-bg-success rounded-pill">Principal</span>
-                          )}
-                        </div>
-                        <p className="small texto-gris mb-1">
-                          {direccion.comuna}, {direccion.region}
+                    <Card key={direccion.id} className="gap-2 p-5">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="flex items-center gap-1.5 font-bold">
+                          <MapPin className="size-4 text-primary" aria-hidden="true" />
+                          {direccion.calle} {direccion.numero}
+                        </h3>
+                        {direccion.principal && <Badge variant="success">Principal</Badge>}
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {direccion.comuna}, {direccion.region}
+                      </p>
+                      {direccion.departamento && (
+                        <p className="text-sm text-muted-foreground">
+                          Depto. {direccion.departamento}
                         </p>
-                        {direccion.departamento && (
-                          <p className="small texto-gris mb-1">Depto. {direccion.departamento}</p>
-                        )}
-                        {direccion.referencia && (
-                          <p className="small texto-gris mb-2">{direccion.referencia}</p>
-                        )}
-                        <div className="d-flex flex-wrap gap-2 mt-auto pt-3">
-                          <button
+                      )}
+                      {direccion.referencia && (
+                        <p className="text-sm text-muted-foreground">{direccion.referencia}</p>
+                      )}
+                      <div className="mt-auto flex flex-wrap gap-2 pt-3">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => abrirEditarDireccion(direccion)}
+                        >
+                          Editar
+                        </Button>
+                        {!direccion.principal && (
+                          <Button
                             type="button"
-                            className="btn btn-sm btn-marca-outline rounded-pill"
-                            onClick={() => abrirEditarDireccion(direccion)}
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => marcarPrincipal(direccion)}
                           >
-                            Editar
-                          </button>
-                          {!direccion.principal && (
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-outline-secondary rounded-pill"
-                              onClick={() => marcarPrincipal(direccion)}
-                            >
-                              Hacer principal
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            className="btn btn-sm btn-outline-danger rounded-pill"
-                            onClick={() => setDireccionAEliminar(direccion)}
-                          >
-                            Eliminar
-                          </button>
-                        </div>
-                      </article>
-                    </div>
+                            Hacer principal
+                          </Button>
+                        )}
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          className="text-destructive hover:bg-destructive/10"
+                          onClick={() => setDireccionAEliminar(direccion)}
+                        >
+                          Eliminar
+                        </Button>
+                      </div>
+                    </Card>
                   ))}
                 </div>
               )}
-            </div>
-          )}
+            </TabsContent>
 
-          {tab === 'pedidos' && (
-            <div>
-              <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                <h2 className="h5 fw-bold mb-0">Mis pedidos</h2>
-                <Link to="/productos" className="btn btn-marca-outline rounded-pill">
-                  Seguir comprando
-                </Link>
+            <TabsContent value="pedidos">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-lg font-bold">Mis pedidos</h2>
+                <Button asChild variant="outline">
+                  <Link to="/productos">Seguir comprando</Link>
+                </Button>
               </div>
               {Boolean(errorPedidos) && <ErrorAlert error={errorPedidos} />}
               {cargandoPedidos ? (
@@ -545,241 +542,227 @@ export function MiCuentaPage() {
                   titulo="Todavía no tienes pedidos"
                   descripcion="Cuando realices tu primera compra aparecerá aquí."
                   accion={
-                    <Link to="/productos" className="btn btn-marca rounded-pill">
-                      Ver productos
-                    </Link>
+                    <Button asChild>
+                      <Link to="/productos">Ver productos</Link>
+                    </Button>
                   }
                 />
               ) : (
-                <div className="card card-formulario p-3 p-md-4">
-                  <div className="table-responsive">
-                    <table className="table table-hover align-middle tabla-marca mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">Orden</th>
-                          <th scope="col">Fecha</th>
-                          <th scope="col">Productos</th>
-                          <th scope="col">Total</th>
-                          <th scope="col">Estado</th>
-                          <th scope="col" className="text-end">
-                            Acciones
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                <Card className="gap-3 p-4">
+                  <div className="table-wrap">
+                    <Table className="min-w-[760px]">
+                      <TableHeader>
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead>Orden</TableHead>
+                          <TableHead>Fecha</TableHead>
+                          <TableHead>Productos</TableHead>
+                          <TableHead>Total</TableHead>
+                          <TableHead>Estado</TableHead>
+                          <TableHead className="text-right">Acciones</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
                         {pedidos.map((pedido) => (
-                          <tr key={pedido.id}>
-                            <td className="fw-bold">{pedido.numeroOrden}</td>
-                            <td>{formatDateTime(pedido.fechaCreacion)}</td>
-                            <td>{pedido.cantidadProductos}</td>
-                            <td>{formatCLP(pedido.total)}</td>
-                            <td>
+                          <TableRow key={pedido.id}>
+                            <TableCell className="font-bold">{pedido.numeroOrden}</TableCell>
+                            <TableCell>{formatDateTime(pedido.fechaCreacion)}</TableCell>
+                            <TableCell>{pedido.cantidadProductos}</TableCell>
+                            <TableCell>{formatCLP(pedido.total)}</TableCell>
+                            <TableCell>
                               <PedidoBadge estado={pedido.estado} />
-                              <span className="d-block small texto-gris mt-1">
+                              <span className="mt-1 block text-xs text-muted-foreground">
                                 Pago: {pedido.estadoPago}
                               </span>
-                            </td>
-                            <td className="text-end">
-                              <div className="d-flex flex-wrap justify-content-end gap-2">
-                                <Link
-                                  to={`/pedido/${pedido.id}`}
-                                  className="btn btn-sm btn-marca-outline rounded-pill"
-                                >
-                                  Ver detalle
-                                </Link>
-                                <button
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex flex-wrap justify-end gap-2">
+                                <Button asChild size="sm" variant="outline">
+                                  <Link to={`/pedido/${pedido.id}`}>Ver detalle</Link>
+                                </Button>
+                                <Button
                                   type="button"
-                                  className="btn btn-sm btn-marca rounded-pill"
+                                  size="sm"
                                   onClick={() => descargarComprobante(pedido)}
                                   disabled={descargandoId === pedido.id}
                                 >
-                                  {descargandoId === pedido.id ? 'Descargando...' : 'Comprobante'}
-                                </button>
+                                  {descargandoId === pedido.id ? (
+                                    <>
+                                      <Spinner className="size-3.5" />
+                                      Descargando...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <FileDown className="size-3.5" aria-hidden="true" />
+                                      Comprobante
+                                    </>
+                                  )}
+                                </Button>
                               </div>
-                            </td>
-                          </tr>
+                            </TableCell>
+                          </TableRow>
                         ))}
-                      </tbody>
-                    </table>
+                      </TableBody>
+                    </Table>
                   </div>
-                </div>
+                </Card>
               )}
-            </div>
-          )}
+            </TabsContent>
+          </Tabs>
+
+          <div className="mt-8 flex flex-wrap gap-3 border-t border-border pt-5">
+            <Button asChild variant="outline">
+              <Link to="/productos">
+                <PackageCheck className="size-4" aria-hidden="true" />
+                Seguir comprando
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
-      {modalDireccion && (
-        <>
-          <div className="modal fade show d-block" tabIndex={-1} role="dialog" aria-modal="true">
-            <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-              <form className="modal-content" onSubmit={guardarDireccion}>
-                <div className="modal-header">
-                  <h2 className="modal-title h5">
-                    {direccionEditando ? 'Editar dirección' : 'Nueva dirección'}
-                  </h2>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    aria-label="Cerrar"
-                    onClick={() => setModalDireccion(false)}
+      <Dialog open={modalDireccion} onOpenChange={(abierto) => setModalDireccion(abierto)}>
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{direccionEditando ? 'Editar dirección' : 'Nueva dirección'}</DialogTitle>
+            <DialogDescription>
+              Completa los datos para guardar tu dirección de despacho.
+            </DialogDescription>
+          </DialogHeader>
+          <form className="grid gap-4" onSubmit={guardarDireccion}>
+            {Boolean(errorDireccion) && (
+              <ErrorAlert error={errorDireccion} onClose={() => setErrorDireccion(null)} />
+            )}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="region-direccion">Región *</Label>
+                <select
+                  id="region-direccion"
+                  name="region"
+                  className={selectClase}
+                  value={formDireccion.region}
+                  onChange={(event) => {
+                    setFormDireccion((actual) => ({
+                      ...actual,
+                      region: event.target.value,
+                      comuna: '',
+                    }))
+                  }}
+                  required
+                  aria-invalid={erroresDireccion.region ? true : undefined}
+                >
+                  <option value="">Selecciona una región</option>
+                  {regiones.map((region) => (
+                    <option key={region.codigo} value={region.nombre}>
+                      {region.nombre}
+                    </option>
+                  ))}
+                </select>
+                {mensajeCampo('region')}
+              </div>
+              <div>
+                <Label htmlFor="comuna-direccion">Comuna *</Label>
+                <select
+                  id="comuna-direccion"
+                  name="comuna"
+                  className={selectClase}
+                  value={formDireccion.comuna}
+                  onChange={actualizarDireccion}
+                  disabled={!regionSeleccionada}
+                  required
+                  aria-invalid={erroresDireccion.comuna ? true : undefined}
+                >
+                  <option value="">Selecciona una comuna</option>
+                  {regionSeleccionada?.comunas.map((comuna) => (
+                    <option key={comuna.id} value={comuna.nombre}>
+                      {comuna.nombre}
+                    </option>
+                  ))}
+                </select>
+                {mensajeCampo('comuna')}
+              </div>
+              <div className="sm:col-span-2 sm:grid sm:grid-cols-[1fr_8rem] sm:gap-4">
+                <div>
+                  <Label htmlFor="calle">Calle *</Label>
+                  <Input
+                    id="calle"
+                    name="calle"
+                    value={formDireccion.calle}
+                    onChange={actualizarDireccion}
+                    maxLength={150}
+                    required
+                    aria-invalid={erroresDireccion.calle ? true : undefined}
                   />
+                  {mensajeCampo('calle')}
                 </div>
-                <div className="modal-body">
-                  {Boolean(errorDireccion) && (
-                    <ErrorAlert error={errorDireccion} onClose={() => setErrorDireccion(null)} />
-                  )}
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <label htmlFor="region-direccion" className="form-label">
-                        Región *
-                      </label>
-                      <select
-                        id="region-direccion"
-                        name="region"
-                        className={`form-select${erroresDireccion.region ? ' is-invalid' : ''}`}
-                        value={formDireccion.region}
-                        onChange={(event) => {
-                          setFormDireccion((actual) => ({
-                            ...actual,
-                            region: event.target.value,
-                            comuna: '',
-                          }))
-                        }}
-                        required
-                      >
-                        <option value="">Selecciona una región</option>
-                        {regiones.map((region) => (
-                          <option key={region.codigo} value={region.nombre}>
-                            {region.nombre}
-                          </option>
-                        ))}
-                      </select>
-                      {erroresDireccion.region && (
-                        <div className="invalid-feedback">{erroresDireccion.region}</div>
-                      )}
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="comuna-direccion" className="form-label">
-                        Comuna *
-                      </label>
-                      <select
-                        id="comuna-direccion"
-                        name="comuna"
-                        className={`form-select${erroresDireccion.comuna ? ' is-invalid' : ''}`}
-                        value={formDireccion.comuna}
-                        onChange={actualizarDireccion}
-                        disabled={!regionSeleccionada}
-                        required
-                      >
-                        <option value="">Selecciona una comuna</option>
-                        {regionSeleccionada?.comunas.map((comuna) => (
-                          <option key={comuna.id} value={comuna.nombre}>
-                            {comuna.nombre}
-                          </option>
-                        ))}
-                      </select>
-                      {erroresDireccion.comuna && (
-                        <div className="invalid-feedback">{erroresDireccion.comuna}</div>
-                      )}
-                    </div>
-                    <div className="col-md-8">
-                      <label htmlFor="calle" className="form-label">
-                        Calle *
-                      </label>
-                      <input
-                        id="calle"
-                        name="calle"
-                        className={`form-control${erroresDireccion.calle ? ' is-invalid' : ''}`}
-                        value={formDireccion.calle}
-                        onChange={actualizarDireccion}
-                        maxLength={150}
-                        required
-                      />
-                      {erroresDireccion.calle && (
-                        <div className="invalid-feedback">{erroresDireccion.calle}</div>
-                      )}
-                    </div>
-                    <div className="col-md-4">
-                      <label htmlFor="numero" className="form-label">
-                        Número *
-                      </label>
-                      <input
-                        id="numero"
-                        name="numero"
-                        className={`form-control${erroresDireccion.numero ? ' is-invalid' : ''}`}
-                        value={formDireccion.numero}
-                        onChange={actualizarDireccion}
-                        maxLength={20}
-                        required
-                      />
-                      {erroresDireccion.numero && (
-                        <div className="invalid-feedback">{erroresDireccion.numero}</div>
-                      )}
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="departamento" className="form-label">
-                        Departamento / casa
-                      </label>
-                      <input
-                        id="departamento"
-                        name="departamento"
-                        className="form-control"
-                        value={formDireccion.departamento ?? ''}
-                        onChange={actualizarDireccion}
-                        maxLength={50}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="referencia" className="form-label">
-                        Referencia
-                      </label>
-                      <input
-                        id="referencia"
-                        name="referencia"
-                        className="form-control"
-                        value={formDireccion.referencia ?? ''}
-                        onChange={actualizarDireccion}
-                        maxLength={250}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-check mt-3">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="principal"
-                      name="principal"
-                      checked={formDireccion.principal}
-                      onChange={actualizarDireccion}
-                    />
-                    <label className="form-check-label" htmlFor="principal">
-                      Usar como dirección principal
-                    </label>
-                  </div>
+                <div>
+                  <Label htmlFor="numero">Número *</Label>
+                  <Input
+                    id="numero"
+                    name="numero"
+                    value={formDireccion.numero}
+                    onChange={actualizarDireccion}
+                    maxLength={20}
+                    required
+                    aria-invalid={erroresDireccion.numero ? true : undefined}
+                  />
+                  {mensajeCampo('numero')}
                 </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary rounded-pill"
-                    onClick={() => setModalDireccion(false)}
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-marca rounded-pill"
-                    disabled={guardandoDireccion}
-                  >
-                    {guardandoDireccion ? 'Guardando...' : 'Guardar dirección'}
-                  </button>
-                </div>
-              </form>
+              </div>
+              <div>
+                <Label htmlFor="departamento">Departamento / casa</Label>
+                <Input
+                  id="departamento"
+                  name="departamento"
+                  value={formDireccion.departamento ?? ''}
+                  onChange={actualizarDireccion}
+                  maxLength={50}
+                />
+              </div>
+              <div>
+                <Label htmlFor="referencia">Referencia</Label>
+                <Input
+                  id="referencia"
+                  name="referencia"
+                  value={formDireccion.referencia ?? ''}
+                  onChange={actualizarDireccion}
+                  maxLength={250}
+                />
+              </div>
             </div>
-          </div>
-          <div className="modal-backdrop fade show" />
-        </>
-      )}
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                id="principal"
+                name="principal"
+                checked={formDireccion.principal}
+                onChange={actualizarDireccion}
+                className="size-4 accent-primary"
+              />
+              Usar como dirección principal
+            </label>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setModalDireccion(false)}
+                disabled={guardandoDireccion}
+              >
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={guardandoDireccion}>
+                {guardandoDireccion ? (
+                  <>
+                    <Spinner className="size-4" />
+                    Guardando...
+                  </>
+                ) : (
+                  'Guardar dirección'
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <ConfirmModal
         abierto={Boolean(direccionAEliminar)}

@@ -1,10 +1,32 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { Download, FileText, Link2, Search } from 'lucide-react'
 import { EmptyState } from '../../components/common/EmptyState'
 import { ErrorAlert, mensajeDeError } from '../../components/common/ErrorAlert'
 import { Loading } from '../../components/common/Loading'
 import { Pagination } from '../../components/common/Pagination'
 import { CotizacionBadge } from '../../components/common/StatusBadge'
+import { Button } from '../../components/ui/button'
+import { Card } from '../../components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../../components/ui/dialog'
+import { Input } from '../../components/ui/input'
+import { Label } from '../../components/ui/label'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../components/ui/table'
+import { Textarea } from '../../components/ui/textarea'
 import { useNotification } from '../../context/NotificationContext'
 import { cotizacionService } from '../../services/cotizaciones'
 import type {
@@ -19,6 +41,9 @@ interface FormularioPresupuesto {
   plazoEntregaDias: string
   observaciones: string
 }
+
+const selectClase =
+  'flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-sm shadow-xs outline-none transition-colors focus-visible:border-brand-light focus-visible:ring-2 focus-visible:ring-ring/30'
 
 export function AdminCotizacionesPage() {
   const { mostrar } = useNotification()
@@ -137,46 +162,41 @@ export function AdminCotizacionesPage() {
 
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Cotizaciones</h1>
-          <p className="pagina-intro">
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Cotizaciones</h1>
+          <p className="page-intro mb-0">
             Revisa solicitudes, descarga archivos 3D y asigna monto y plazo de entrega.
           </p>
         </div>
       </section>
 
-      <section className="py-4">
-        <div className="container">
-          <div className="card card-formulario p-4">
+      <section className="pb-16">
+        <div className="container-page">
+          <Card className="gap-4 p-4 sm:p-5">
             <form
-              className="row g-2 mb-3 align-items-end"
+              className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1.4fr_0.8fr_0.8fr_0.8fr_auto]"
               onSubmit={(event) => {
                 event.preventDefault()
                 setQ(qInput)
                 setPagina(0)
               }}
             >
-              <div className="col-md-4">
-                <label htmlFor="buscar-cotizacion" className="form-label">
-                  Buscar
-                </label>
-                <input
+              <div>
+                <Label htmlFor="buscar-cotizacion">Buscar</Label>
+                <Input
                   id="buscar-cotizacion"
                   type="search"
-                  className="form-control"
                   placeholder="Ticket, cliente o correo"
                   value={qInput}
                   onChange={(event) => setQInput(event.target.value)}
                 />
               </div>
-              <div className="col-md-2">
-                <label htmlFor="estado-cotizacion" className="form-label">
-                  Estado
-                </label>
+              <div>
+                <Label htmlFor="estado-cotizacion">Estado</Label>
                 <select
                   id="estado-cotizacion"
-                  className="form-select"
+                  className={selectClase}
                   value={estado}
                   onChange={(event) => {
                     setEstado(event.target.value)
@@ -188,14 +208,11 @@ export function AdminCotizacionesPage() {
                   <option value="Presupuestada">Presupuestada</option>
                 </select>
               </div>
-              <div className="col-md-2">
-                <label htmlFor="cotizacion-desde" className="form-label">
-                  Desde
-                </label>
-                <input
+              <div>
+                <Label htmlFor="cotizacion-desde">Desde</Label>
+                <Input
                   id="cotizacion-desde"
                   type="date"
-                  className="form-control"
                   value={desde}
                   onChange={(event) => {
                     setDesde(event.target.value)
@@ -203,14 +220,11 @@ export function AdminCotizacionesPage() {
                   }}
                 />
               </div>
-              <div className="col-md-2">
-                <label htmlFor="cotizacion-hasta" className="form-label">
-                  Hasta
-                </label>
-                <input
+              <div>
+                <Label htmlFor="cotizacion-hasta">Hasta</Label>
+                <Input
                   id="cotizacion-hasta"
                   type="date"
-                  className="form-control"
                   value={hasta}
                   onChange={(event) => {
                     setHasta(event.target.value)
@@ -218,13 +232,14 @@ export function AdminCotizacionesPage() {
                   }}
                 />
               </div>
-              <div className="col-md-2 d-flex gap-2">
-                <button type="submit" className="btn btn-marca rounded-pill flex-grow-1">
+              <div className="flex items-end gap-2">
+                <Button type="submit" className="flex-1">
+                  <Search className="size-4" aria-hidden="true" />
                   Buscar
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn btn-marca-outline rounded-pill"
+                  variant="outline"
                   onClick={() => {
                     setQInput('')
                     setQ('')
@@ -235,7 +250,7 @@ export function AdminCotizacionesPage() {
                   }}
                 >
                   Limpiar
-                </button>
+                </Button>
               </div>
             </form>
 
@@ -250,55 +265,62 @@ export function AdminCotizacionesPage() {
               />
             ) : (
               <>
-                <div className="table-responsive">
-                  <table className="table table-hover align-middle tabla-marca tabla-admin mb-0">
-                    <thead>
-                      <tr>
-                        <th scope="col">Ticket</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Cliente</th>
-                        <th scope="col">Categoría</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Archivos</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Presupuesto</th>
-                        <th scope="col">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                <div className="table-wrap">
+                  <Table className="min-w-[1100px]">
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead>Ticket</TableHead>
+                        <TableHead>Fecha</TableHead>
+                        <TableHead>Cliente</TableHead>
+                        <TableHead>Categoría</TableHead>
+                        <TableHead>Cantidad</TableHead>
+                        <TableHead>Archivos</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Presupuesto</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                       {cotizaciones.contenido.map((cotizacion) => (
-                        <tr key={cotizacion.id}>
-                          <td className="fw-bold font-monospace">{cotizacion.numeroTicket}</td>
-                          <td>{formatDateTime(cotizacion.fechaCreacion)}</td>
-                          <td>
-                            <span className="d-block">
+                        <TableRow key={cotizacion.id}>
+                          <TableCell className="font-mono font-bold">
+                            {cotizacion.numeroTicket}
+                          </TableCell>
+                          <TableCell>{formatDateTime(cotizacion.fechaCreacion)}</TableCell>
+                          <TableCell className="whitespace-normal">
+                            <span className="block">
                               {cotizacion.nombre} {cotizacion.apellido}
                             </span>
-                            <span className="small texto-gris d-block">{cotizacion.correo}</span>
-                          </td>
-                          <td className="small">{cotizacion.categoria}</td>
-                          <td>{cotizacion.cantidad ?? '—'}</td>
-                          <td>{cotizacion.cantidadArchivos}</td>
-                          <td>
+                            <span className="block text-xs text-muted-foreground">
+                              {cotizacion.correo}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-xs">{cotizacion.categoria}</TableCell>
+                          <TableCell>{cotizacion.cantidad ?? '—'}</TableCell>
+                          <TableCell>{cotizacion.cantidadArchivos}</TableCell>
+                          <TableCell>
                             <CotizacionBadge estado={cotizacion.estado} />
-                          </td>
-                          <td>{cotizacion.montoTotal ? formatCLP(cotizacion.montoTotal) : '—'}</td>
-                          <td>
-                            <button
+                          </TableCell>
+                          <TableCell>
+                            {cotizacion.montoTotal ? formatCLP(cotizacion.montoTotal) : '—'}
+                          </TableCell>
+                          <TableCell>
+                            <Button
                               type="button"
-                              className="btn btn-sm btn-marca-outline rounded-pill"
+                              size="sm"
+                              variant="outline"
                               onClick={() => void verDetalle(cotizacion)}
                             >
                               Ver detalle
-                            </button>
-                          </td>
-                        </tr>
+                            </Button>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
-                <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
-                  <span className="small texto-gris">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs text-muted-foreground">
                     {cotizaciones.totalElementos} cotización
                     {cotizaciones.totalElementos === 1 ? '' : 'es'} en total
                   </span>
@@ -310,236 +332,213 @@ export function AdminCotizacionesPage() {
                 </div>
               </>
             )}
-          </div>
+          </Card>
         </div>
       </section>
 
-      {modalAbierto && (
-        <>
-          <div className="modal fade show d-block" tabIndex={-1} role="dialog" aria-modal="true">
-            <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h2 className="modal-title h5">
-                    {detalle ? `Cotización ${detalle.numeroTicket}` : 'Detalle de cotización'}
-                  </h2>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    aria-label="Cerrar"
-                    onClick={() => setModalAbierto(false)}
-                  />
-                </div>
-                <div className="modal-body">
-                  {cargandoDetalle ? (
-                    <Loading texto="Cargando cotización..." />
-                  ) : errorDetalle ? (
-                    <ErrorAlert error={errorDetalle} onClose={() => setErrorDetalle(null)} />
-                  ) : detalle ? (
-                    <>
-                      <div className="row g-3 mb-4">
-                        <div className="col-md-5">
-                          <h3 className="h6 fw-bold">Solicitante</h3>
-                          <p className="small mb-0">
-                            {detalle.nombre} {detalle.apellido}
-                            <br />
-                            {detalle.correo}
-                            {detalle.telefono && (
-                              <>
-                                <br />
-                                {detalle.telefono}
-                              </>
-                            )}
-                          </p>
-                        </div>
-                        <div className="col-md-3">
-                          <h3 className="h6 fw-bold">Proyecto</h3>
-                          <p className="small mb-0">
-                            Categoría: {detalle.categoria}
-                            <br />
-                            Cantidad: {detalle.cantidad ?? 'No indicada'}
-                            <br />
-                            Plazo: {detalle.plazo || 'Sin preferencia'}
-                          </p>
-                        </div>
-                        <div className="col-md-4">
-                          <h3 className="h6 fw-bold">Estado</h3>
-                          <p className="small mb-0">
-                            <CotizacionBadge estado={detalle.estado} />
-                            <br />
-                            Creada: {formatDateTime(detalle.fechaCreacion)}
-                            {detalle.fechaPresupuesto && (
-                              <>
-                                <br />
-                                Presupuestada: {formatDateTime(detalle.fechaPresupuesto)}
-                              </>
-                            )}
-                          </p>
-                        </div>
-                      </div>
+      <Dialog open={modalAbierto} onOpenChange={setModalAbierto}>
+        <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {detalle ? `Cotización ${detalle.numeroTicket}` : 'Detalle de cotización'}
+            </DialogTitle>
+            <DialogDescription>
+              Revisa la solicitud, descarga los archivos y define el presupuesto.
+            </DialogDescription>
+          </DialogHeader>
 
-                      <h3 className="h6 fw-bold">Descripción</h3>
-                      <p className="small" style={{ whiteSpace: 'pre-wrap' }}>
-                        {detalle.descripcion}
+          {cargandoDetalle ? (
+            <Loading texto="Cargando cotización..." />
+          ) : errorDetalle ? (
+            <ErrorAlert error={errorDetalle} onClose={() => setErrorDetalle(null)} />
+          ) : detalle ? (
+            <div className="space-y-5">
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div>
+                  <h3 className="text-sm font-bold">Solicitante</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {detalle.nombre} {detalle.apellido}
+                    <br />
+                    {detalle.correo}
+                    {detalle.telefono && (
+                      <>
+                        <br />
+                        {detalle.telefono}
+                      </>
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold">Proyecto</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Categoría: {detalle.categoria}
+                    <br />
+                    Cantidad: {detalle.cantidad ?? 'No indicada'}
+                    <br />
+                    Plazo: {detalle.plazo || 'Sin preferencia'}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold">Estado</h3>
+                  <div className="mt-1 space-y-1 text-sm text-muted-foreground">
+                    <CotizacionBadge estado={detalle.estado} />
+                    <p className="mb-0">Creada: {formatDateTime(detalle.fechaCreacion)}</p>
+                    {detalle.fechaPresupuesto && (
+                      <p className="mb-0">
+                        Presupuestada: {formatDateTime(detalle.fechaPresupuesto)}
                       </p>
-
-                      <h3 className="h6 fw-bold">Archivos 3D</h3>
-                      {detalle.archivos.length === 0 ? (
-                        <p className="small texto-gris">No se adjuntaron archivos.</p>
-                      ) : (
-                        <ul className="list-group mb-3">
-                          {detalle.archivos.map((archivo) => (
-                            <li
-                              key={archivo.id}
-                              className="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2"
-                            >
-                              <span>
-                                <i className="bi bi-file-earmark me-2 texto-marca" aria-hidden="true" />
-                                {archivo.nombreOriginal}{' '}
-                                <span className="small texto-gris">
-                                  ({archivo.tamanoLegible} · {archivo.extension})
-                                </span>
-                              </span>
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-marca-outline rounded-pill"
-                                onClick={() => void descargarArchivo(archivo.id, archivo.nombreOriginal)}
-                                disabled={descargandoArchivo === archivo.id}
-                              >
-                                {descargandoArchivo === archivo.id ? 'Descargando...' : 'Descargar'}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-
-                      <hr />
-                      <h3 className="h6 fw-bold">Presupuesto</h3>
-                      {detalle.estado === 'Presupuestada' ? (
-                        <div className="row g-3">
-                          <div className="col-md-3">
-                            <span className="small texto-gris d-block">Monto total</span>
-                            <strong>{formatCLP(detalle.montoTotal ?? 0)}</strong>
-                          </div>
-                          <div className="col-md-3">
-                            <span className="small texto-gris d-block">Plazo de entrega</span>
-                            <strong>{detalle.plazoEntregaDias ?? '—'} días</strong>
-                          </div>
-                          <div className="col-md-6">
-                            <span className="small texto-gris d-block">Observaciones</span>
-                            <span>{detalle.observacionesPresupuesto || 'Sin observaciones'}</span>
-                          </div>
-                          {detalle.enlacePago && (
-                            <div className="col-12">
-                              <a
-                                href={detalle.enlacePago}
-                                className="btn btn-marca rounded-pill"
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                <i className="bi bi-link-45deg me-1" aria-hidden="true" />
-                                Abrir enlace de pago
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <form className="row g-3" onSubmit={guardarPresupuesto}>
-                          {Boolean(errorPresupuesto) && (
-                            <div className="col-12">
-                              <ErrorAlert
-                                error={errorPresupuesto}
-                                onClose={() => setErrorPresupuesto(null)}
-                              />
-                            </div>
-                          )}
-                          <div className="col-md-4">
-                            <label htmlFor="monto-total" className="form-label">
-                              Monto total (CLP) *
-                            </label>
-                            <input
-                              id="monto-total"
-                              type="number"
-                              min={0}
-                              step={1}
-                              className="form-control"
-                              value={presupuesto.montoTotal}
-                              onChange={(event) =>
-                                setPresupuesto((actual) => ({
-                                  ...actual,
-                                  montoTotal: event.target.value,
-                                }))
-                              }
-                              required
-                            />
-                          </div>
-                          <div className="col-md-4">
-                            <label htmlFor="plazo-entrega" className="form-label">
-                              Plazo de entrega (días) *
-                            </label>
-                            <input
-                              id="plazo-entrega"
-                              type="number"
-                              min={1}
-                              max={365}
-                              className="form-control"
-                              value={presupuesto.plazoEntregaDias}
-                              onChange={(event) =>
-                                setPresupuesto((actual) => ({
-                                  ...actual,
-                                  plazoEntregaDias: event.target.value,
-                                }))
-                              }
-                              required
-                            />
-                          </div>
-                          <div className="col-12">
-                            <label htmlFor="observaciones-presupuesto" className="form-label">
-                              Observaciones
-                            </label>
-                            <textarea
-                              id="observaciones-presupuesto"
-                              rows={3}
-                              className="form-control"
-                              value={presupuesto.observaciones}
-                              onChange={(event) =>
-                                setPresupuesto((actual) => ({
-                                  ...actual,
-                                  observaciones: event.target.value,
-                                }))
-                              }
-                              maxLength={1000}
-                            />
-                          </div>
-                          <div className="col-12">
-                            <button
-                              type="submit"
-                              className="btn btn-acento rounded-pill px-4"
-                              disabled={guardandoPresupuesto}
-                            >
-                              {guardandoPresupuesto ? 'Guardando...' : 'Guardar presupuesto'}
-                            </button>
-                          </div>
-                        </form>
-                      )}
-                    </>
-                  ) : null}
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary rounded-pill"
-                    onClick={() => setModalAbierto(false)}
-                  >
-                    Cerrar
-                  </button>
+                    )}
+                  </div>
                 </div>
               </div>
+
+              <div>
+                <h3 className="mb-2 text-sm font-bold">Descripción</h3>
+                <p className="text-sm whitespace-pre-wrap text-muted-foreground">
+                  {detalle.descripcion}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="mb-2 text-sm font-bold">Archivos 3D</h3>
+                {detalle.archivos.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No se adjuntaron archivos.</p>
+                ) : (
+                  <ul className="divide-y divide-border rounded-xl border border-border">
+                    {detalle.archivos.map((archivo) => (
+                      <li
+                        key={archivo.id}
+                        className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5"
+                      >
+                        <span className="flex items-center gap-2 text-sm">
+                          <FileText className="size-4 text-brand" aria-hidden="true" />
+                          {archivo.nombreOriginal}{' '}
+                          <span className="text-xs text-muted-foreground">
+                            ({archivo.tamanoLegible} · {archivo.extension})
+                          </span>
+                        </span>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => void descargarArchivo(archivo.id, archivo.nombreOriginal)}
+                          disabled={descargandoArchivo === archivo.id}
+                        >
+                          <Download className="size-4" aria-hidden="true" />
+                          {descargandoArchivo === archivo.id ? 'Descargando...' : 'Descargar'}
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="border-t border-border pt-4">
+                <h3 className="mb-3 text-sm font-bold">Presupuesto</h3>
+                {detalle.estado === 'Presupuestada' ? (
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    <div>
+                      <span className="block text-xs text-muted-foreground">Monto total</span>
+                      <strong>{formatCLP(detalle.montoTotal ?? 0)}</strong>
+                    </div>
+                    <div>
+                      <span className="block text-xs text-muted-foreground">Plazo de entrega</span>
+                      <strong>{detalle.plazoEntregaDias ?? '—'} días</strong>
+                    </div>
+                    <div>
+                      <span className="block text-xs text-muted-foreground">Observaciones</span>
+                      <span className="text-sm">
+                        {detalle.observacionesPresupuesto || 'Sin observaciones'}
+                      </span>
+                    </div>
+                    {detalle.enlacePago && (
+                      <div className="sm:col-span-3">
+                        <Button asChild>
+                          <a href={detalle.enlacePago} target="_blank" rel="noreferrer">
+                            <Link2 className="size-4" aria-hidden="true" />
+                            Abrir enlace de pago
+                          </a>
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <form className="grid gap-4 sm:grid-cols-2" onSubmit={guardarPresupuesto}>
+                    {Boolean(errorPresupuesto) && (
+                      <div className="sm:col-span-2">
+                        <ErrorAlert
+                          error={errorPresupuesto}
+                          onClose={() => setErrorPresupuesto(null)}
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <Label htmlFor="monto-total">Monto total (CLP) *</Label>
+                      <Input
+                        id="monto-total"
+                        type="number"
+                        min={0}
+                        step={1}
+                        value={presupuesto.montoTotal}
+                        onChange={(event) =>
+                          setPresupuesto((actual) => ({
+                            ...actual,
+                            montoTotal: event.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="plazo-entrega">Plazo de entrega (días) *</Label>
+                      <Input
+                        id="plazo-entrega"
+                        type="number"
+                        min={1}
+                        max={365}
+                        value={presupuesto.plazoEntregaDias}
+                        onChange={(event) =>
+                          setPresupuesto((actual) => ({
+                            ...actual,
+                            plazoEntregaDias: event.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <Label htmlFor="observaciones-presupuesto">Observaciones</Label>
+                      <Textarea
+                        id="observaciones-presupuesto"
+                        rows={3}
+                        value={presupuesto.observaciones}
+                        onChange={(event) =>
+                          setPresupuesto((actual) => ({
+                            ...actual,
+                            observaciones: event.target.value,
+                          }))
+                        }
+                        maxLength={1000}
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <Button type="submit" variant="accent" disabled={guardandoPresupuesto}>
+                        {guardandoPresupuesto ? 'Guardando...' : 'Guardar presupuesto'}
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="modal-backdrop fade show" />
-        </>
-      )}
+          ) : null}
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setModalAbierto(false)}>
+              Cerrar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

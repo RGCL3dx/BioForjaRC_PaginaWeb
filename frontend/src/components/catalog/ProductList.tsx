@@ -4,22 +4,20 @@ import { ProductCard } from './ProductCard'
 interface ProductListProps {
   productos: ProductoResumen[]
   onAgregar: (producto: ProductoResumen) => void
-  columnas?: string
+  columnas?: 3 | 4
 }
 
-const COLUMNAS_POR_DEFECTO = 'row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4'
-
-export function ProductList({
-  productos,
-  onAgregar,
-  columnas = COLUMNAS_POR_DEFECTO,
-}: ProductListProps) {
+export function ProductList({ productos, onAgregar, columnas = 4 }: ProductListProps) {
   return (
-    <div className={`row g-4 ${columnas}`}>
+    <div
+      className={
+        columnas === 3
+          ? 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3'
+          : 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+      }
+    >
       {productos.map((producto) => (
-        <div className="col" key={producto.id}>
-          <ProductCard producto={producto} onAgregar={onAgregar} />
-        </div>
+        <ProductCard key={producto.id} producto={producto} onAgregar={onAgregar} />
       ))}
     </div>
   )

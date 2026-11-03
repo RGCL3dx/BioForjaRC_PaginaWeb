@@ -1,10 +1,33 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
+import { ImageIcon, Package, Plus, Search } from 'lucide-react'
 import { ConfirmModal } from '../../components/common/ConfirmModal'
 import { EmptyState } from '../../components/common/EmptyState'
 import { ErrorAlert, mensajeDeError } from '../../components/common/ErrorAlert'
 import { Loading } from '../../components/common/Loading'
 import { Pagination } from '../../components/common/Pagination'
+import { Badge } from '../../components/ui/badge'
+import { Button } from '../../components/ui/button'
+import { Card } from '../../components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../../components/ui/dialog'
+import { Input } from '../../components/ui/input'
+import { Label } from '../../components/ui/label'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../components/ui/table'
+import { Textarea } from '../../components/ui/textarea'
 import { useNotification } from '../../context/NotificationContext'
 import { catalogoService } from '../../services/catalogo'
 import type {
@@ -14,6 +37,7 @@ import type {
   ProductoResumen,
 } from '../../types/api'
 import { assetUrl, formatCLP, formatNumber } from '../../utils/format'
+import { cn } from '@/lib/utils'
 
 type FiltroActivo = 'todos' | 'activos' | 'inactivos'
 
@@ -40,6 +64,9 @@ const formularioInicial: FormularioProducto = {
   imagen: '',
   imagenes: '',
 }
+
+const selectClase =
+  'flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-sm shadow-xs outline-none transition-colors focus-visible:border-brand-light focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-70'
 
 export function AdminInventarioPage() {
   const { mostrar } = useNotification()
@@ -223,62 +250,54 @@ export function AdminInventarioPage() {
     }
   }
 
-  const campoClase = (campo: string) =>
-    `form-control${erroresFormulario[campo] ? ' is-invalid' : ''}`
-
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Inventario</h1>
-          <p className="pagina-intro">
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Inventario</h1>
+          <p className="page-intro mb-0">
             Agrega productos al catálogo y actualiza precios y stock de la tienda.
           </p>
         </div>
       </section>
 
-      <section className="py-4">
-        <div className="container">
-          <div className="card card-formulario p-4">
-            <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-              <h2 className="h5 fw-bold mb-0">
-                <i className="bi bi-cube me-2 pie-icono text-marca" aria-hidden="true" />
+      <section className="pb-16">
+        <div className="container-page">
+          <Card className="gap-4 p-4 sm:p-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="flex items-center gap-2 text-lg font-bold">
+                <Package className="size-5 text-brand" aria-hidden="true" />
                 Productos registrados
               </h2>
-              <button type="button" className="btn btn-acento rounded-pill px-4" onClick={abrirNuevo}>
-                <i className="bi bi-plus-circle me-1" aria-hidden="true" />
+              <Button type="button" variant="accent" onClick={abrirNuevo}>
+                <Plus className="size-4" aria-hidden="true" />
                 Agregar producto
-              </button>
+              </Button>
             </div>
 
             <form
-              className="row g-2 mb-3 align-items-end"
+              className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1.4fr_1fr_1fr_auto]"
               onSubmit={(event) => {
                 event.preventDefault()
                 setQ(qInput)
                 setPagina(0)
               }}
             >
-              <div className="col-md-4">
-                <label htmlFor="buscar-producto" className="form-label">
-                  Buscar
-                </label>
-                <input
+              <div>
+                <Label htmlFor="buscar-producto">Buscar</Label>
+                <Input
                   id="buscar-producto"
                   type="search"
-                  className="form-control"
                   placeholder="Nombre o descripción"
                   value={qInput}
                   onChange={(event) => setQInput(event.target.value)}
                 />
               </div>
-              <div className="col-md-3">
-                <label htmlFor="categoria-filtro" className="form-label">
-                  Categoría
-                </label>
+              <div>
+                <Label htmlFor="categoria-filtro">Categoría</Label>
                 <select
                   id="categoria-filtro"
-                  className="form-select"
+                  className={selectClase}
                   value={categoria}
                   onChange={(event) => {
                     setCategoria(event.target.value)
@@ -293,13 +312,11 @@ export function AdminInventarioPage() {
                   ))}
                 </select>
               </div>
-              <div className="col-md-3">
-                <label htmlFor="estado-filtro" className="form-label">
-                  Estado
-                </label>
+              <div>
+                <Label htmlFor="estado-filtro">Estado</Label>
                 <select
                   id="estado-filtro"
-                  className="form-select"
+                  className={selectClase}
                   value={filtroActivo}
                   onChange={(event) => {
                     setFiltroActivo(event.target.value as FiltroActivo)
@@ -311,13 +328,14 @@ export function AdminInventarioPage() {
                   <option value="inactivos">Inactivos</option>
                 </select>
               </div>
-              <div className="col-md-2 d-flex gap-2">
-                <button type="submit" className="btn btn-marca rounded-pill flex-grow-1">
+              <div className="flex items-end gap-2">
+                <Button type="submit" className="flex-1">
+                  <Search className="size-4" aria-hidden="true" />
                   Buscar
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn btn-marca-outline rounded-pill"
+                  variant="outline"
                   onClick={() => {
                     setQInput('')
                     setQ('')
@@ -327,7 +345,7 @@ export function AdminInventarioPage() {
                   }}
                 >
                   Limpiar
-                </button>
+                </Button>
               </div>
             </form>
 
@@ -340,94 +358,103 @@ export function AdminInventarioPage() {
                 titulo="No hay productos que coincidan"
                 descripcion="Cambia los filtros o agrega un nuevo producto al catálogo."
                 accion={
-                  <button type="button" className="btn btn-marca rounded-pill" onClick={abrirNuevo}>
+                  <Button type="button" onClick={abrirNuevo}>
+                    <Plus className="size-4" aria-hidden="true" />
                     Agregar producto
-                  </button>
+                  </Button>
                 }
               />
             ) : (
               <>
-                <div className="table-responsive">
-                  <table className="table table-hover align-middle tabla-marca tabla-admin mb-0">
-                    <thead>
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Producto</th>
-                        <th scope="col">Categoría</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                <div className="table-wrap">
+                  <Table className="min-w-[980px]">
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead>ID</TableHead>
+                        <TableHead>Producto</TableHead>
+                        <TableHead>Categoría</TableHead>
+                        <TableHead>Precio</TableHead>
+                        <TableHead>Stock</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                       {productos.contenido.map((producto) => (
-                        <tr key={producto.id}>
-                          <td>{producto.id}</td>
-                          <td>
-                            <div className="d-flex align-items-center gap-2">
-                              <img
-                                src={assetUrl(producto.imagen)}
-                                alt=""
-                                width={48}
-                                height={48}
-                                className="rounded-2"
-                                style={{ objectFit: 'cover' }}
-                              />
-                              <div>
-                                <span className="fw-bold d-block">{producto.nombre}</span>
-                                <span className="small texto-gris d-block text-truncate" style={{ maxWidth: '260px' }}>
+                        <TableRow key={producto.id}>
+                          <TableCell className="text-muted-foreground">{producto.id}</TableCell>
+                          <TableCell className="whitespace-normal">
+                            <div className="flex items-center gap-3">
+                              {producto.imagen ? (
+                                <img
+                                  src={assetUrl(producto.imagen)}
+                                  alt=""
+                                  width={48}
+                                  height={48}
+                                  className="size-12 shrink-0 rounded-lg border border-border object-cover"
+                                />
+                              ) : (
+                                <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                                  <ImageIcon className="size-5" aria-hidden="true" />
+                                </span>
+                              )}
+                              <div className="min-w-0">
+                                <span className="block font-bold">{producto.nombre}</span>
+                                <span className="block max-w-[260px] truncate text-xs text-muted-foreground">
                                   {producto.descripcion}
                                 </span>
                               </div>
                             </div>
-                          </td>
-                          <td>{producto.categoria.nombre}</td>
-                          <td>{formatCLP(producto.precio)}</td>
-                          <td>
-                            <span className={`fw-bold ${producto.stockBajo ? 'text-danger' : 'text-success'}`}>
+                          </TableCell>
+                          <TableCell>{producto.categoria.nombre}</TableCell>
+                          <TableCell>{formatCLP(producto.precio)}</TableCell>
+                          <TableCell>
+                            <span
+                              className={cn(
+                                'font-bold',
+                                producto.stockBajo ? 'text-destructive' : 'text-emerald-700',
+                              )}
+                            >
                               {formatNumber(producto.stock)}
                             </span>
                             {producto.stockBajo && (
-                              <span className="badge text-bg-warning d-block mt-1">Stock bajo</span>
+                              <Badge variant="warning" className="mt-1 block w-fit">
+                                Stock bajo
+                              </Badge>
                             )}
-                          </td>
-                          <td>
-                            <span
-                              className={`badge rounded-pill ${
-                                producto.activo ? 'text-bg-success' : 'text-bg-secondary'
-                              }`}
-                            >
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant={producto.activo ? 'success' : 'muted'}>
                               {producto.activo ? 'Activo' : 'Inactivo'}
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex flex-wrap gap-2">
-                              <button
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-2">
+                              <Button
                                 type="button"
-                                className="btn btn-sm btn-marca-outline rounded-pill"
+                                size="sm"
+                                variant="outline"
                                 onClick={() => void abrirEditar(producto)}
                               >
                                 Editar
-                              </button>
-                              <button
+                              </Button>
+                              <Button
                                 type="button"
-                                className={`btn btn-sm rounded-pill ${
-                                  producto.activo ? 'btn-outline-danger' : 'btn-marca'
-                                }`}
+                                size="sm"
+                                variant={producto.activo ? 'destructive' : 'default'}
                                 onClick={() => setProductoEstado(producto)}
                               >
                                 {producto.activo ? 'Desactivar' : 'Activar'}
-                              </button>
+                              </Button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
-                <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
-                  <span className="small texto-gris">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-xs text-muted-foreground">
                     {formatNumber(productos.totalElementos)} producto
                     {productos.totalElementos === 1 ? '' : 's'} en total
                   </span>
@@ -439,229 +466,197 @@ export function AdminInventarioPage() {
                 </div>
               </>
             )}
-          </div>
+          </Card>
         </div>
       </section>
 
-      {modalAbierto && (
-        <>
-          <div className="modal fade show d-block" tabIndex={-1} role="dialog" aria-modal="true">
-            <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-              <form className="modal-content" onSubmit={guardar}>
-                <div className="modal-header">
-                  <h2 className="modal-title h5">
-                    {editandoId ? 'Editar producto' : 'Agregar producto'}
-                  </h2>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    aria-label="Cerrar"
-                    onClick={() => setModalAbierto(false)}
+      <Dialog open={modalAbierto} onOpenChange={setModalAbierto}>
+        <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editandoId ? 'Editar producto' : 'Agregar producto'}
+            </DialogTitle>
+            <DialogDescription>
+              Completa los datos del producto. Los campos con * son obligatorios.
+            </DialogDescription>
+          </DialogHeader>
+
+          {cargandoEdicion ? (
+            <Loading texto="Cargando producto..." />
+          ) : (
+            <form className="space-y-4" onSubmit={guardar}>
+              {Boolean(errorFormulario) && (
+                <ErrorAlert error={errorFormulario} onClose={() => setErrorFormulario(null)} />
+              )}
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="sm:col-span-2">
+                  <Label htmlFor="nombre-producto">Nombre *</Label>
+                  <Input
+                    id="nombre-producto"
+                    name="nombre"
+                    value={formulario.nombre}
+                    onChange={actualizar}
+                    maxLength={150}
+                    aria-invalid={Boolean(erroresFormulario.nombre)}
+                    required
                   />
-                </div>
-                <div className="modal-body">
-                  {cargandoEdicion ? (
-                    <Loading texto="Cargando producto..." />
-                  ) : (
-                    <>
-                      {Boolean(errorFormulario) && (
-                        <ErrorAlert
-                          error={errorFormulario}
-                          onClose={() => setErrorFormulario(null)}
-                        />
-                      )}
-                      <div className="row g-3">
-                        <div className="col-md-8">
-                          <label htmlFor="nombre-producto" className="form-label">
-                            Nombre *
-                          </label>
-                          <input
-                            id="nombre-producto"
-                            name="nombre"
-                            className={campoClase('nombre')}
-                            value={formulario.nombre}
-                            onChange={actualizar}
-                            maxLength={150}
-                            required
-                          />
-                          {erroresFormulario.nombre && (
-                            <div className="invalid-feedback">{erroresFormulario.nombre}</div>
-                          )}
-                        </div>
-                        <div className="col-md-4">
-                          <label htmlFor="categoria-producto" className="form-label">
-                            Categoría *
-                          </label>
-                          <select
-                            id="categoria-producto"
-                            name="categoriaSlug"
-                            className={`form-select${erroresFormulario.categoriaSlug ? ' is-invalid' : ''}`}
-                            value={formulario.categoriaSlug}
-                            onChange={actualizar}
-                            required
-                          >
-                            <option value="">Selecciona una categoría</option>
-                            {categorias.map((item) => (
-                              <option key={item.id} value={item.slug}>
-                                {item.nombre}
-                              </option>
-                            ))}
-                          </select>
-                          {erroresFormulario.categoriaSlug && (
-                            <div className="invalid-feedback">{erroresFormulario.categoriaSlug}</div>
-                          )}
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="descripcion-producto" className="form-label">
-                            Descripción *
-                          </label>
-                          <textarea
-                            id="descripcion-producto"
-                            name="descripcion"
-                            rows={3}
-                            className={`form-control${erroresFormulario.descripcion ? ' is-invalid' : ''}`}
-                            value={formulario.descripcion}
-                            onChange={actualizar}
-                            maxLength={1000}
-                            required
-                          />
-                          {erroresFormulario.descripcion && (
-                            <div className="invalid-feedback">{erroresFormulario.descripcion}</div>
-                          )}
-                        </div>
-                        <div className="col-md-4">
-                          <label htmlFor="precio-producto" className="form-label">
-                            Precio CLP *
-                          </label>
-                          <input
-                            id="precio-producto"
-                            name="precio"
-                            type="number"
-                            min={1}
-                            step={1}
-                            className={campoClase('precio')}
-                            value={formulario.precio}
-                            onChange={actualizar}
-                            required
-                          />
-                          {erroresFormulario.precio && (
-                            <div className="invalid-feedback">{erroresFormulario.precio}</div>
-                          )}
-                        </div>
-                        <div className="col-md-4">
-                          <label htmlFor="stock-producto" className="form-label">
-                            Stock *
-                          </label>
-                          <input
-                            id="stock-producto"
-                            name="stock"
-                            type="number"
-                            min={0}
-                            step={1}
-                            className={campoClase('stock')}
-                            value={formulario.stock}
-                            onChange={actualizar}
-                            required
-                          />
-                          {erroresFormulario.stock && (
-                            <div className="invalid-feedback">{erroresFormulario.stock}</div>
-                          )}
-                        </div>
-                        <div className="col-md-4">
-                          <label htmlFor="material-producto" className="form-label">
-                            Material
-                          </label>
-                          <input
-                            id="material-producto"
-                            name="material"
-                            className="form-control"
-                            value={formulario.material}
-                            onChange={actualizar}
-                            maxLength={120}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label htmlFor="dimensiones-producto" className="form-label">
-                            Dimensiones
-                          </label>
-                          <input
-                            id="dimensiones-producto"
-                            name="dimensiones"
-                            className="form-control"
-                            value={formulario.dimensiones}
-                            onChange={actualizar}
-                            maxLength={120}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label htmlFor="imagen-producto" className="form-label">
-                            Imagen principal *
-                          </label>
-                          <input
-                            id="imagen-producto"
-                            name="imagen"
-                            className={campoClase('imagen')}
-                            value={formulario.imagen}
-                            onChange={actualizar}
-                            placeholder="/assets/imagenes/macetero-1.webp"
-                            maxLength={500}
-                            required
-                          />
-                          {erroresFormulario.imagen && (
-                            <div className="invalid-feedback">{erroresFormulario.imagen}</div>
-                          )}
-                        </div>
-                        <div className="col-12">
-                          <label htmlFor="imagenes-producto" className="form-label">
-                            Galería (una ruta por línea, máximo 8)
-                          </label>
-                          <textarea
-                            id="imagenes-producto"
-                            name="imagenes"
-                            rows={3}
-                            className="form-control"
-                            value={formulario.imagenes}
-                            onChange={actualizar}
-                            placeholder={`/assets/imagenes/macetero-1.webp\n/assets/imagenes/macetero-2.webp`}
-                          />
-                        </div>
-                        {formulario.imagen && (
-                          <div className="col-12">
-                            <span className="small texto-gris d-block mb-2">Vista previa</span>
-                            <img
-                              src={assetUrl(formulario.imagen)}
-                              alt="Vista previa del producto"
-                              className="rounded-3"
-                              style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </>
+                  {erroresFormulario.nombre && (
+                    <p className="field-error">{erroresFormulario.nombre}</p>
                   )}
                 </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary rounded-pill"
-                    onClick={() => setModalAbierto(false)}
+                <div>
+                  <Label htmlFor="categoria-producto">Categoría *</Label>
+                  <select
+                    id="categoria-producto"
+                    name="categoriaSlug"
+                    className={cn(
+                      selectClase,
+                      erroresFormulario.categoriaSlug && 'border-destructive',
+                    )}
+                    value={formulario.categoriaSlug}
+                    onChange={actualizar}
+                    aria-invalid={Boolean(erroresFormulario.categoriaSlug)}
+                    required
                   >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-marca rounded-pill"
-                    disabled={guardando || cargandoEdicion}
-                  >
-                    {guardando ? 'Guardando...' : editandoId ? 'Guardar cambios' : 'Agregar producto'}
-                  </button>
+                    <option value="">Selecciona una categoría</option>
+                    {categorias.map((item) => (
+                      <option key={item.id} value={item.slug}>
+                        {item.nombre}
+                      </option>
+                    ))}
+                  </select>
+                  {erroresFormulario.categoriaSlug && (
+                    <p className="field-error">{erroresFormulario.categoriaSlug}</p>
+                  )}
                 </div>
-              </form>
-            </div>
-          </div>
-          <div className="modal-backdrop fade show" />
-        </>
-      )}
+                <div className="sm:col-span-3">
+                  <Label htmlFor="descripcion-producto">Descripción *</Label>
+                  <Textarea
+                    id="descripcion-producto"
+                    name="descripcion"
+                    rows={3}
+                    value={formulario.descripcion}
+                    onChange={actualizar}
+                    maxLength={1000}
+                    aria-invalid={Boolean(erroresFormulario.descripcion)}
+                    required
+                  />
+                  {erroresFormulario.descripcion && (
+                    <p className="field-error">{erroresFormulario.descripcion}</p>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="precio-producto">Precio CLP *</Label>
+                  <Input
+                    id="precio-producto"
+                    name="precio"
+                    type="number"
+                    min={1}
+                    step={1}
+                    value={formulario.precio}
+                    onChange={actualizar}
+                    aria-invalid={Boolean(erroresFormulario.precio)}
+                    required
+                  />
+                  {erroresFormulario.precio && (
+                    <p className="field-error">{erroresFormulario.precio}</p>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="stock-producto">Stock *</Label>
+                  <Input
+                    id="stock-producto"
+                    name="stock"
+                    type="number"
+                    min={0}
+                    step={1}
+                    value={formulario.stock}
+                    onChange={actualizar}
+                    aria-invalid={Boolean(erroresFormulario.stock)}
+                    required
+                  />
+                  {erroresFormulario.stock && (
+                    <p className="field-error">{erroresFormulario.stock}</p>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="material-producto">Material</Label>
+                  <Input
+                    id="material-producto"
+                    name="material"
+                    value={formulario.material}
+                    onChange={actualizar}
+                    maxLength={120}
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <Label htmlFor="dimensiones-producto">Dimensiones</Label>
+                  <Input
+                    id="dimensiones-producto"
+                    name="dimensiones"
+                    value={formulario.dimensiones}
+                    onChange={actualizar}
+                    maxLength={120}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="imagen-producto">Imagen principal *</Label>
+                  <Input
+                    id="imagen-producto"
+                    name="imagen"
+                    value={formulario.imagen}
+                    onChange={actualizar}
+                    placeholder="/assets/imagenes/macetero-1.webp"
+                    maxLength={500}
+                    aria-invalid={Boolean(erroresFormulario.imagen)}
+                    required
+                  />
+                  {erroresFormulario.imagen && (
+                    <p className="field-error">{erroresFormulario.imagen}</p>
+                  )}
+                </div>
+                <div className="sm:col-span-3">
+                  <Label htmlFor="imagenes-producto">
+                    Galería (una ruta por línea, máximo 8)
+                  </Label>
+                  <Textarea
+                    id="imagenes-producto"
+                    name="imagenes"
+                    rows={3}
+                    value={formulario.imagenes}
+                    onChange={actualizar}
+                    placeholder={'/assets/imagenes/macetero-1.webp\n/assets/imagenes/macetero-2.webp'}
+                  />
+                </div>
+                {formulario.imagen && (
+                  <div className="sm:col-span-3">
+                    <span className="mb-2 block text-xs text-muted-foreground">Vista previa</span>
+                    <img
+                      src={assetUrl(formulario.imagen)}
+                      alt="Vista previa del producto"
+                      className="size-28 rounded-xl border border-border object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setModalAbierto(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button type="submit" disabled={guardando}>
+                  {guardando ? 'Guardando...' : editandoId ? 'Guardar cambios' : 'Agregar producto'}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <ConfirmModal
         abierto={Boolean(productoEstado)}

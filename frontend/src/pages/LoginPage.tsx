@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Eye, EyeOff, ShieldCheck } from 'lucide-react'
 import { ErrorAlert } from '../components/common/ErrorAlert'
+import { Alert } from '../components/ui/alert'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Spinner } from '../components/ui/spinner'
 import { useAuth } from '../context/AuthContext'
 import { useNotification } from '../context/NotificationContext'
 
@@ -44,90 +51,84 @@ export function LoginPage() {
   }
 
   return (
-    <div className="pt-2">
-      <section className="py-5 seccion-clara">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-md-7 col-lg-5">
-              <h1 className="titulo-seccion">Iniciar sesión</h1>
-              <p className="pagina-intro text-center">
-                Accede para revisar tus pedidos y completar tus compras.
-              </p>
+    <section className="bg-white/40 py-14">
+      <div className="container-page flex flex-col items-center">
+        <h1 className="section-title">Iniciar sesión</h1>
+        <p className="page-intro max-w-md text-center">
+          Accede para revisar tus pedidos y completar tus compras.
+        </p>
 
-              <form className="card card-formulario p-4 p-md-5" onSubmit={enviar}>
-                {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
+        <form onSubmit={enviar} className="w-full max-w-md">
+          <Card className="gap-4 p-6 sm:p-8">
+            {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
 
-                <div className="mb-3">
-                  <label className="form-label" htmlFor="correo">
-                    Correo electrónico *
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="correo"
-                    name="correo"
-                    placeholder="ej: nombre@correo.cl"
-                    autoComplete="email"
-                    value={correo}
-                    onChange={(event) => setCorreo(event.target.value)}
-                    required
-                  />
-                </div>
+            <div>
+              <Label htmlFor="correo">Correo electrónico *</Label>
+              <Input
+                type="email"
+                id="correo"
+                name="correo"
+                placeholder="ej: nombre@correo.cl"
+                autoComplete="email"
+                value={correo}
+                onChange={(event) => setCorreo(event.target.value)}
+                required
+              />
+            </div>
 
-                <div className="mb-3">
-                  <label className="form-label" htmlFor="clave">
-                    Contraseña *
-                  </label>
-                  <div className="input-group">
-                    <input
-                      type={mostrarClave ? 'text' : 'password'}
-                      className="form-control"
-                      id="clave"
-                      name="clave"
-                      autoComplete="current-password"
-                      value={clave}
-                      onChange={(event) => setClave(event.target.value)}
-                      required
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => setMostrarClave((visible) => !visible)}
-                      aria-label={mostrarClave ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                    >
-                      <i className={`bi ${mostrarClave ? 'bi-eye-slash' : 'bi-eye'}`} aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-
+            <div>
+              <Label htmlFor="clave">Contraseña *</Label>
+              <div className="relative">
+                <Input
+                  type={mostrarClave ? 'text' : 'password'}
+                  id="clave"
+                  name="clave"
+                  autoComplete="current-password"
+                  value={clave}
+                  onChange={(event) => setClave(event.target.value)}
+                  required
+                  className="pr-10"
+                />
                 <button
-                  type="submit"
-                  className="btn btn-acento btn-lg rounded-pill w-100 mt-2"
-                  disabled={enviando}
+                  type="button"
+                  className="absolute top-1/2 right-1 -translate-y-1/2 rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  onClick={() => setMostrarClave((visible) => !visible)}
+                  aria-label={mostrarClave ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
-                  {enviando ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
-                      Ingresando...
-                    </>
+                  {mostrarClave ? (
+                    <EyeOff className="size-4" aria-hidden="true" />
                   ) : (
-                    'Ingresar'
+                    <Eye className="size-4" aria-hidden="true" />
                   )}
                 </button>
-
-                <p className="text-center mt-4 mb-0">
-                  ¿No tienes cuenta? <Link to="/registro">Regístrate aquí</Link>
-                </p>
-              </form>
-
-              <div className="alert alert-light border mt-4 small">
-                <i className="bi bi-shield-lock me-2 texto-marca" aria-hidden="true" />
-                Tus datos se envían al API Gateway local de BioForjaRC. No compartas tu contraseña.
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </div>
+
+            <Button type="submit" size="lg" variant="accent" className="mt-1 w-full" disabled={enviando}>
+              {enviando ? (
+                <>
+                  <Spinner className="size-4" />
+                  Ingresando...
+                </>
+              ) : (
+                'Ingresar'
+              )}
+            </Button>
+
+            <p className="text-center text-sm text-muted-foreground">
+              ¿No tienes cuenta?{' '}
+              <Link to="/registro" className="font-semibold text-primary hover:underline">
+                Regístrate aquí
+              </Link>
+            </p>
+          </Card>
+
+          <Alert variant="brand" className="mt-4 text-xs">
+            <ShieldCheck aria-hidden="true" />
+            Tus datos se envían al API Gateway local de BioForjaRC. No compartas tu contraseña.
+          </Alert>
+        </form>
+      </div>
+    </section>
   )
 }

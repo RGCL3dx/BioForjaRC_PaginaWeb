@@ -2,8 +2,14 @@ import { useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { ErrorAlert } from '../components/common/ErrorAlert'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Spinner } from '../components/ui/spinner'
 import { useAuth } from '../context/AuthContext'
 import { useNotification } from '../context/NotificationContext'
+import { cn } from '@/lib/utils'
 
 interface FormularioRegistro {
   nombre: string
@@ -97,184 +103,174 @@ export function RegistroPage() {
     }
   }
 
-  const campoClase = (campo: string) =>
-    `form-control${errores[campo] ? ' is-invalid' : ''}`
+  const errorCampo = (campo: string) => Boolean(errores[campo])
+  const mensajeCampo = (campo: string) =>
+    errores[campo] ? <p className="field-error">{errores[campo]}</p> : null
 
   return (
-    <section className="py-5 seccion-clara">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-9 col-lg-7 col-xl-6">
-            <h1 className="titulo-seccion">Crear cuenta</h1>
-            <p className="pagina-intro text-center">
-              Regístrate para comprar, revisar tu historial y gestionar tus direcciones.
-            </p>
+    <section className="bg-white/40 py-14">
+      <div className="container-page flex flex-col items-center">
+        <h1 className="section-title">Crear cuenta</h1>
+        <p className="page-intro max-w-xl text-center">
+          Regístrate para comprar, revisar tu historial y gestionar tus direcciones.
+        </p>
 
-            <form className="card card-formulario p-4 p-md-5" onSubmit={enviar} noValidate>
-              {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
+        <form className="w-full max-w-2xl" onSubmit={enviar} noValidate>
+          <Card className="gap-5 p-6 sm:p-8">
+            {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
 
-              <div className="row g-3">
-                <div className="col-md-6">
-                  <label htmlFor="nombre" className="form-label">
-                    Nombre *
-                  </label>
-                  <input
-                    id="nombre"
-                    name="nombre"
-                    className={campoClase('nombre')}
-                    value={formulario.nombre}
-                    onChange={actualizar}
-                    autoComplete="given-name"
-                    maxLength={80}
-                    required
-                  />
-                  {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="apellido" className="form-label">
-                    Apellido *
-                  </label>
-                  <input
-                    id="apellido"
-                    name="apellido"
-                    className={campoClase('apellido')}
-                    value={formulario.apellido}
-                    onChange={actualizar}
-                    autoComplete="family-name"
-                    maxLength={80}
-                    required
-                  />
-                  {errores.apellido && <div className="invalid-feedback">{errores.apellido}</div>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="rut" className="form-label">
-                    RUT *
-                  </label>
-                  <input
-                    id="rut"
-                    name="rut"
-                    className={campoClase('rut')}
-                    value={formulario.rut}
-                    onChange={actualizar}
-                    placeholder="12.345.678-9"
-                    maxLength={20}
-                    required
-                  />
-                  {errores.rut && <div className="invalid-feedback">{errores.rut}</div>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="telefono" className="form-label">
-                    Teléfono
-                  </label>
-                  <input
-                    id="telefono"
-                    name="telefono"
-                    type="tel"
-                    className={campoClase('telefono')}
-                    value={formulario.telefono}
-                    onChange={actualizar}
-                    autoComplete="tel"
-                    maxLength={25}
-                  />
-                  {errores.telefono && <div className="invalid-feedback">{errores.telefono}</div>}
-                </div>
-                <div className="col-12">
-                  <label htmlFor="correo" className="form-label">
-                    Correo electrónico *
-                  </label>
-                  <input
-                    id="correo"
-                    name="correo"
-                    type="email"
-                    className={campoClase('correo')}
-                    value={formulario.correo}
-                    onChange={actualizar}
-                    autoComplete="email"
-                    maxLength={150}
-                    required
-                  />
-                  {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="clave" className="form-label">
-                    Contraseña *
-                  </label>
-                  <input
-                    id="clave"
-                    name="clave"
-                    type="password"
-                    className={campoClase('clave')}
-                    value={formulario.clave}
-                    onChange={actualizar}
-                    autoComplete="new-password"
-                    minLength={8}
-                    maxLength={72}
-                    required
-                  />
-                  {errores.clave ? (
-                    <div className="invalid-feedback">{errores.clave}</div>
-                  ) : (
-                    <div className="form-text">Mínimo 8 caracteres, con mayúscula, minúscula y número.</div>
-                  )}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="confirmarClave" className="form-label">
-                    Confirmar contraseña *
-                  </label>
-                  <input
-                    id="confirmarClave"
-                    name="confirmarClave"
-                    type="password"
-                    className={campoClase('confirmarClave')}
-                    value={formulario.confirmarClave}
-                    onChange={actualizar}
-                    autoComplete="new-password"
-                    required
-                  />
-                  {errores.confirmarClave && (
-                    <div className="invalid-feedback">{errores.confirmarClave}</div>
-                  )}
-                </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="nombre">Nombre *</Label>
+                <Input
+                  id="nombre"
+                  name="nombre"
+                  value={formulario.nombre}
+                  onChange={actualizar}
+                  autoComplete="given-name"
+                  maxLength={80}
+                  required
+                  aria-invalid={errorCampo('nombre')}
+                />
+                {mensajeCampo('nombre')}
               </div>
+              <div>
+                <Label htmlFor="apellido">Apellido *</Label>
+                <Input
+                  id="apellido"
+                  name="apellido"
+                  value={formulario.apellido}
+                  onChange={actualizar}
+                  autoComplete="family-name"
+                  maxLength={80}
+                  required
+                  aria-invalid={errorCampo('apellido')}
+                />
+                {mensajeCampo('apellido')}
+              </div>
+              <div>
+                <Label htmlFor="rut">RUT *</Label>
+                <Input
+                  id="rut"
+                  name="rut"
+                  value={formulario.rut}
+                  onChange={actualizar}
+                  placeholder="12.345.678-9"
+                  maxLength={20}
+                  required
+                  aria-invalid={errorCampo('rut')}
+                />
+                {mensajeCampo('rut')}
+              </div>
+              <div>
+                <Label htmlFor="telefono">Teléfono</Label>
+                <Input
+                  id="telefono"
+                  name="telefono"
+                  type="tel"
+                  value={formulario.telefono}
+                  onChange={actualizar}
+                  autoComplete="tel"
+                  maxLength={25}
+                  aria-invalid={errorCampo('telefono')}
+                />
+                {mensajeCampo('telefono')}
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="correo">Correo electrónico *</Label>
+                <Input
+                  id="correo"
+                  name="correo"
+                  type="email"
+                  value={formulario.correo}
+                  onChange={actualizar}
+                  autoComplete="email"
+                  maxLength={150}
+                  required
+                  aria-invalid={errorCampo('correo')}
+                />
+                {mensajeCampo('correo')}
+              </div>
+              <div>
+                <Label htmlFor="clave">Contraseña *</Label>
+                <Input
+                  id="clave"
+                  name="clave"
+                  type="password"
+                  value={formulario.clave}
+                  onChange={actualizar}
+                  autoComplete="new-password"
+                  minLength={8}
+                  maxLength={72}
+                  required
+                  aria-invalid={errorCampo('clave')}
+                />
+                {errores.clave ? (
+                  mensajeCampo('clave')
+                ) : (
+                  <p className="mt-1.5 text-xs text-muted-foreground">
+                    Mínimo 8 caracteres, con mayúscula, minúscula y número.
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="confirmarClave">Confirmar contraseña *</Label>
+                <Input
+                  id="confirmarClave"
+                  name="confirmarClave"
+                  type="password"
+                  value={formulario.confirmarClave}
+                  onChange={actualizar}
+                  autoComplete="new-password"
+                  required
+                  aria-invalid={errorCampo('confirmarClave')}
+                />
+                {mensajeCampo('confirmarClave')}
+              </div>
+            </div>
 
-              <div className="form-check mt-4">
+            <div className="rounded-xl border border-border bg-muted/40 p-4">
+              <label className="flex items-start gap-3 text-sm">
                 <input
-                  className={`form-check-input${errores.aceptaTerminos ? ' is-invalid' : ''}`}
                   type="checkbox"
                   id="aceptaTerminos"
                   name="aceptaTerminos"
                   checked={formulario.aceptaTerminos}
                   onChange={actualizar}
+                  className={cn(
+                    'mt-0.5 size-4 rounded border-input accent-primary',
+                    errores.aceptaTerminos && 'outline-2 outline-destructive',
+                  )}
+                  aria-invalid={errorCampo('aceptaTerminos')}
                 />
-                <label className="form-check-label" htmlFor="aceptaTerminos">
+                <span>
                   Acepto los términos y el tratamiento de mis datos para gestionar compras y envíos. *
-                </label>
-                {errores.aceptaTerminos && (
-                  <div className="invalid-feedback d-block">{errores.aceptaTerminos}</div>
-                )}
-              </div>
+                </span>
+              </label>
+              {errores.aceptaTerminos && (
+                <p className="field-error">{errores.aceptaTerminos}</p>
+              )}
+            </div>
 
-              <button
-                type="submit"
-                className="btn btn-acento btn-lg rounded-pill w-100 mt-4"
-                disabled={enviando}
-              >
-                {enviando ? (
-                  <>
-                    <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
-                    Creando cuenta...
-                  </>
-                ) : (
-                  'Crear mi cuenta'
-                )}
-              </button>
+            <Button type="submit" size="lg" variant="accent" className="w-full" disabled={enviando}>
+              {enviando ? (
+                <>
+                  <Spinner className="size-4" />
+                  Creando cuenta...
+                </>
+              ) : (
+                'Crear mi cuenta'
+              )}
+            </Button>
 
-              <p className="text-center mt-4 mb-0">
-                ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
-              </p>
-            </form>
-          </div>
-        </div>
+            <p className="text-center text-sm text-muted-foreground">
+              ¿Ya tienes cuenta?{' '}
+              <Link to="/login" className="font-semibold text-primary hover:underline">
+                Inicia sesión
+              </Link>
+            </p>
+          </Card>
+        </form>
       </div>
     </section>
   )

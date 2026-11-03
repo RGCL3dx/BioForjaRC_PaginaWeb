@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
+import { CheckCircle2, Clock, Mail, MapPin, Phone, Send, Share2 } from 'lucide-react'
 import { ErrorAlert } from '../components/common/ErrorAlert'
+import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Spinner } from '../components/ui/spinner'
+import { Textarea } from '../components/ui/textarea'
 import { consultaService } from '../services/consultas'
 import type { ConsultaResponse } from '../types/api'
 
@@ -27,9 +35,7 @@ export function ContactoPage() {
   const [enviando, setEnviando] = useState(false)
   const [confirmacion, setConfirmacion] = useState<ConsultaResponse | null>(null)
 
-  const actualizar = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const actualizar = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target
     setFormulario((actual) => ({ ...actual, [name]: value }))
   }
@@ -78,120 +84,109 @@ export function ContactoPage() {
     }
   }
 
-  const campoClase = (campo: string) => `form-control${errores[campo] ? ' is-invalid' : ''}`
+  const mensajeCampo = (campo: string) =>
+    errores[campo] ? <p className="field-error">{errores[campo]}</p> : null
 
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Contacto</h1>
-          <p className="pagina-intro">Escríbenos y te responderemos a la brevedad.</p>
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Contacto</h1>
+          <p className="page-intro mb-0">Escríbenos y te responderemos a la brevedad.</p>
         </div>
       </section>
 
-      <section className="py-4 seccion-clara">
-        <div className="container">
-          <div className="row g-4">
-            <div className="col-lg-7">
-              {confirmacion && (
-                <div className="alert alert-success" role="status">
-                  <h2 className="h6 alert-heading">
-                    <i className="bi bi-check-circle me-2" aria-hidden="true" />
-                    Mensaje enviado
-                  </h2>
-                  <p className="mb-1">
+      <section className="pb-16">
+        <div className="container-page grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <div>
+            {confirmacion && (
+              <Alert variant="success" className="mb-4">
+                <CheckCircle2 aria-hidden="true" />
+                <AlertTitle>Mensaje enviado</AlertTitle>
+                <AlertDescription>
+                  <p>
                     {confirmacion.mensajeConfirmacion ||
                       'Tu consulta fue registrada. Te responderemos a la brevedad.'}
                   </p>
-                  <p className="small mb-0">
+                  <p className="text-xs opacity-80">
                     Referencia #{confirmacion.id} · {confirmacion.asunto}
                   </p>
-                </div>
-              )}
+                </AlertDescription>
+              </Alert>
+            )}
 
-              <form className="card card-formulario p-4 p-md-5" onSubmit={enviar} noValidate>
+            <form onSubmit={enviar} noValidate>
+              <Card className="gap-4 p-6 sm:p-8">
                 {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
 
-                <div className="mb-3">
-                  <label htmlFor="nombre" className="form-label">
-                    Nombre completo *
-                  </label>
-                  <input
-                    type="text"
-                    className={campoClase('nombre')}
-                    id="nombre"
-                    name="nombre"
-                    placeholder="Ej: Juan Pérez"
-                    autoComplete="name"
-                    value={formulario.nombre}
-                    onChange={actualizar}
-                    maxLength={100}
-                    required
-                  />
-                  {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="nombre">Nombre completo *</Label>
+                    <Input
+                      type="text"
+                      id="nombre"
+                      name="nombre"
+                      placeholder="Ej: Juan Pérez"
+                      autoComplete="name"
+                      value={formulario.nombre}
+                      onChange={actualizar}
+                      maxLength={100}
+                      required
+                      aria-invalid={errores.nombre ? true : undefined}
+                    />
+                    {mensajeCampo('nombre')}
+                  </div>
+                  <div>
+                    <Label htmlFor="correo">Correo electrónico *</Label>
+                    <Input
+                      type="email"
+                      id="correo"
+                      name="correo"
+                      placeholder="ej: nombre@correo.cl"
+                      autoComplete="email"
+                      value={formulario.correo}
+                      onChange={actualizar}
+                      maxLength={150}
+                      required
+                      aria-invalid={errores.correo ? true : undefined}
+                    />
+                    {mensajeCampo('correo')}
+                  </div>
+                  <div>
+                    <Label htmlFor="telefono">Teléfono</Label>
+                    <Input
+                      type="tel"
+                      id="telefono"
+                      name="telefono"
+                      placeholder="+56 9 1234 5678"
+                      autoComplete="tel"
+                      value={formulario.telefono}
+                      onChange={actualizar}
+                      maxLength={30}
+                      aria-invalid={errores.telefono ? true : undefined}
+                    />
+                    {mensajeCampo('telefono')}
+                  </div>
+                  <div>
+                    <Label htmlFor="asunto">Asunto *</Label>
+                    <Input
+                      type="text"
+                      id="asunto"
+                      name="asunto"
+                      placeholder="Ej: Consulta por maceteros"
+                      value={formulario.asunto}
+                      onChange={actualizar}
+                      maxLength={120}
+                      required
+                      aria-invalid={errores.asunto ? true : undefined}
+                    />
+                    {mensajeCampo('asunto')}
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="correo" className="form-label">
-                    Correo electrónico *
-                  </label>
-                  <input
-                    type="email"
-                    className={campoClase('correo')}
-                    id="correo"
-                    name="correo"
-                    placeholder="ej: nombre@correo.cl"
-                    autoComplete="email"
-                    value={formulario.correo}
-                    onChange={actualizar}
-                    maxLength={150}
-                    required
-                  />
-                  {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="telefono" className="form-label">
-                    Teléfono
-                  </label>
-                  <input
-                    type="tel"
-                    className={campoClase('telefono')}
-                    id="telefono"
-                    name="telefono"
-                    placeholder="+56 9 1234 5678"
-                    autoComplete="tel"
-                    value={formulario.telefono}
-                    onChange={actualizar}
-                    maxLength={30}
-                  />
-                  {errores.telefono && <div className="invalid-feedback">{errores.telefono}</div>}
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="asunto" className="form-label">
-                    Asunto *
-                  </label>
-                  <input
-                    type="text"
-                    className={campoClase('asunto')}
-                    id="asunto"
-                    name="asunto"
-                    placeholder="Ej: Consulta por maceteros"
-                    value={formulario.asunto}
-                    onChange={actualizar}
-                    maxLength={120}
-                    required
-                  />
-                  {errores.asunto && <div className="invalid-feedback">{errores.asunto}</div>}
-                </div>
-
-                <div className="mb-4">
-                  <label htmlFor="mensaje" className="form-label">
-                    Mensaje *
-                  </label>
-                  <textarea
-                    className={campoClase('mensaje')}
+                <div>
+                  <Label htmlFor="mensaje">Mensaje *</Label>
+                  <Textarea
                     id="mensaje"
                     name="mensaje"
                     rows={5}
@@ -200,67 +195,89 @@ export function ContactoPage() {
                     onChange={actualizar}
                     maxLength={2000}
                     required
+                    aria-invalid={errores.mensaje ? true : undefined}
                   />
                   {errores.mensaje ? (
-                    <div className="invalid-feedback">{errores.mensaje}</div>
+                    mensajeCampo('mensaje')
                   ) : (
-                    <div className="form-text">{formulario.mensaje.length}/2000 caracteres</div>
+                    <p className="mt-1.5 text-xs text-muted-foreground">
+                      {formulario.mensaje.length}/2000 caracteres
+                    </p>
                   )}
                 </div>
 
-                <button type="submit" className="btn btn-acento btn-lg rounded-pill px-4" disabled={enviando}>
+                <Button type="submit" size="lg" variant="accent" disabled={enviando}>
                   {enviando ? (
                     <>
-                      <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
+                      <Spinner className="size-4" />
                       Enviando...
                     </>
                   ) : (
-                    'Enviar mensaje'
+                    <>
+                      <Send className="size-4" aria-hidden="true" />
+                      Enviar mensaje
+                    </>
                   )}
-                </button>
-              </form>
+                </Button>
+              </Card>
+            </form>
+          </div>
+
+          <Card className="h-fit gap-5 p-6">
+            <h2 className="text-lg font-bold">¿Prefieres escribirnos directo?</h2>
+
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-center gap-2.5">
+                <MapPin className="size-4 text-primary" aria-hidden="true" />
+                Santiago, Chile
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Phone className="size-4 text-primary" aria-hidden="true" />
+                <a href="tel:+56912345678" className="hover:text-primary hover:underline">
+                  +56 9 1234 5678
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Mail className="size-4 text-primary" aria-hidden="true" />
+                <a href="mailto:contacto@bioforjarc.cl" className="hover:text-primary hover:underline">
+                  contacto@bioforjarc.cl
+                </a>
+              </li>
+            </ul>
+
+            <div>
+              <h3 className="mb-2 flex items-center gap-2 font-display text-xs font-bold tracking-wide text-muted-foreground uppercase">
+                <Clock className="size-4" aria-hidden="true" />
+                Horario de atención
+              </h3>
+              <p className="text-sm">Lunes a viernes: 09:00 – 18:00 hrs</p>
+              <p className="text-sm">Sábado: 10:00 – 14:00 hrs</p>
             </div>
 
-            <div className="col-lg-5">
-              <div className="card card-formulario p-4 h-100">
-                <h2 className="h5 fw-bold mb-3">¿Prefieres escribirnos directo?</h2>
-
-                <p className="mb-2">
-                  <i className="bi bi-geo-alt-fill me-2 pie-icono text-marca" aria-hidden="true" />
-                  Santiago, Chile
-                </p>
-                <p className="mb-2">
-                  <i className="bi bi-telephone-fill me-2 pie-icono text-marca" aria-hidden="true" />
-                  <a href="tel:+56912345678" className="enlace-marca">
-                    +56 9 1234 5678
+            <div>
+              <h3 className="mb-2 flex items-center gap-2 font-display text-xs font-bold tracking-wide text-muted-foreground uppercase">
+                <Share2 className="size-4" aria-hidden="true" />
+                Síguenos
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { href: 'https://facebook.com', label: 'Facebook' },
+                  { href: 'https://instagram.com', label: 'Instagram' },
+                  { href: 'https://x.com', label: 'X (Twitter)' },
+                ].map((red) => (
+                  <a
+                    key={red.label}
+                    href={red.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full border border-brand/30 px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
+                  >
+                    {red.label}
                   </a>
-                </p>
-                <p className="mb-4">
-                  <i className="bi bi-envelope-fill me-2 pie-icono text-marca" aria-hidden="true" />
-                  <a href="mailto:contacto@bioforjarc.cl" className="enlace-marca">
-                    contacto@bioforjarc.cl
-                  </a>
-                </p>
-
-                <h3 className="h6 text-uppercase fw-bold texto-gris mb-3">Horario de atención</h3>
-                <p className="mb-1">Lunes a viernes: 09:00 – 18:00 hrs</p>
-                <p className="mb-4">Sábado: 10:00 – 14:00 hrs</p>
-
-                <h3 className="h6 text-uppercase fw-bold texto-gris mb-3">Síguenos</h3>
-                <div className="d-flex gap-3 fs-3">
-                  <a href="https://facebook.com" target="_blank" rel="noreferrer" className="text-marca" aria-label="Facebook">
-                    <i className="bi bi-facebook" aria-hidden="true" />
-                  </a>
-                  <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-marca" aria-label="Instagram">
-                    <i className="bi bi-instagram" aria-hidden="true" />
-                  </a>
-                  <a href="https://x.com" target="_blank" rel="noreferrer" className="text-marca" aria-label="X (Twitter)">
-                    <i className="bi bi-twitter-x" aria-hidden="true" />
-                  </a>
-                </div>
+                ))}
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
     </>

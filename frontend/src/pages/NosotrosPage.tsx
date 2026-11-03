@@ -1,23 +1,26 @@
 import { Link } from 'react-router-dom'
+import { Eye, GraduationCap, HeartHandshake, PackageCheck, Recycle, Target } from 'lucide-react'
+import { Button } from '../components/ui/button'
+import { Card, CardContent } from '../components/ui/card'
 
 const compromisos = [
   {
-    icono: 'bi-recycle',
+    icono: Recycle,
     titulo: 'Economía circular',
     texto: 'Cada kilogramo de plástico reciclado reduce residuos y emisiones.',
   },
   {
-    icono: 'bi-chat-heart',
+    icono: GraduationCap,
     titulo: 'Educación',
     texto: 'Compartimos contenido para que más personas se sumen al reciclaje.',
   },
   {
-    icono: 'bi-box-seam',
+    icono: PackageCheck,
     titulo: 'Calidad',
     texto: 'Productos resistentes, seguros y aptos para toda la familia.',
   },
   {
-    icono: 'bi-house-heart',
+    icono: HeartHandshake,
     titulo: 'Comunidad',
     texto: 'Apoyamos emprendimientos locales y talleres sustentables.',
   },
@@ -26,98 +29,98 @@ const compromisos = [
 export function NosotrosPage() {
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Nosotros</h1>
-          <p className="pagina-intro">
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Nosotros</h1>
+          <p className="page-intro mb-0">
             Un emprendimiento chileno que combina reciclaje y tecnología para cuidar el planeta.
           </p>
         </div>
       </section>
 
-      <section className="py-4">
-        <div className="container">
-          <div className="row g-4 align-items-center">
-            <article className="col-lg-6">
-              <h2>Nuestra historia</h2>
+      <section className="pb-14">
+        <div className="container-page grid items-center gap-10 lg:grid-cols-2">
+          <article>
+            <h2 className="mb-3 text-2xl font-extrabold">Nuestra historia</h2>
+            <div className="space-y-3 text-muted-foreground">
               <p>
-                BioForja<strong>RC</strong> nace con la convicción de que los residuos pueden
-                convertirse en algo útil y bello. Recuperamos botellas de plástico PET y otros
-                residuos plásticos, los transformamos en filamento ecológico y lo imprimimos en 3D
-                para crear maceteros, animales articulados, juegos sensoriales y figuras decorativas.
+                BioForja<strong className="text-brand">RC</strong> nace con la convicción de que los
+                residuos pueden convertirse en algo útil y bello. Recuperamos botellas de plástico
+                PET y otros residuos plásticos, los transformamos en filamento ecológico y lo
+                imprimimos en 3D para crear maceteros, animales articulados, juegos sensoriales y
+                figuras decorativas.
               </p>
               <p>
                 Cada producto cuenta una historia de reciclaje: menos plástico en el vertedero,
                 menos emisiones y más conciencia ambiental en los hogares chilenos.
               </p>
-              <div className="d-flex flex-wrap gap-3 mt-4">
-                <Link to="/cotizacion" className="btn btn-marca rounded-pill px-4">
-                  Quiero una cotización
-                </Link>
-                <Link to="/productos" className="btn btn-marca-outline rounded-pill px-4">
-                  Ver productos
-                </Link>
-              </div>
-            </article>
-            <figure className="col-lg-6 text-center">
-              <img
-                src="/assets/imagenes/fondo.webp"
-                alt="Producción de filamento reciclado en BioForjaRC"
-                className="img-fluid rounded-4 shadow"
-              />
-              <figcaption className="texto-gris small mt-2">
-                Producción de filamento reciclado en BioForjaRC.
-              </figcaption>
-            </figure>
-          </div>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <Button asChild>
+                <Link to="/cotizacion">Quiero una cotización</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link to="/productos">Ver productos</Link>
+              </Button>
+            </div>
+          </article>
+          <figure className="text-center">
+            <img
+              src="/assets/imagenes/fondo.webp"
+              alt="Producción de filamento reciclado en BioForjaRC"
+              className="w-full rounded-2xl object-cover shadow-lg"
+            />
+            <figcaption className="mt-2 text-sm text-muted-foreground">
+              Producción de filamento reciclado en BioForjaRC.
+            </figcaption>
+          </figure>
         </div>
       </section>
 
-      <section className="py-4 seccion-clara">
-        <div className="container">
-          <div className="row g-4">
-            <article className="col-md-6">
-              <div className="card tarjeta-valor h-100">
-                <div className="card-body d-flex gap-3">
-                  <i className="bi bi-bullseye fs-1 text-marca" aria-hidden="true" />
-                  <div>
-                    <h3>Misión</h3>
-                    <p className="mb-0">
-                      Reducir el impacto ambiental del plástico mediante productos ecológicos,
-                      accesibles y de calidad, educando a la comunidad sobre el reciclaje.
-                    </p>
-                  </div>
-                </div>
+      <section className="bg-white/60 py-12">
+        <div className="container-page grid gap-5 md:grid-cols-2">
+          <Card className="gap-0 p-6">
+            <div className="flex gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                <Target className="size-6" aria-hidden="true" />
+              </span>
+              <div>
+                <h3 className="mb-1 text-lg">Misión</h3>
+                <p className="text-sm text-muted-foreground">
+                  Reducir el impacto ambiental del plástico mediante productos ecológicos,
+                  accesibles y de calidad, educando a la comunidad sobre el reciclaje.
+                </p>
               </div>
-            </article>
-            <article className="col-md-6">
-              <div className="card tarjeta-valor h-100">
-                <div className="card-body d-flex gap-3">
-                  <i className="bi bi-eye fs-1 text-marca" aria-hidden="true" />
-                  <div>
-                    <h3>Visión</h3>
-                    <p className="mb-0">
-                      Ser referente en economía circular en Chile, demostrando que el reciclaje y la
-                      fabricación digital pueden convivir en un modelo de negocio sostenible.
-                    </p>
-                  </div>
-                </div>
+            </div>
+          </Card>
+          <Card className="gap-0 p-6">
+            <div className="flex gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                <Eye className="size-6" aria-hidden="true" />
+              </span>
+              <div>
+                <h3 className="mb-1 text-lg">Visión</h3>
+                <p className="text-sm text-muted-foreground">
+                  Ser referente en economía circular en Chile, demostrando que el reciclaje y la
+                  fabricación digital pueden convivir en un modelo de negocio sostenible.
+                </p>
               </div>
-            </article>
-          </div>
+            </div>
+          </Card>
         </div>
       </section>
 
-      <section className="py-4">
-        <div className="container">
-          <h2 className="titulo-seccion">Mira cómo transformamos el plástico</h2>
-          <p className="pagina-intro mb-4">
+      <section className="section-y">
+        <div className="container-page">
+          <h2 className="section-title">Mira cómo transformamos el plástico</h2>
+          <p className="page-intro">
             Este video muestra el proceso de reciclaje de botellas PET y su conversión en filamento
             para impresión 3D.
           </p>
-          <div className="col-lg-10 mx-auto">
-            <div className="contenedor-video">
+          <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border bg-black shadow-lg">
+            <div className="aspect-video">
               <iframe
+                className="size-full"
                 src="https://www.youtube-nocookie.com/embed/qhZfwsaZrnU"
                 title="Reciclaje de botellas PET a filamento para impresión 3D"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -128,21 +131,24 @@ export function NosotrosPage() {
         </div>
       </section>
 
-      <section className="py-5 seccion-clara">
-        <div className="container">
-          <h2 className="titulo-seccion">Nuestros compromisos</h2>
-          <div className="row g-4">
-            {compromisos.map((compromiso) => (
-              <article className="col-md-6 col-lg-3" key={compromiso.titulo}>
-                <div className="card tarjeta-valor h-100 text-center">
-                  <div className="card-body">
-                    <i className={`bi ${compromiso.icono} fs-1 text-acento`} aria-hidden="true" />
-                    <h3 className="h5">{compromiso.titulo}</h3>
-                    <p className="mb-0 small">{compromiso.texto}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
+      <section className="bg-white/60 py-12">
+        <div className="container-page">
+          <h2 className="section-title">Nuestros compromisos</h2>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {compromisos.map((compromiso) => {
+              const Icono = compromiso.icono
+              return (
+                <Card key={compromiso.titulo} className="gap-0 text-center">
+                  <CardContent className="flex flex-col items-center gap-2 p-6">
+                    <span className="mb-1 flex size-12 items-center justify-center rounded-xl bg-amber-brand/15 text-amber-brand-dark">
+                      <Icono className="size-6" aria-hidden="true" />
+                    </span>
+                    <h3 className="text-base">{compromiso.titulo}</h3>
+                    <p className="text-sm text-muted-foreground">{compromiso.texto}</p>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>

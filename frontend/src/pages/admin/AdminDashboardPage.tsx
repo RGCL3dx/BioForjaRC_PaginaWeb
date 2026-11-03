@@ -1,7 +1,32 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  ArrowRight,
+  Boxes,
+  Download,
+  Mail,
+  Package,
+  Receipt,
+  RefreshCw,
+  TrendingUp,
+  Trophy,
+  Users,
+} from 'lucide-react'
 import { ErrorAlert, mensajeDeError } from '../../components/common/ErrorAlert'
 import { Loading } from '../../components/common/Loading'
+import { Badge } from '../../components/ui/badge'
+import { Button } from '../../components/ui/button'
+import { Card } from '../../components/ui/card'
+import { Input } from '../../components/ui/input'
+import { Label } from '../../components/ui/label'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../components/ui/table'
 import { useNotification } from '../../context/NotificationContext'
 import { catalogoService } from '../../services/catalogo'
 import { cotizacionService } from '../../services/cotizaciones'
@@ -69,243 +94,230 @@ export function AdminDashboardPage() {
 
   if (cargando && !reporte) {
     return (
-      <section className="py-5">
-        <div className="container">
+      <section className="py-12">
+        <div className="container-page">
           <Loading texto="Cargando panel de administración..." />
         </div>
       </section>
     )
   }
 
+  const metricas = [
+    {
+      titulo: 'Ventas',
+      valor: formatCLP(reporte?.totalVentas ?? 0),
+      icono: TrendingUp,
+      extra: null as string | null,
+    },
+    {
+      titulo: 'Pedidos',
+      valor: formatNumber(reporte?.cantidadPedidos ?? 0),
+      icono: Boxes,
+      extra: null,
+    },
+    {
+      titulo: 'Ticket promedio',
+      valor: formatCLP(reporte?.ticketPromedio ?? 0),
+      icono: Receipt,
+      extra: null,
+    },
+    {
+      titulo: 'Productos',
+      valor: formatNumber(inventario?.totalProductos ?? 0),
+      icono: Package,
+      extra:
+        inventario && inventario.stockBajo > 0 ? `${inventario.stockBajo} con stock bajo` : null,
+    },
+    {
+      titulo: 'Usuarios',
+      valor: formatNumber(usuarios.length),
+      icono: Users,
+      extra: null,
+    },
+    {
+      titulo: 'Cotizaciones',
+      valor: formatNumber(totalCotizaciones),
+      icono: Mail,
+      extra: null,
+    },
+  ]
+
   return (
-    <>
-      <section className="py-5">
-        <div className="container">
-          <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
-            <div>
-              <h1 className="titulo-seccion text-start mb-2">Panel de administración</h1>
-              <p className="texto-gris mb-0">Resumen de actividad de tu tienda BioForjaRC.</p>
-            </div>
-            <div className="d-flex flex-wrap gap-2">
-              <button type="button" className="btn btn-marca-outline rounded-pill" onClick={() => void cargar()}>
-                <i className="bi bi-arrow-clockwise me-1" aria-hidden="true" />
-                Actualizar
-              </button>
-              <button
-                type="button"
-                className="btn btn-marca rounded-pill"
-                onClick={() => void exportar('xlsx')}
-                disabled={exportando !== null}
-              >
-                {exportando === 'xlsx' ? 'Exportando...' : 'Exportar Excel'}
-              </button>
-              <button
-                type="button"
-                className="btn btn-marca rounded-pill"
-                onClick={() => void exportar('pdf')}
-                disabled={exportando !== null}
-              >
-                {exportando === 'pdf' ? 'Exportando...' : 'Exportar PDF'}
-              </button>
-            </div>
+    <section className="py-8">
+      <div className="container-page">
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-extrabold text-brand-dark sm:text-3xl">
+              Panel de administración
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Resumen de actividad de tu tienda BioForjaRC.
+            </p>
           </div>
-
-          {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
-
-          <div className="card card-formulario p-3 mb-4">
-            <div className="row g-2 align-items-end">
-              <div className="col-md-4">
-                <label htmlFor="reporte-desde" className="form-label">
-                  Desde
-                </label>
-                <input
-                  id="reporte-desde"
-                  type="date"
-                  className="form-control"
-                  value={desde}
-                  onChange={(event) => setDesde(event.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="reporte-hasta" className="form-label">
-                  Hasta
-                </label>
-                <input
-                  id="reporte-hasta"
-                  type="date"
-                  className="form-control"
-                  value={hasta}
-                  onChange={(event) => setHasta(event.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
-                <button
-                  type="button"
-                  className="btn btn-marca rounded-pill w-100"
-                  onClick={() => void cargar()}
-                  disabled={cargando}
-                >
-                  {cargando ? 'Cargando...' : 'Aplicar rango'}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-4 mb-4">
-            <article className="col-sm-6 col-lg-4 col-xl-2">
-              <div className="card tarjeta-metrica border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div>
-                    <h2 className="texto-gris text-uppercase small fw-bold mb-1">Ventas</h2>
-                    <p className="fs-4 fw-bold mb-0 text-marca">
-                      {formatCLP(reporte?.totalVentas ?? 0)}
-                    </p>
-                  </div>
-                  <i className="bi bi-graph-up-arrow" aria-hidden="true" />
-                </div>
-              </div>
-            </article>
-            <article className="col-sm-6 col-lg-4 col-xl-2">
-              <div className="card tarjeta-metrica border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div>
-                    <h2 className="texto-gris text-uppercase small fw-bold mb-1">Pedidos</h2>
-                    <p className="fs-4 fw-bold mb-0 text-marca">
-                      {formatNumber(reporte?.cantidadPedidos ?? 0)}
-                    </p>
-                  </div>
-                  <i className="bi bi-box-seam" aria-hidden="true" />
-                </div>
-              </div>
-            </article>
-            <article className="col-sm-6 col-lg-4 col-xl-2">
-              <div className="card tarjeta-metrica border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div>
-                    <h2 className="texto-gris text-uppercase small fw-bold mb-1">Ticket promedio</h2>
-                    <p className="fs-4 fw-bold mb-0 text-marca">
-                      {formatCLP(reporte?.ticketPromedio ?? 0)}
-                    </p>
-                  </div>
-                  <i className="bi bi-receipt" aria-hidden="true" />
-                </div>
-              </div>
-            </article>
-            <article className="col-sm-6 col-lg-4 col-xl-2">
-              <div className="card tarjeta-metrica border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div>
-                    <h2 className="texto-gris text-uppercase small fw-bold mb-1">Productos</h2>
-                    <p className="fs-4 fw-bold mb-0 text-marca">
-                      {formatNumber(inventario?.totalProductos ?? 0)}
-                    </p>
-                    {inventario && inventario.stockBajo > 0 && (
-                      <span className="badge text-bg-warning">{inventario.stockBajo} con stock bajo</span>
-                    )}
-                  </div>
-                  <i className="bi bi-cube" aria-hidden="true" />
-                </div>
-              </div>
-            </article>
-            <article className="col-sm-6 col-lg-4 col-xl-2">
-              <div className="card tarjeta-metrica border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div>
-                    <h2 className="texto-gris text-uppercase small fw-bold mb-1">Usuarios</h2>
-                    <p className="fs-4 fw-bold mb-0 text-marca">{formatNumber(usuarios.length)}</p>
-                  </div>
-                  <i className="bi bi-people" aria-hidden="true" />
-                </div>
-              </div>
-            </article>
-            <article className="col-sm-6 col-lg-4 col-xl-2">
-              <div className="card tarjeta-metrica border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div>
-                    <h2 className="texto-gris text-uppercase small fw-bold mb-1">Cotizaciones</h2>
-                    <p className="fs-4 fw-bold mb-0 text-marca">{formatNumber(totalCotizaciones)}</p>
-                  </div>
-                  <i className="bi bi-envelope-paper" aria-hidden="true" />
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div className="row g-4">
-            <div className="col-lg-7">
-              <div className="card card-formulario p-4 h-100">
-                <h2 className="h5 fw-bold mb-3">
-                  <i className="bi bi-trophy me-2 pie-icono text-marca" aria-hidden="true" />
-                  Productos más vendidos
-                </h2>
-                {reporte && reporte.topProductos.length > 0 ? (
-                  <div className="table-responsive">
-                    <table className="table table-hover align-middle tabla-marca mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">Producto</th>
-                          <th scope="col">Unidades</th>
-                          <th scope="col">Ingresos</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {reporte.topProductos.map((producto) => (
-                          <tr key={producto.productoId ?? producto.nombre}>
-                            <td>{producto.nombre}</td>
-                            <td>{formatNumber(producto.unidades)}</td>
-                            <td className="fw-bold">{formatCLP(producto.ingresos)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <p className="texto-gris mb-0">No hay ventas registradas en el período seleccionado.</p>
-                )}
-              </div>
-            </div>
-
-            <div className="col-lg-5">
-              <div className="card card-formulario p-4 mb-4">
-                <h2 className="h5 fw-bold mb-3">Accesos rápidos</h2>
-                <div className="d-grid gap-2">
-                  <Link to="/admin/inventario" className="btn btn-marca-outline rounded-pill text-start">
-                    <i className="bi bi-cube me-2" aria-hidden="true" />
-                    Gestionar inventario
-                  </Link>
-                  <Link to="/admin/pedidos" className="btn btn-marca-outline rounded-pill text-start">
-                    <i className="bi bi-box-seam me-2" aria-hidden="true" />
-                    Revisar pedidos
-                  </Link>
-                  <Link to="/admin/usuarios" className="btn btn-marca-outline rounded-pill text-start">
-                    <i className="bi bi-people me-2" aria-hidden="true" />
-                    Administrar usuarios
-                  </Link>
-                  <Link to="/admin/cotizaciones" className="btn btn-marca-outline rounded-pill text-start">
-                    <i className="bi bi-envelope-paper me-2" aria-hidden="true" />
-                    Ver cotizaciones
-                  </Link>
-                </div>
-              </div>
-
-              <div className="card card-formulario p-4">
-                <h2 className="h6 fw-bold">Rango del reporte</h2>
-                <p className="small texto-gris mb-1">
-                  Desde {formatDate(desde)} hasta {formatDate(hasta)}
-                </p>
-                <p className="small texto-gris mb-0">
-                  Unidades vendidas: {formatNumber(reporte?.unidadesVendidas ?? 0)}
-                </p>
-                {inventario && (
-                  <p className="small texto-gris mb-0">
-                    Unidades disponibles: {formatNumber(inventario.unidadesDisponibles)}
-                  </p>
-                )}
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" variant="outline" onClick={() => void cargar()}>
+              <RefreshCw className="size-4" aria-hidden="true" />
+              Actualizar
+            </Button>
+            <Button
+              type="button"
+              onClick={() => void exportar('xlsx')}
+              disabled={exportando !== null}
+            >
+              <Download className="size-4" aria-hidden="true" />
+              {exportando === 'xlsx' ? 'Exportando...' : 'Exportar Excel'}
+            </Button>
+            <Button
+              type="button"
+              onClick={() => void exportar('pdf')}
+              disabled={exportando !== null}
+            >
+              <Download className="size-4" aria-hidden="true" />
+              {exportando === 'pdf' ? 'Exportando...' : 'Exportar PDF'}
+            </Button>
           </div>
         </div>
-      </section>
-    </>
+
+        {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
+
+        <Card className="mb-5 gap-0 p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <div className="flex-1">
+              <Label htmlFor="reporte-desde">Desde</Label>
+              <Input
+                id="reporte-desde"
+                type="date"
+                value={desde}
+                onChange={(event) => setDesde(event.target.value)}
+              />
+            </div>
+            <div className="flex-1">
+              <Label htmlFor="reporte-hasta">Hasta</Label>
+              <Input
+                id="reporte-hasta"
+                type="date"
+                value={hasta}
+                onChange={(event) => setHasta(event.target.value)}
+              />
+            </div>
+            <Button type="button" onClick={() => void cargar()} disabled={cargando}>
+              {cargando ? 'Cargando...' : 'Aplicar rango'}
+            </Button>
+          </div>
+        </Card>
+
+        <div className="mb-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {metricas.map((metrica) => {
+            const Icono = metrica.icono
+            return (
+              <Card key={metrica.titulo} className="gap-1 p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h2 className="font-display text-[11px] font-bold tracking-wide text-muted-foreground uppercase">
+                      {metrica.titulo}
+                    </h2>
+                    <p className="mt-1 font-display text-xl font-bold text-primary">
+                      {metrica.valor}
+                    </p>
+                  </div>
+                  <span className="flex size-9 items-center justify-center rounded-lg bg-brand/10 text-brand">
+                    <Icono className="size-4" aria-hidden="true" />
+                  </span>
+                </div>
+                {metrica.extra && (
+                  <Badge variant="warning" className="mt-1 self-start">
+                    {metrica.extra}
+                  </Badge>
+                )}
+              </Card>
+            )
+          })}
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
+          <Card className="gap-3 p-5">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
+              <Trophy className="size-5 text-amber-brand" aria-hidden="true" />
+              Productos más vendidos
+            </h2>
+            {reporte && reporte.topProductos.length > 0 ? (
+              <div className="table-wrap">
+                <Table className="min-w-[480px]">
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead>Producto</TableHead>
+                      <TableHead>Unidades</TableHead>
+                      <TableHead>Ingresos</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {reporte.topProductos.map((producto) => (
+                      <TableRow key={producto.productoId ?? producto.nombre}>
+                        <TableCell className="whitespace-normal">{producto.nombre}</TableCell>
+                        <TableCell>{formatNumber(producto.unidades)}</TableCell>
+                        <TableCell className="font-bold">
+                          {formatCLP(producto.ingresos)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                No hay ventas registradas en el período seleccionado.
+              </p>
+            )}
+          </Card>
+
+          <div className="space-y-4">
+            <Card className="gap-3 p-5">
+              <h2 className="text-lg font-bold">Accesos rápidos</h2>
+              <div className="grid gap-2">
+                {[
+                  { to: '/admin/inventario', label: 'Gestionar inventario', icono: Package },
+                  { to: '/admin/pedidos', label: 'Revisar pedidos', icono: Boxes },
+                  { to: '/admin/usuarios', label: 'Administrar usuarios', icono: Users },
+                  { to: '/admin/cotizaciones', label: 'Ver cotizaciones', icono: Mail },
+                ].map((acceso) => {
+                  const Icono = acceso.icono
+                  return (
+                    <Button
+                      key={acceso.to}
+                      asChild
+                      variant="outline"
+                      className="justify-between"
+                    >
+                      <Link to={acceso.to}>
+                        <span className="flex items-center gap-2">
+                          <Icono className="size-4" aria-hidden="true" />
+                          {acceso.label}
+                        </span>
+                        <ArrowRight className="size-4" aria-hidden="true" />
+                      </Link>
+                    </Button>
+                  )
+                })}
+              </div>
+            </Card>
+
+            <Card className="gap-2 p-5">
+              <h2 className="text-sm font-bold">Rango del reporte</h2>
+              <p className="text-xs text-muted-foreground">
+                Desde {formatDate(desde)} hasta {formatDate(hasta)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Unidades vendidas: {formatNumber(reporte?.unidadesVendidas ?? 0)}
+              </p>
+              {inventario && (
+                <p className="text-xs text-muted-foreground">
+                  Unidades disponibles: {formatNumber(inventario.unidadesDisponibles)}
+                </p>
+              )}
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }

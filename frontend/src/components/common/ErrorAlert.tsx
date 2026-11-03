@@ -1,3 +1,5 @@
+import { X } from 'lucide-react'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ApiError } from '../../services/http'
 
 export function mensajeDeError(error: unknown): string {
@@ -14,11 +16,18 @@ export function mensajeDeError(error: unknown): string {
 export function ErrorAlert({ error, onClose }: { error: unknown; onClose?: () => void }) {
   if (!error) return null
   return (
-    <div className="alert alert-danger d-flex justify-content-between align-items-start" role="alert">
-      <span>{mensajeDeError(error)}</span>
+    <Alert variant="destructive" className="mb-4 flex items-start justify-between gap-3">
+      <AlertDescription className="col-start-1">{mensajeDeError(error)}</AlertDescription>
       {onClose && (
-        <button type="button" className="btn-close ms-3" aria-label="Cerrar" onClick={onClose} />
+        <button
+          type="button"
+          className="rounded-full p-1 transition-colors hover:bg-destructive/10"
+          aria-label="Cerrar"
+          onClick={onClose}
+        >
+          <X className="size-4" />
+        </button>
       )}
-    </div>
+    </Alert>
   )
 }

@@ -1,10 +1,16 @@
 # Frontend BioForjaRC
 
-Cliente web en **React 19 + TypeScript + Vite + SWC + Bootstrap 5** que consume exclusivamente el API Gateway de BioForjaRC en `http://localhost:8090`.
+Cliente web en **React 19 + TypeScript + Vite + Tailwind CSS v4** con componentes estilo
+**shadcn/ui** (Radix UI + CVA). Consume exclusivamente el API Gateway de BioForjaRC en
+`http://localhost:8090`.
+
+> **Nota académica:** la evaluación menciona Bootstrap, pero el usuario solicitó Tailwind CSS y
+> shadcn/ui. Bootstrap fue retirado de esta aplicación. Es una **equivalencia tecnológica pendiente de
+> validar con el docente**; no se afirma cumplimiento literal de Bootstrap.
 
 ## Requisitos
 
-- Node.js 22 o superior
+- Node.js 22 o superior (verificado con v25.7.0)
 - API Gateway y microservicios iniciados (`8090` a `8096`)
 - PostgreSQL 18 con las bases de datos del backend
 
@@ -40,9 +46,10 @@ No guardes credenciales, tokens ni secretos en `.env` ni en el repositorio.
 | `npm run dev` | Servidor de desarrollo con recarga en caliente |
 | `npm run build` | Verificación TypeScript y build de producción en `dist/` |
 | `npm run preview` | Vista previa del build de producción |
-| `npm run lint` | Análisis estático con ESLint |
-| `npm test` | Pruebas unitarias con Vitest |
-| `npm run test:watch` | Pruebas en modo interactivo |
+| `npm run lint` | Análisis estático con Oxlint |
+
+Los scripts `npm test` y `npm run test:watch` fueron retirados junto con las pruebas unitarias por
+solicitud del usuario. No hay framework de pruebas unitarias instalado.
 
 ## Rutas principales
 
@@ -74,27 +81,57 @@ No guardes credenciales, tokens ni secretos en `.env` ni en el repositorio.
 
 ## Arquitectura
 
-- `src/services/http.ts`: cliente HTTP, JWT, manejo de errores, descargas y URL del Gateway.
-- `src/services/`: un servicio por dominio del backend.
-- `src/context/`: autenticación, carrito, notificaciones y catálogo.
-- `src/components/`: layouts, guards y componentes reutilizables (`Navbar`, `ProductList`, `ProductCard`, `ConfirmModal`, etc.).
-- `src/pages/`: páginas públicas, de cuenta y de administración.
-- `src/types/api.ts`: contratos TypeScript de las respuestas y solicitudes.
-- `src/utils/format.ts`: formato de moneda, fechas, números y rutas de imágenes.
+```text
+src/
+├── components/
+│   ├── ui/          Primitivas estilo shadcn/ui (Button, Card, Dialog, Table, etc.)
+│   ├── common/      Componentes de negocio reutilizables
+│   ├── catalog/     ProductCard, ProductList
+│   └── layout/      Navbar, Layout, AdminLayout, Guards
+├── context/         Auth, Cart y Notification
+├── pages/           Páginas públicas, de cuenta y administración
+├── services/        Cliente HTTP por dominio
+├── types/           Contratos TypeScript
+├── utils/           Formato de moneda, fechas y números
+├── lib/             Utilidad `cn`
+└── styles/base/     Tokens Tailwind y estilos globales
+```
 
-El diseño y los estilos se reutilizan del sitio original copiado a `public/assets` y `src/styles`; las carpetas originales `paginas/`, `js/`, `css/` y `assets/` no se modifican.
+- `src/services/http.ts`: URL base, JWT, manejo de errores, sesión expirada y descargas.
+- `src/services/`: un cliente por dominio del backend.
+- `src/context/`: autenticación, carrito y notificaciones.
+- `src/components/ui/`: base visual; la lógica de negocio permanece en componentes y páginas.
+- `src/types/api.ts`: contratos TypeScript de respuestas y solicitudes.
+- `src/utils/format.ts`: formato CLP, fechas, números y rutas de imágenes.
+
+### Configuración de Tailwind y shadcn/ui
+
+- `components.json`: configuración de shadcn/ui.
+- `vite.config.ts`: plugins de React y `@tailwindcss/vite`, alias `@` a `src`.
+- `tsconfig.app.json`: alias `@/*`.
+- `src/lib/utils.ts`: función `cn`.
+- `src/styles/base/global.css`: `@import 'tailwindcss'`, variables de tema, tokens de marca
+  BioForjaRC y utilidades compartidas.
+
+La carpeta original `paginas/`, `js/`, `css/` y `assets/` no se modifica; el sitio estático conserva
+sus propios estilos.
 
 ## Verificación
 
-Estado de la última ejecución:
+Estado de esta entrega:
 
+- `npm run build`: correcto (TypeScript estricto + Vite).
 - `npm run lint`: sin errores.
-- `npm test`: 11 archivos y 42 pruebas aprobadas.
-- `npm run build`: correcto.
-- Trazabilidad HU/CA: [`../docs/Matriz_Pruebas_Frontend.md`](../docs/Matriz_Pruebas_Frontend.md).
-- Flujo probado en navegador real: catálogo, búsqueda, filtros, registro, login, perfil, direcciones, carrito, checkout con boleta/factura, retiro, envío estándar/express, pago simulado, comprobantes, cotizaciones con archivos, presupuesto y panel administrativo.
-- Permisos y errores probados: rutas protegidas, cliente en `/admin`, 401, 403, 404, sesión expirada, credenciales inválidas, correo duplicado, stock insuficiente y Gateway caído.
-- Responsive revisado a 375 px, 768 px y escritorio.
+- Pruebas unitarias: retiradas por solicitud; no ejecutadas.
+- Cobertura: no generada.
+- Rutas públicas revisadas en navegador integrado (Chromium): inicio, productos, cotización,
+  contacto, nosotros, login y carrito renderizan. `/admin` redirige a `/login` sin sesión.
+- Navegación responsiva básica a 800 px: el botón de menú abre el panel lateral con los enlaces.
+- Flujo E2E con servicios activos: no verificado; los puertos 8090–8096 estaban libres durante la revisión.
+- Revisión en dispositivos móviles reales: pendiente.
+
+No se presentan resultados históricos de Vitest como validación actual. Ver
+[`../docs/Mapa_API.md`](../docs/Mapa_API.md) y [`../docs/Retiro_Pruebas_Unitarias.md`](../docs/Retiro_Pruebas_Unitarias.md).
 
 ## Pendientes conocidos
 
@@ -102,3 +139,5 @@ Estado de la última ejecución:
 - Envío real de correos: los mensajes se registran en el log.
 - Descuento automático de stock al crear un pedido: el backend valida stock, pero no lo descuenta.
 - Página transaccional real para pagar cotizaciones: el enlace actual informa cómo coordinar el pago.
+- Pruebas unitarias y cobertura: aplazadas para una fase posterior.
+- Validación docente de Tailwind/shadcn/ui como equivalencia de Bootstrap.

@@ -1,8 +1,25 @@
 import { useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import {
+  Banknote,
+  CreditCard,
+  Info,
+  Lock,
+  MapPin,
+  Package,
+  ReceiptText,
+  Truck,
+  UserRound,
+} from 'lucide-react'
 import { ErrorAlert } from '../components/common/ErrorAlert'
 import { Loading } from '../components/common/Loading'
+import { Alert, AlertDescription } from '../components/ui/alert'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Spinner } from '../components/ui/spinner'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useNotification } from '../context/NotificationContext'
@@ -17,6 +34,7 @@ import type {
   TipoDocumento,
 } from '../types/api'
 import { assetUrl, formatCLP } from '../utils/format'
+import { cn } from '@/lib/utils'
 
 interface FormularioCheckout {
   nombre: string
@@ -33,6 +51,9 @@ interface FormularioCheckout {
   metodoDespacho: string
   metodoPago: MetodoPago
 }
+
+const selectClase =
+  'flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-sm shadow-xs outline-none transition-colors focus-visible:border-brand-light focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-70'
 
 function normalizar(texto: string): string {
   return texto
@@ -132,9 +153,7 @@ export function CheckoutPage() {
       return
     }
     let activo = true
-    Promise.allSettled(
-      items.map((item) => catalogoService.obtenerProducto(item.producto.id)),
-    )
+    Promise.allSettled(items.map((item) => catalogoService.obtenerProducto(item.producto.id)))
       .then((resultados) => {
         if (!activo) return
         resultados.forEach((resultado) => {
@@ -260,7 +279,11 @@ export function CheckoutPage() {
       }
     }
     if (formulario.documentoTipo === 'factura') {
-      if (!formulario.rutFacturacion.trim() || !formulario.razonSocial.trim() || !formulario.giro.trim()) {
+      if (
+        !formulario.rutFacturacion.trim() ||
+        !formulario.razonSocial.trim() ||
+        !formulario.giro.trim()
+      ) {
         setError(new Error('Para emitir factura debes completar RUT, razón social y giro.'))
         return
       }
@@ -276,8 +299,7 @@ export function CheckoutPage() {
         documentoTipo: formulario.documentoTipo,
         rutFacturacion:
           formulario.documentoTipo === 'factura' ? formulario.rutFacturacion : undefined,
-        razonSocial:
-          formulario.documentoTipo === 'factura' ? formulario.razonSocial : undefined,
+        razonSocial: formulario.documentoTipo === 'factura' ? formulario.razonSocial : undefined,
         giro: formulario.documentoTipo === 'factura' ? formulario.giro : undefined,
         direccion: requiereDireccion ? formulario.direccion : undefined,
         comuna: requiereDireccion ? formulario.comuna : undefined,
@@ -298,8 +320,8 @@ export function CheckoutPage() {
 
   if (cargandoCatalogos || verificandoStock) {
     return (
-      <section className="py-5">
-        <div className="container">
+      <section className="py-12">
+        <div className="container-page">
           <Loading texto="Preparando tu checkout..." />
         </div>
       </section>
@@ -308,113 +330,110 @@ export function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <section className="py-5">
-        <div className="container text-center">
-          <h1 className="titulo-seccion">Finalizar compra</h1>
-          <p className="pagina-intro">Tu carrito está vacío.</p>
-          <Link to="/productos" className="btn btn-marca btn-lg rounded-pill px-4">
-            Ver productos
-          </Link>
+      <section className="py-16">
+        <div className="container-page text-center">
+          <h1 className="section-title">Finalizar compra</h1>
+          <p className="page-intro">Tu carrito está vacío.</p>
+          <Button asChild size="lg">
+            <Link to="/productos">Ver productos</Link>
+          </Button>
         </div>
       </section>
     )
   }
 
+  const opcionClase = (activa: boolean) =>
+    cn(
+      'h-full w-full rounded-xl border-2 p-4 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+      activa
+        ? 'border-primary bg-brand/5'
+        : 'border-border bg-white hover:border-brand-light',
+    )
+
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Finalizar compra</h1>
-          <p className="pagina-intro">
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Finalizar compra</h1>
+          <p className="page-intro mb-0">
             Completa tus datos para generar la orden y el comprobante de compra.
           </p>
         </div>
       </section>
 
-      <section className="py-4">
-        <div className="container">
-          <form className="row g-4" onSubmit={enviarPedido} noValidate>
-            <div className="col-lg-8">
+      <section className="pb-16">
+        <div className="container-page">
+          <form className="grid gap-5 lg:grid-cols-[1fr_22rem]" onSubmit={enviarPedido} noValidate>
+            <div className="space-y-4">
               {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
               {hayProblemaStock && (
-                <div className="alert alert-warning">
-                  Uno o más productos no tienen stock suficiente. Vuelve al{' '}
-                  <Link to="/carrito" className="alert-link">
-                    carrito
-                  </Link>{' '}
-                  para ajustar las cantidades.
-                </div>
+                <Alert variant="warning">
+                  <AlertDescription>
+                    Uno o más productos no tienen stock suficiente. Vuelve al{' '}
+                    <Link to="/carrito" className="font-semibold underline">
+                      carrito
+                    </Link>{' '}
+                    para ajustar las cantidades.
+                  </AlertDescription>
+                </Alert>
               )}
 
-              <div className="card card-formulario p-4 mb-4">
-                <h2 className="h5 fw-bold mb-3">
-                  <i className="bi bi-person me-2 texto-marca" aria-hidden="true" />
+              <Card className="gap-4 p-5 sm:p-6">
+                <h2 className="flex items-center gap-2 text-lg font-bold">
+                  <UserRound className="size-5 text-primary" aria-hidden="true" />
                   Datos del comprador
                 </h2>
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <label htmlFor="nombre" className="form-label">
-                      Nombre *
-                    </label>
-                    <input
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="nombre">Nombre *</Label>
+                    <Input
                       id="nombre"
                       name="nombre"
-                      className="form-control"
                       value={formulario.nombre}
                       onChange={actualizarCampo}
                       required
                       maxLength={100}
                     />
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="apellido" className="form-label">
-                      Apellido *
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="apellido">Apellido *</Label>
+                    <Input
                       id="apellido"
                       name="apellido"
-                      className="form-control"
                       value={formulario.apellido}
                       onChange={actualizarCampo}
                       required
                       maxLength={100}
                     />
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="correo-cuenta" className="form-label">
-                      Correo de la cuenta
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="correo-cuenta">Correo de la cuenta</Label>
+                    <Input
                       id="correo-cuenta"
-                      className="form-control"
                       value={usuario?.correo ?? ''}
                       readOnly
                       disabled
                     />
-                    <div className="form-text">El comprobante se asociará a este correo.</div>
+                    <p className="mt-1.5 text-xs text-muted-foreground">
+                      El comprobante se asociará a este correo.
+                    </p>
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="telefono" className="form-label">
-                      Teléfono
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="telefono">Teléfono</Label>
+                    <Input
                       id="telefono"
                       name="telefono"
                       type="tel"
-                      className="form-control"
                       value={formulario.telefono}
                       onChange={actualizarCampo}
                       maxLength={30}
                     />
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="rut" className="form-label">
-                      RUT
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="rut">RUT</Label>
+                    <Input
                       id="rut"
                       name="rut"
-                      className="form-control"
                       value={formulario.rut}
                       onChange={actualizarCampo}
                       maxLength={20}
@@ -422,17 +441,16 @@ export function CheckoutPage() {
                     />
                   </div>
                 </div>
-              </div>
+              </Card>
 
-              <div className="card card-formulario p-4 mb-4">
-                <h2 className="h5 fw-bold mb-3">
-                  <i className="bi bi-receipt me-2 texto-marca" aria-hidden="true" />
+              <Card className="gap-4 p-5 sm:p-6">
+                <h2 className="flex items-center gap-2 text-lg font-bold">
+                  <ReceiptText className="size-5 text-primary" aria-hidden="true" />
                   Documento de compra
                 </h2>
-                <div className="d-flex flex-wrap gap-3 mb-3">
-                  <div className="form-check">
+                <div className="flex flex-wrap gap-4 text-sm">
+                  <label className="flex cursor-pointer items-center gap-2">
                     <input
-                      className="form-check-input"
                       type="radio"
                       name="documentoTipo"
                       id="documento-boleta"
@@ -441,14 +459,12 @@ export function CheckoutPage() {
                       onChange={() =>
                         setFormulario((actual) => ({ ...actual, documentoTipo: 'boleta' }))
                       }
+                      className="size-4 accent-primary"
                     />
-                    <label className="form-check-label" htmlFor="documento-boleta">
-                      Boleta
-                    </label>
-                  </div>
-                  <div className="form-check">
+                    Boleta
+                  </label>
+                  <label className="flex cursor-pointer items-center gap-2">
                     <input
-                      className="form-check-input"
                       type="radio"
                       name="documentoTipo"
                       id="documento-factura"
@@ -457,50 +473,40 @@ export function CheckoutPage() {
                       onChange={() =>
                         setFormulario((actual) => ({ ...actual, documentoTipo: 'factura' }))
                       }
+                      className="size-4 accent-primary"
                     />
-                    <label className="form-check-label" htmlFor="documento-factura">
-                      Factura
-                    </label>
-                  </div>
+                    Factura
+                  </label>
                 </div>
                 {formulario.documentoTipo === 'factura' && (
-                  <div className="row g-3">
-                    <div className="col-md-4">
-                      <label htmlFor="rutFacturacion" className="form-label">
-                        RUT de facturación *
-                      </label>
-                      <input
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    <div>
+                      <Label htmlFor="rutFacturacion">RUT de facturación *</Label>
+                      <Input
                         id="rutFacturacion"
                         name="rutFacturacion"
-                        className="form-control"
                         value={formulario.rutFacturacion}
                         onChange={actualizarCampo}
                         maxLength={20}
                         required
                       />
                     </div>
-                    <div className="col-md-4">
-                      <label htmlFor="razonSocial" className="form-label">
-                        Razón social *
-                      </label>
-                      <input
+                    <div>
+                      <Label htmlFor="razonSocial">Razón social *</Label>
+                      <Input
                         id="razonSocial"
                         name="razonSocial"
-                        className="form-control"
                         value={formulario.razonSocial}
                         onChange={actualizarCampo}
                         maxLength={150}
                         required
                       />
                     </div>
-                    <div className="col-md-4">
-                      <label htmlFor="giro" className="form-label">
-                        Giro *
-                      </label>
-                      <input
+                    <div>
+                      <Label htmlFor="giro">Giro *</Label>
+                      <Input
                         id="giro"
                         name="giro"
-                        className="form-control"
                         value={formulario.giro}
                         onChange={actualizarCampo}
                         maxLength={120}
@@ -509,22 +515,22 @@ export function CheckoutPage() {
                     </div>
                   </div>
                 )}
-              </div>
+              </Card>
 
-              <div className="card card-formulario p-4 mb-4">
-                <h2 className="h5 fw-bold mb-3">
-                  <i className="bi bi-truck me-2 texto-marca" aria-hidden="true" />
+              <Card className="gap-4 p-5 sm:p-6">
+                <h2 className="flex items-center gap-2 text-lg font-bold">
+                  <Truck className="size-5 text-primary" aria-hidden="true" />
                   Despacho
                 </h2>
-                <div className="row g-3 mb-3">
-                  <div className="col-md-6">
-                    <label htmlFor="regionCodigo" className="form-label">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="regionCodigo">
                       Región {requiereDireccion ? '*' : ''}
-                    </label>
+                    </Label>
                     <select
                       id="regionCodigo"
                       name="regionCodigo"
-                      className="form-select"
+                      className={selectClase}
                       value={formulario.regionCodigo}
                       onChange={(event) => {
                         setFormulario((actual) => ({
@@ -543,14 +549,12 @@ export function CheckoutPage() {
                       ))}
                     </select>
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="comuna" className="form-label">
-                      Comuna {requiereDireccion ? '*' : ''}
-                    </label>
+                  <div>
+                    <Label htmlFor="comuna">Comuna {requiereDireccion ? '*' : ''}</Label>
                     <select
                       id="comuna"
                       name="comuna"
-                      className="form-select"
+                      className={selectClase}
                       value={formulario.comuna}
                       onChange={actualizarCampo}
                       required={requiereDireccion}
@@ -564,14 +568,11 @@ export function CheckoutPage() {
                       ))}
                     </select>
                   </div>
-                  <div className="col-12">
-                    <label htmlFor="direccion" className="form-label">
-                      Dirección {requiereDireccion ? '*' : ''}
-                    </label>
-                    <input
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="direccion">Dirección {requiereDireccion ? '*' : ''}</Label>
+                    <Input
                       id="direccion"
                       name="direccion"
-                      className="form-control"
                       value={formulario.direccion}
                       onChange={actualizarCampo}
                       maxLength={200}
@@ -582,190 +583,190 @@ export function CheckoutPage() {
                   </div>
                 </div>
 
-                <h3 className="h6 fw-bold mt-4 mb-2">Método de despacho</h3>
-                {cargandoOpciones && <p className="texto-gris small">Calculando costos de envío...</p>}
+                <h3 className="mt-2 text-sm font-bold">Método de despacho</h3>
+                {cargandoOpciones && (
+                  <p className="text-sm text-muted-foreground">Calculando costos de envío...</p>
+                )}
                 {Boolean(errorOpciones) && <ErrorAlert error={errorOpciones} />}
-                <div className="row g-2">
+                <div className="grid gap-3 sm:grid-cols-3">
                   {metodos.map((metodo) => {
                     const opcion = opciones?.opciones.find(
                       (item) => item.metodoCodigo === metodo.codigo,
                     )
                     const disponible = Boolean(opcion) || metodo.codigo === 'retiro'
+                    const activo = formulario.metodoDespacho === metodo.codigo
                     return (
-                      <div className="col-md-4" key={metodo.codigo}>
-                        <button
-                          type="button"
-                          className={`card h-100 w-100 text-start border-2 ${
-                            formulario.metodoDespacho === metodo.codigo
-                              ? 'border-success bg-success-subtle'
-                              : 'border-light-subtle'
-                          }`}
-                          onClick={() => seleccionarMetodo(metodo.codigo)}
-                          disabled={!disponible}
-                          aria-pressed={formulario.metodoDespacho === metodo.codigo}
-                        >
-                          <span className="card-body p-3">
-                            <span className="fw-bold d-block">{metodo.nombre}</span>
-                            <span className="small texto-gris d-block">{metodo.descripcion}</span>
-                            <span className="small fw-bold texto-marca d-block mt-2">
-                              {opcion
-                                ? opcion.costoEnvio === 0
-                                  ? 'Sin costo'
-                                  : formatCLP(opcion.costoEnvio)
-                                : metodo.codigo === 'retiro'
-                                  ? 'Sin costo'
-                                  : 'Selecciona región'}
-                            </span>
-                            {opcion && (
-                              <span className="small texto-gris d-block">
-                                {opcion.diasHabiles} día{opcion.diasHabiles === 1 ? '' : 's'} hábil
-                                {opcion.diasHabiles === 1 ? '' : 'es'}
-                              </span>
-                            )}
+                      <button
+                        key={metodo.codigo}
+                        type="button"
+                        className={opcionClase(activo)}
+                        onClick={() => seleccionarMetodo(metodo.codigo)}
+                        disabled={!disponible}
+                        aria-pressed={activo}
+                      >
+                        <span className="block font-bold">{metodo.nombre}</span>
+                        <span className="block text-xs text-muted-foreground">
+                          {metodo.descripcion}
+                        </span>
+                        <span className="mt-2 block text-sm font-bold text-primary">
+                          {opcion
+                            ? opcion.costoEnvio === 0
+                              ? 'Sin costo'
+                              : formatCLP(opcion.costoEnvio)
+                            : metodo.codigo === 'retiro'
+                              ? 'Sin costo'
+                              : 'Selecciona región'}
+                        </span>
+                        {opcion && (
+                          <span className="block text-xs text-muted-foreground">
+                            {opcion.diasHabiles} día{opcion.diasHabiles === 1 ? '' : 's'} hábil
+                            {opcion.diasHabiles === 1 ? '' : 'es'}
                           </span>
-                        </button>
-                      </div>
+                        )}
+                      </button>
                     )
                   })}
                 </div>
                 {metodos.length === 0 && (
-                  <div className="alert alert-warning mb-0">No hay métodos de despacho disponibles.</div>
+                  <Alert variant="warning">
+                    <AlertDescription>No hay métodos de despacho disponibles.</AlertDescription>
+                  </Alert>
                 )}
-              </div>
+              </Card>
 
-              <div className="card card-formulario p-4">
-                <h2 className="h5 fw-bold mb-3">
-                  <i className="bi bi-credit-card me-2 texto-marca" aria-hidden="true" />
+              <Card className="gap-4 p-5 sm:p-6">
+                <h2 className="flex items-center gap-2 text-lg font-bold">
+                  <CreditCard className="size-5 text-primary" aria-hidden="true" />
                   Pago
                 </h2>
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <button
-                      type="button"
-                      className={`card h-100 w-100 text-start border-2 ${
-                        formulario.metodoPago === 'tarjeta'
-                          ? 'border-success bg-success-subtle'
-                          : 'border-light-subtle'
-                      }`}
-                      onClick={() => setFormulario((actual) => ({ ...actual, metodoPago: 'tarjeta' }))}
-                      aria-pressed={formulario.metodoPago === 'tarjeta'}
-                    >
-                      <span className="card-body p-3">
-                        <span className="fw-bold d-block">
-                          <i className="bi bi-credit-card-2-front me-2" aria-hidden="true" />
-                          Tarjeta de crédito o débito
-                        </span>
-                        <span className="small texto-gris">
-                          Pago simulado para esta versión local.
-                        </span>
-                      </span>
-                    </button>
-                  </div>
-                  <div className="col-md-6">
-                    <button
-                      type="button"
-                      className={`card h-100 w-100 text-start border-2 ${
-                        formulario.metodoPago === 'transferencia'
-                          ? 'border-success bg-success-subtle'
-                          : 'border-light-subtle'
-                      }`}
-                      onClick={() =>
-                        setFormulario((actual) => ({ ...actual, metodoPago: 'transferencia' }))
-                      }
-                      aria-pressed={formulario.metodoPago === 'transferencia'}
-                    >
-                      <span className="card-body p-3">
-                        <span className="fw-bold d-block">
-                          <i className="bi bi-bank me-2" aria-hidden="true" />
-                          Transferencia bancaria
-                        </span>
-                        <span className="small texto-gris">
-                          Recibirás los datos por correo (registrado en log).
-                        </span>
-                      </span>
-                    </button>
-                  </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    className={opcionClase(formulario.metodoPago === 'tarjeta')}
+                    onClick={() =>
+                      setFormulario((actual) => ({ ...actual, metodoPago: 'tarjeta' }))
+                    }
+                    aria-pressed={formulario.metodoPago === 'tarjeta'}
+                  >
+                    <span className="flex items-center gap-2 font-bold">
+                      <CreditCard className="size-4" aria-hidden="true" />
+                      Tarjeta de crédito o débito
+                    </span>
+                    <span className="mt-1 block text-xs text-muted-foreground">
+                      Pago simulado para esta versión local.
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className={opcionClase(formulario.metodoPago === 'transferencia')}
+                    onClick={() =>
+                      setFormulario((actual) => ({ ...actual, metodoPago: 'transferencia' }))
+                    }
+                    aria-pressed={formulario.metodoPago === 'transferencia'}
+                  >
+                    <span className="flex items-center gap-2 font-bold">
+                      <Banknote className="size-4" aria-hidden="true" />
+                      Transferencia bancaria
+                    </span>
+                    <span className="mt-1 block text-xs text-muted-foreground">
+                      Recibirás los datos por correo (registrado en log).
+                    </span>
+                  </button>
                 </div>
-                <div className="alert alert-info mt-3 mb-0 small">
-                  <i className="bi bi-info-circle me-2" aria-hidden="true" />
-                  El pago es simulado: no se cobrará dinero real. El pedido quedará registrado y
-                  podrás descargar tu comprobante.
-                </div>
-              </div>
+                <Alert variant="info" className="text-xs">
+                  <Info aria-hidden="true" />
+                  <AlertDescription>
+                    El pago es simulado: no se cobrará dinero real. El pedido quedará registrado y
+                    podrás descargar tu comprobante.
+                  </AlertDescription>
+                </Alert>
+              </Card>
             </div>
 
-            <div className="col-lg-4">
-              <div className="card card-formulario p-4 sticky-lg-top" style={{ top: '100px' }}>
-                <h2 className="h5 fw-bold mb-3">Resumen del pedido</h2>
-                <ul className="list-unstyled mb-3">
+            <div>
+              <Card className="gap-3 p-5 lg:sticky lg:top-24">
+                <h2 className="flex items-center gap-2 text-lg font-bold">
+                  <Package className="size-5 text-primary" aria-hidden="true" />
+                  Resumen del pedido
+                </h2>
+                <ul className="space-y-3">
                   {items.map((item) => (
-                    <li key={item.producto.id} className="d-flex gap-2 mb-3">
+                    <li key={item.producto.id} className="flex gap-2">
                       <img
                         src={assetUrl(item.producto.imagen)}
                         alt=""
                         width={52}
                         height={52}
-                        className="rounded-2"
-                        style={{ objectFit: 'cover' }}
+                        className="size-13 shrink-0 rounded-lg object-cover"
                       />
-                      <div className="flex-grow-1">
-                        <span className="fw-bold small d-block">{item.producto.nombre}</span>
-                        <span className="small texto-gris">
+                      <div className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-semibold">
+                          {item.producto.nombre}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
                           {item.cantidad} × {formatCLP(item.producto.precio)}
                         </span>
                       </div>
-                      <span className="small fw-bold">
+                      <span className="text-sm font-bold">
                         {formatCLP(Number(item.producto.precio) * item.cantidad)}
                       </span>
                     </li>
                   ))}
                 </ul>
-                <dl className="row mb-2">
-                  <dt className="col-7 fw-normal texto-gris">Subtotal productos</dt>
-                  <dd className="col-5 text-end mb-0">{formatCLP(subtotal)}</dd>
-                  <dt className="col-7 fw-normal texto-gris">Costo de envío</dt>
-                  <dd className="col-5 text-end mb-0">
-                    {opcionSeleccionada
-                      ? opcionSeleccionada.costoEnvio === 0
-                        ? 'Sin costo'
-                        : formatCLP(opcionSeleccionada.costoEnvio)
-                      : formulario.metodoDespacho === 'retiro'
-                        ? 'Sin costo'
-                        : 'Por calcular'}
-                  </dd>
+                <dl className="space-y-2 text-sm">
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-muted-foreground">Subtotal productos</dt>
+                    <dd>{formatCLP(subtotal)}</dd>
+                  </div>
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-muted-foreground">Costo de envío</dt>
+                    <dd>
+                      {opcionSeleccionada
+                        ? opcionSeleccionada.costoEnvio === 0
+                          ? 'Sin costo'
+                          : formatCLP(opcionSeleccionada.costoEnvio)
+                        : formulario.metodoDespacho === 'retiro'
+                          ? 'Sin costo'
+                          : 'Por calcular'}
+                    </dd>
+                  </div>
                 </dl>
-                <hr />
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <span className="fw-bold">Total a pagar</span>
-                  <span className="fs-4 fw-bold texto-marca">{formatCLP(total)}</span>
+                <hr className="border-border" />
+                <div className="flex items-center justify-between">
+                  <span className="font-bold">Total a pagar</span>
+                  <span className="font-display text-2xl font-extrabold text-primary">
+                    {formatCLP(total)}
+                  </span>
                 </div>
                 {regionSeleccionada && formulario.comuna && (
-                  <p className="small texto-gris">
-                    <i className="bi bi-geo-alt me-1" aria-hidden="true" />
+                  <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <MapPin className="size-3.5" aria-hidden="true" />
                     {formulario.comuna}, {regionSeleccionada.nombre}
                   </p>
                 )}
-                <button
+                <Button
                   type="submit"
-                  className="btn btn-acento btn-lg rounded-pill w-100"
+                  size="lg"
+                  variant="accent"
+                  className="w-full"
                   disabled={enviando || hayProblemaStock}
                 >
                   {enviando ? (
                     <>
-                      <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
+                      <Spinner className="size-4" />
                       Procesando...
                     </>
                   ) : (
                     <>
-                      <i className="bi bi-lock me-1" aria-hidden="true" />
+                      <Lock className="size-4" aria-hidden="true" />
                       Pagar y generar pedido
                     </>
                   )}
-                </button>
-                <Link to="/carrito" className="btn btn-link w-100 mt-2 text-decoration-none">
-                  Volver al carrito
-                </Link>
-              </div>
+                </Button>
+                <Button asChild variant="ghost" className="w-full">
+                  <Link to="/carrito">Volver al carrito</Link>
+                </Button>
+              </Card>
             </div>
           </form>
         </div>

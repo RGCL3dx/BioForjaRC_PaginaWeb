@@ -1,4 +1,14 @@
 import type { ReactNode } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Spinner } from '@/components/ui/spinner'
 
 interface ConfirmModalProps {
   abierto: boolean
@@ -12,6 +22,12 @@ interface ConfirmModalProps {
   onCancelar: () => void
 }
 
+const variantes = {
+  danger: 'destructive',
+  primary: 'default',
+  success: 'default',
+} as const
+
 export function ConfirmModal({
   abierto,
   titulo,
@@ -23,35 +39,36 @@ export function ConfirmModal({
   onConfirmar,
   onCancelar,
 }: ConfirmModalProps) {
-  if (!abierto) return null
   return (
-    <>
-      <div className="modal fade show d-block" tabIndex={-1} role="dialog" aria-modal="true">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2 className="modal-title h5">{titulo}</h2>
-              <button type="button" className="btn-close" aria-label="Cerrar" onClick={onCancelar} />
-            </div>
-            <div className="modal-body">{children}</div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-outline-secondary rounded-pill" onClick={onCancelar}>
-                {textoCancelar}
-              </button>
-              <button
-                type="button"
-                className={`btn btn-${variante} rounded-pill`}
-                onClick={onConfirmar}
-                disabled={ocupado}
-              >
-                {ocupado && <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />}
-                {textoConfirmar}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="modal-backdrop fade show" />
-    </>
+    <Dialog
+      open={abierto}
+      onOpenChange={(abiertoAhora) => {
+        if (!abiertoAhora && !ocupado) onCancelar()
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{titulo}</DialogTitle>
+          <DialogDescription className="sr-only">
+            Confirma o cancela la acción solicitada.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="text-sm text-muted-foreground">{children}</div>
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={onCancelar} disabled={ocupado}>
+            {textoCancelar}
+          </Button>
+          <Button
+            type="button"
+            variant={variantes[variante]}
+            onClick={onConfirmar}
+            disabled={ocupado}
+          >
+            {ocupado && <Spinner className="size-4" />}
+            {textoConfirmar}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

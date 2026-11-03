@@ -1,11 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { ProductList } from '../components/catalog/ProductList'
 import { EmptyState } from '../components/common/EmptyState'
 import { ErrorAlert } from '../components/common/ErrorAlert'
 import { Loading } from '../components/common/Loading'
 import { Pagination } from '../components/common/Pagination'
+import { Badge } from '../components/ui/badge'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
 import { useCart } from '../context/CartContext'
 import { useNotification } from '../context/NotificationContext'
 import { catalogoService } from '../services/catalogo'
@@ -150,45 +156,41 @@ export function ProductosPage() {
 
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Catálogo de productos</h1>
-          <p className="pagina-intro">
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Catálogo de productos</h1>
+          <p className="page-intro mb-0">
             Explora nuestra línea ecológica creada con plástico PET reciclado e impresión 3D.
           </p>
         </div>
       </section>
 
-      <section className="py-4">
-        <div className="container-xl">
-          <div className="card card-filtros p-3 p-md-4 mb-4">
-            <form className="row g-2 align-items-end" onSubmit={aplicarBusqueda}>
-              <div className="col-lg-5">
-                <label htmlFor="buscar-producto" className="form-label">
-                  Buscar en el catálogo
-                </label>
-                <div className="input-group">
-                  <span className="input-group-text bg-white">
-                    <i className="bi bi-search" aria-hidden="true" />
-                  </span>
-                  <input
+      <section className="pb-16">
+        <div className="container-page">
+          <Card className="mb-5 gap-0 p-4 sm:p-6">
+            <form className="flex flex-col gap-4 lg:flex-row lg:items-end" onSubmit={aplicarBusqueda}>
+              <div className="flex-1">
+                <Label htmlFor="buscar-producto">Buscar en el catálogo</Label>
+                <div className="relative">
+                  <Search
+                    className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  <Input
                     id="buscar-producto"
                     type="search"
-                    className="form-control"
+                    className="pl-9"
                     placeholder="Nombre o descripción del producto"
                     value={busqueda}
                     onChange={(event) => setBusqueda(event.target.value)}
                   />
                 </div>
               </div>
-              <div className="col-lg-4">
-                <label htmlFor="filtrar-material" className="form-label">
-                  Material
-                </label>
-                <input
+              <div className="flex-1">
+                <Label htmlFor="filtrar-material">Material</Label>
+                <Input
                   id="filtrar-material"
                   type="search"
-                  className="form-control"
                   placeholder="Ej: PET reciclado"
                   value={materialInput}
                   onChange={(event) => setMaterialInput(event.target.value)}
@@ -200,60 +202,62 @@ export function ProductosPage() {
                   }}
                 />
               </div>
-              <div className="col-lg-3 d-flex gap-2 acciones-filtros">
-                <button type="submit" className="btn btn-marca rounded-pill flex-grow-1">
+              <div className="flex gap-2">
+                <Button type="submit" className="flex-1 lg:flex-none">
+                  <Search className="size-4" aria-hidden="true" />
                   Buscar
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn btn-marca-outline rounded-pill"
+                  variant="outline"
                   onClick={limpiarFiltros}
                   disabled={!hayFiltros}
                 >
+                  <X className="size-4" aria-hidden="true" />
                   Limpiar
-                </button>
+                </Button>
               </div>
             </form>
 
             {categoriasDisponibles.length > 0 && (
-              <div className="mt-3 pt-3 border-top">
-                <span className="small fw-bold text-uppercase texto-gris me-2">Categorías:</span>
-                <div className="d-inline-flex flex-wrap gap-2 mt-1">
-                  {categoriasDisponibles.map((categoria) => {
-                    const activa = categorias.includes(categoria.slug)
-                    return (
-                      <button
-                        key={categoria.id}
-                        type="button"
-                        className={`btn btn-sm rounded-pill ${
-                          activa ? 'btn-marca' : 'btn-marca-outline'
-                        }`}
-                        aria-pressed={activa}
-                        onClick={() => alternarCategoria(categoria.slug)}
-                      >
-                        {categoria.nombre}
-                      </button>
-                    )
-                  })}
-                </div>
+              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-4">
+                <span className="mr-1 inline-flex items-center gap-1.5 text-xs font-bold tracking-wide text-muted-foreground uppercase">
+                  <SlidersHorizontal className="size-3.5" aria-hidden="true" />
+                  Categorías:
+                </span>
+                {categoriasDisponibles.map((categoria) => {
+                  const activa = categorias.includes(categoria.slug)
+                  return (
+                    <Button
+                      key={categoria.id}
+                      type="button"
+                      size="sm"
+                      variant={activa ? 'default' : 'outline'}
+                      aria-pressed={activa}
+                      onClick={() => alternarCategoria(categoria.slug)}
+                    >
+                      {categoria.nombre}
+                    </Button>
+                  )
+                })}
               </div>
             )}
             {Boolean(errorCategorias) && (
-              <div className="mt-3">
+              <div className="mt-4">
                 <ErrorAlert error={errorCategorias} />
               </div>
             )}
-          </div>
+          </Card>
 
           {hayFiltros && (
-            <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
-              <span className="texto-gris small">Filtros activos:</span>
-              {q && <span className="badge text-bg-light border">Búsqueda: {q}</span>}
-              {material && <span className="badge text-bg-light border">Material: {material}</span>}
+            <div className="mb-4 flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted-foreground">Filtros activos:</span>
+              {q && <Badge variant="outline">Búsqueda: {q}</Badge>}
+              {material && <Badge variant="outline">Material: {material}</Badge>}
               {categorias.map((categoria) => (
-                <span className="badge text-bg-light border" key={categoria}>
+                <Badge variant="outline" key={categoria}>
                   {categoriasDisponibles.find((item) => item.slug === categoria)?.nombre ?? categoria}
-                </span>
+                </Badge>
               ))}
             </div>
           )}
@@ -268,20 +272,20 @@ export function ProductosPage() {
               descripcion="Prueba con otra búsqueda o quita algunos filtros."
               accion={
                 hayFiltros ? (
-                  <button type="button" className="btn btn-marca rounded-pill" onClick={limpiarFiltros}>
+                  <Button type="button" onClick={limpiarFiltros}>
                     Ver todos los productos
-                  </button>
+                  </Button>
                 ) : undefined
               }
             />
           ) : (
             <>
-              <div className="d-flex flex-wrap justify-content-between gap-2 mb-3">
-                <p className="texto-gris mb-0">
-                  {productos.totalElementos} producto{productos.totalElementos === 1 ? '' : 's'} encontrado
-                  {productos.totalElementos === 1 ? '' : 's'}
+              <div className="mb-4 flex flex-wrap justify-between gap-2 text-sm text-muted-foreground">
+                <p>
+                  {productos.totalElementos} producto{productos.totalElementos === 1 ? '' : 's'}{' '}
+                  encontrado{productos.totalElementos === 1 ? '' : 's'}
                 </p>
-                <p className="texto-gris mb-0">
+                <p>
                   Página {productos.totalPaginas === 0 ? 0 : productos.pagina + 1} de{' '}
                   {productos.totalPaginas}
                 </p>

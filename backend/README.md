@@ -38,6 +38,7 @@ El frontend consume **únicamente** el API Gateway en `http://localhost:8090`.
 ## Frontend
 
 El cliente React está en `frontend/` y se ejecuta con Vite en `http://localhost:5173`.
+Usa React 19 + TypeScript + Tailwind CSS v4 + componentes estilo shadcn/ui.
 Requiere el Gateway y los microservicios activos. Instrucciones, rutas y scripts en
 [`frontend/README.md`](../frontend/README.md).
 
@@ -61,15 +62,20 @@ No se versionan secretos ni archivos `.env` reales.
 - [x] **Fase 6** — `ms-consultas` (8096): formulario público de contacto y notificación al administrador.
 - [x] **Fase 7** — frontend React + TypeScript + Vite en `frontend/`, consumiendo solo el Gateway.
 
-### Verificación de la entrega
+### Verificación de esta entrega
 
-- Frontend: `npm run lint` sin errores, 19 pruebas Vitest aprobadas y build de producción correcto.
-- Backend: 121 pruebas Maven aprobadas en los siete servicios (unitarias, integración y contexto).
-- Flujo E2E por el Gateway: catálogo, registro, login, perfil, direcciones, carrito,
-  checkout con boleta/factura, retiro y envíos, pago simulado, comprobantes,
-  cotizaciones con archivos 3D, presupuesto, panel administrativo, reportes,
-  permisos 401/403, 404, validaciones, stock insuficiente y Gateway caído.
-- Responsive revisado a 375 px, 768 px y escritorio.
+- Frontend: `npm run build` correcto y `npm run lint` sin errores.
+- Backend: `.\mvnw.cmd -DskipTests package` correcto en `api-gateway` y en los seis microservicios.
+- Pruebas unitarias: **retiradas por solicitud del usuario**. No se ejecutaron.
+- Pruebas de integración y contexto: conservadas en `src/test`, pero **no ejecutadas en esta entrega**
+  porque requieren PostgreSQL.
+- Cobertura: no generada.
+- Flujo E2E con servicios activos: no verificado en esta entrega.
+- Responsive: pendiente de revisión formal con el frontend y los servicios activos.
+
+No se presentan resultados históricos de pruebas como validación actual. Ver
+[`../docs/Mapa_API.md`](../docs/Mapa_API.md) y
+[`../docs/Retiro_Pruebas_Unitarias.md`](../docs/Retiro_Pruebas_Unitarias.md).
 
 ## ms-usuarios (EP-02)
 
@@ -118,13 +124,16 @@ La contraseña se almacena con BCrypt y nunca se devuelve en las respuestas.
 El enlace de confirmación se escribe en el log en entorno local; el envío SMTP
 real queda pendiente de configurar credenciales de correo.
 
-### Ejecutar y probar
+### Ejecutar
 
 ```powershell
 cd backend\ms-usuarios
-.\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
+
+Las pruebas unitarias de seguridad y servicio fueron retiradas por solicitud. Se
+conserva `UsuarioControllerIntegrationTest` junto con la prueba de contexto; ambas
+requieren PostgreSQL y **no se ejecutaron en esta entrega**.
 
 Cuentas semilla (solo si `BIOFORJA_SEMILLA_HABILITADA=true` y las claves están
 definidas en el entorno):
@@ -175,13 +184,16 @@ La baja de productos es lógica (`activo = false`); nunca se eliminan.
 El stock bajo se informa con `stockBajo = true` cuando hay menos de 5 unidades.
 La semilla carga las 4 categorías y los 18 productos que ya muestra el sitio.
 
-### Ejecutar y probar
+### Ejecutar
 
 ```powershell
 cd backend\ms-catalogo
-.\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
+
+Se conserva `ProductoControllerIntegrationTest` y la prueba de contexto. Las
+pruebas unitarias de servicio fueron retiradas por solicitud. Las pruebas de
+integración requieren PostgreSQL y **no se ejecutaron en esta entrega**.
 
 ## ms-envios (EP-06)
 
@@ -225,13 +237,16 @@ Se conservan los códigos antiguos `libgral`, `bio` y `araycan` como alias.
 Todas las rutas son públicas en esta fase porque las HU-06.1 y HU-06.2 son
 de usuario. No se agregaron endpoints administrativos que la plantilla no exige.
 
-### Ejecutar y probar
+### Ejecutar
 
 ```powershell
 cd backend\ms-envios
-.\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
+
+Se conserva `EnvioControllerIntegrationTest` y la prueba de contexto. Las pruebas
+unitarias de servicio fueron retiradas por solicitud. Las pruebas de integración
+requieren PostgreSQL y **no se ejecutaron en esta entrega**.
 
 ## ms-pedidos (EP-03 y EP-09)
 
@@ -285,13 +300,16 @@ El reporte entrega total de ventas, ticket promedio, cantidad de pedidos,
 unidades vendidas, ingresos diarios y mensuales, y Top 5 de productos. Solo
 considera pedidos pagados y no cancelados.
 
-### Ejecutar y probar
+### Ejecutar
 
 ```powershell
 cd backend\ms-pedidos
-.\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
+
+Se conserva `PedidoControllerIntegrationTest` y la prueba de contexto. Las pruebas
+unitarias de servicio fueron retiradas por solicitud. Las pruebas de integración
+requieren PostgreSQL y **no se ejecutaron en esta entrega**.
 
 ## ms-cotizaciones (EP-04)
 
@@ -357,19 +375,18 @@ validación de extensión, tamaño y cantidad, y el panel administrativo permite
 descargar cada archivo y guardar el presupuesto. El sitio estático original en
 `paginas/` se conserva sin cambios.
 
-### Ejecutar y probar
+### Ejecutar
 
 ```powershell
 cd backend\ms-cotizaciones
-.\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
 
-Pruebas: 25 en total (9 de integración con MockMvc, 7 unitarias del servicio,
-8 del almacenamiento de archivos y 1 de contexto). El E2E por el gateway
-verificó creación pública con dos archivos, listado y detalle administrativo,
-descarga autenticada, presupuesto con enlace y correo simulado, filtros,
-401/403/400/404, límite de extensión y CORS.
+Se conserva `CotizacionControllerIntegrationTest` y la prueba de contexto. Las
+pruebas unitarias del servicio y del almacenamiento de archivos fueron retiradas
+por solicitud. Las pruebas de integración requieren PostgreSQL y **no se
+ejecutaron en esta entrega**. No se presentan resultados históricos como
+validación actual.
 
 ## ms-consultas (EP-05)
 
@@ -422,15 +439,14 @@ El frontend React en `frontend/` conecta este formulario con validaciones de
 nombre, correo, asunto y mensaje, y muestra la referencia de la consulta creada.
 El sitio estático original en `paginas/` se conserva sin cambios.
 
-### Ejecutar y probar
+### Ejecutar
 
 ```powershell
 cd backend\ms-consultas
-.\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
 
-Pruebas: 11 en total (8 de integración con MockMvc, 2 unitarias del servicio y
-1 de contexto). El E2E por el gateway verificó envío público sin token,
-persistencia, normalización de datos, teléfono opcional, correo simulado al
-administrador, validaciones 400, cuerpo mal formado y CORS.
+Se conserva `ConsultaControllerIntegrationTest` y la prueba de contexto. Las
+pruebas unitarias del servicio fueron retiradas por solicitud. Las pruebas de
+integración requieren PostgreSQL y **no se ejecutaron en esta entrega**. No se
+presentan resultados históricos como validación actual.

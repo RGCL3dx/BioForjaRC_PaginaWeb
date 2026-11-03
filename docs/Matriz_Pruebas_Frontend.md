@@ -1,58 +1,60 @@
-# Matriz de pruebas del frontend
+# Matriz de pruebas del frontend — documento histórico
 
-Trazabilidad entre historias de usuario, criterios de aceptación y pruebas ejecutables de Vitest.
-La fuente de historias es `docs/Plantilla_Gestion_Requerimientos_Scrum_RC.xlsx`.
+> **Estado: histórico y no vigente.**
+> Las pruebas unitarias de Vitest fueron **retiradas por solicitud del usuario** antes de esta entrega.
+> Este documento se conserva únicamente como referencia de la etapa anterior. **No debe presentarse como
+> validación actual ni como evidencia de cobertura.**
 
-## Comandos
+## 1. Qué cambió
 
-```powershell
-cd frontend
-npm test
-npm run lint
-npm run build
-```
+- Se eliminaron los archivos `*.test.ts` y `*.test.tsx` del frontend.
+- Se eliminó `frontend/src/test/setup.ts`.
+- Se retiraron Vitest, Testing Library, jsdom y `bootstrap`/`bootstrap-icons`.
+- Se retiraron los scripts `npm test` y `npm run test:watch`.
+- La aplicación fue migrada a Tailwind CSS + shadcn/ui.
+- El inventario completo está en [`Retiro_Pruebas_Unitarias.md`](Retiro_Pruebas_Unitarias.md).
 
-## Trazabilidad
+## 2. Trazabilidad histórica (solo referencia)
 
-| HU | Criterio de aceptación | Archivo de prueba | Caso |
-|---|---|---|---|
-| HU-02.1 | Valida correo único y contraseña segura | `src/pages/RegistroPage.test.tsx` | Formulario vacío, contraseña débil, correo duplicado y registro exitoso |
-| HU-02.2 | Redirige al perfil tras login y muestra alerta si las credenciales son erróneas | `src/pages/LoginPage.test.tsx` | Login inválido con `401` y login exitoso con notificación |
-| HU-04.1 | Permite `.STL`/`.OBJ` de hasta 50 MB y máximo 5 archivos | `src/pages/CotizacionPage.test.tsx` | Extensión inválida, límite de 5 archivos y archivo `.STL` válido |
-| HU-07.1 | Muestra imagen, cantidad y subtotal; conserva los ítems | `src/context/CartContext.test.tsx`, `src/pages/CarritoPage.test.tsx` | Agregar, persistir en `localStorage`, recuperar y calcular subtotal |
-| HU-07.2 | Botones `+` y `-`; recalcula el subtotal inmediatamente | `src/pages/CarritoPage.test.tsx`, `src/context/CartContext.test.tsx` | Aumentar, disminuir, límites de stock y recálculo |
-| HU-07.3 | Botón de eliminar por producto y confirmación previa | `src/pages/CarritoPage.test.tsx`, `src/components/common/ConfirmModal.test.tsx` | Cancelar la eliminación, confirmar y vaciar el carrito |
-| Seguridad de rutas | Cliente no accede al panel administrativo; sesión anónima va al login | `src/components/layout/Guards.test.tsx` | Anónimo, cliente y administrador |
-| Componentes | Props tipadas, composición y reutilización | `src/components/catalog/ProductCard.test.tsx`, `src/components/catalog/ProductList.test.tsx` | Datos del producto, stock, agregar y composición de la lista |
-| Cliente HTTP | Errores y consultas tipadas | `src/services/http.test.ts` | Query strings, valores vacíos y `ApiError` |
-| Formato | Moneda, fechas y rutas de imágenes | `src/utils/format.test.ts` | Fechas locales, estados y recursos |
+La siguiente tabla describe pruebas que **ya no existen en el repositorio**. No se ejecutaron en esta
+entrega y no constituyen evidencia vigente.
 
-## Casos negativos incluidos
+| HU / área | Criterio | Archivo histórico (eliminado) |
+|---|---|---|
+| HU-02.1 | Validación de correo único y contraseña segura | `src/pages/RegistroPage.test.tsx` |
+| HU-02.2 | Redirección tras login y alerta de credenciales | `src/pages/LoginPage.test.tsx` |
+| HU-04.1 | Archivos `.STL`/`.OBJ` y límite de 5 | `src/pages/CotizacionPage.test.tsx` |
+| HU-07.1 | Carrito persistente y subtotal | `src/context/CartContext.test.tsx`, `src/pages/CarritoPage.test.tsx` |
+| HU-07.2 | Botones `+`/`-` y recálculo | `src/pages/CarritoPage.test.tsx` |
+| HU-07.3 | Eliminación con confirmación | `src/components/common/ConfirmModal.test.tsx` |
+| Seguridad de rutas | Guards de autenticación y rol | `src/components/layout/Guards.test.tsx` |
+| Componentes | Props tipadas y composición | `src/components/catalog/ProductCard.test.tsx`, `ProductList.test.tsx` |
+| Cliente HTTP | Query strings y `ApiError` | `src/services/http.test.ts` |
+| Formato | Moneda, fechas y rutas | `src/utils/format.test.ts` |
 
-- Producto sin stock: `ProductCard` deshabilita la compra.
-- Carrito sin unidades disponibles: no permite superar el stock.
-- Cantidad menor a 1: se normaliza a 1.
-- Eliminación de producto: no se ejecuta hasta confirmar.
-- Login inválido: muestra el mensaje del backend.
-- Registro duplicado: muestra el error `409`.
-- Archivo de cotización con extensión incorrecta: se rechaza.
-- Más de cinco archivos: se conservan solo cinco y se informa el límite.
-- Cliente en `/admin`: se redirige al inicio.
-- Usuario anónimo en ruta privada: se redirige al login.
+## 3. Verificaciones vigentes de esta entrega
 
-## Fallo controlado para la demostración
+| Verificación | Comando | Resultado |
+|---|---|---|
+| Build y tipos | `npm run build` | Correcto |
+| Lint | `npm run lint` | Sin errores |
+| Backend compila sin tests | `.\mvnw.cmd -DskipTests package` | Correcto en los siete módulos |
+| Revisión manual de rutas públicas | `npm run dev` + navegador integrado | Correcta en inicio, productos, cotización, contacto, nosotros, login y carrito; `/admin` redirige a `/login` |
+| Navegación responsiva básica | Ventana de 800 px | Menú lateral funcional; falta validar en dispositivos móviles reales |
+| Flujos con backend activo | Servicios + PostgreSQL | Pendiente; los puertos 8090–8096 no estaban activos durante la revisión |
 
-1. Ejecutar `npm test` y mostrar la suite en verde.
-2. En `src/context/CartContext.test.tsx`, cambiar temporalmente:
-   `expect(result.current.subtotal).toBe(3000)` por `toBe(3001)`.
-3. Ejecutar `npm test` y mostrar el fallo de la prueba de subtotal.
-4. Revertir el cambio y ejecutar `npm test` nuevamente para mostrar la suite en verde.
+## 4. Lo que no debe afirmarse
 
-No dejar el cambio modificado en el repositorio.
+- No afirmar que existen 42 pruebas aprobadas: esos archivos fueron eliminados.
+- No afirmar cobertura porcentual: no se generó.
+- No presentar este documento como prueba de la versión actual.
+- No usar la sección histórica como sustituto de pruebas unitarias.
 
-## Evidencia complementaria
+## 5. Documentos vigentes
 
-- `npm run lint`: sin errores.
-- `npm run build`: compilación TypeScript y build de producción correctos.
-- Navegador real: navegación SPA sin recarga, carrito, checkout, permisos, errores y panel administrativo.
-- Responsive: revisar inicio, catálogo, carrito, cuenta y panel a 375 px, 768 px y escritorio.
+- [`ERS_BioForjaRC.md`](ERS_BioForjaRC.md)
+- [`Matriz_Cumplimiento_Evaluacion_Parcial_2.md`](Matriz_Cumplimiento_Evaluacion_Parcial_2.md)
+- [`Mapa_API.md`](Mapa_API.md)
+- [`Guion_Presentacion.md`](Guion_Presentacion.md)
+- [`Pendientes.md`](Pendientes.md)
+- [`Retiro_Pruebas_Unitarias.md`](Retiro_Pruebas_Unitarias.md)

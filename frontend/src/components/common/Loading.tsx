@@ -1,8 +1,10 @@
+import { Spinner } from '@/components/ui/spinner'
+
 export function Loading({ texto = 'Cargando...' }: { texto?: string }) {
   return (
-    <div className="text-center py-5" role="status">
-      <div className="spinner-border text-marca" aria-hidden="true" />
-      <p className="texto-gris mt-3 mb-0">{texto}</p>
+    <div className="flex flex-col items-center justify-center gap-3 py-12" role="status">
+      <Spinner className="size-8 text-brand" />
+      <p className="mb-0 text-sm text-muted-foreground">{texto}</p>
     </div>
   )
 }

@@ -6,14 +6,14 @@ export function AdminLayout() {
   const location = useLocation()
 
   return (
-    <div className="d-flex min-vh-100 flex-column">
+    <div className="flex min-h-screen flex-col">
       <ScrollToTop />
       <Navbar variante="admin" />
-      <main className="flex-grow-1">
+      <main className="flex-1">
         <Outlet />
       </main>
-      <footer className="bg-marca text-light py-3 mt-auto">
-        <div className="container small text-white-50 d-flex flex-wrap justify-content-between gap-2">
+      <footer className="mt-auto border-t border-white/10 bg-brand-dark py-3 text-white">
+        <div className="container-page flex flex-wrap justify-between gap-2 text-xs text-white/60">
           <span>Panel de administración BioForjaRC</span>
           <span>{location.pathname}</span>
         </div>

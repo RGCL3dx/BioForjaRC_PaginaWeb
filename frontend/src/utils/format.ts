@@ -48,27 +48,6 @@ export function assetUrl(path: string | null | undefined): string {
   return `/${clean}`
 }
 
-export function estadoPedidoClass(estado: string): string {
-  switch (estado) {
-    case 'Entregado':
-      return 'text-bg-success'
-    case 'Despachado':
-      return 'text-bg-info'
-    case 'Cancelado':
-      return 'text-bg-danger'
-    default:
-      return 'text-bg-warning'
-  }
-}
-
-export function estadoCotizacionClass(estado: string): string {
-  return estado === 'Presupuestada' ? 'text-bg-success' : 'text-bg-warning'
-}
-
-export function estadoUsuarioClass(estado: string): string {
-  return estado === 'Activo' ? 'text-bg-success' : 'text-bg-secondary'
-}
-
 export function hoyISO(): string {
   const ahora = new Date()
   const mes = String(ahora.getMonth() + 1).padStart(2, '0')

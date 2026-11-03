@@ -1,15 +1,39 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
+import { Search, ShieldCheck, Users } from 'lucide-react'
 import { ConfirmModal } from '../../components/common/ConfirmModal'
 import { EmptyState } from '../../components/common/EmptyState'
 import { ErrorAlert, mensajeDeError } from '../../components/common/ErrorAlert'
 import { Loading } from '../../components/common/Loading'
 import { UsuarioBadge } from '../../components/common/StatusBadge'
+import { Alert, AlertDescription } from '../../components/ui/alert'
+import { Badge } from '../../components/ui/badge'
+import { Button } from '../../components/ui/button'
+import { Card } from '../../components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../../components/ui/dialog'
+import { Input } from '../../components/ui/input'
+import { Label } from '../../components/ui/label'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../components/ui/table'
 import { useAuth } from '../../context/AuthContext'
 import { useNotification } from '../../context/NotificationContext'
 import { usuarioService } from '../../services/usuarios'
 import type { EstadoUsuario, Rol, Usuario, UsuarioActualizacionRequest } from '../../types/api'
 import { formatDate } from '../../utils/format'
+import { cn } from '@/lib/utils'
 
 interface FormularioUsuario {
   nombre: string
@@ -19,6 +43,9 @@ interface FormularioUsuario {
   telefono: string
   rol: Rol
 }
+
+const selectClase =
+  'flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-sm shadow-xs outline-none transition-colors focus-visible:border-brand-light focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-70'
 
 export function AdminUsuariosPage() {
   const { usuario: usuarioActual, actualizarUsuario } = useAuth()
@@ -136,57 +163,59 @@ export function AdminUsuariosPage() {
     }
   }
 
-  const campoClase = (campo: string) => `form-control${errores[campo] ? ' is-invalid' : ''}`
   const esPropiaCuenta = usuarioActual?.id === usuarioEditando?.id
 
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Usuarios</h1>
-          <p className="pagina-intro">
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Usuarios</h1>
+          <p className="page-intro mb-0">
             Administra las cuentas, sus datos de contacto, roles y estado de acceso.
           </p>
         </div>
       </section>
 
-      <section className="py-4">
-        <div className="container">
-          <div className="card card-formulario p-4">
+      <section className="pb-16">
+        <div className="container-page">
+          <Card className="gap-4 p-4 sm:p-5">
+            <div className="flex items-center gap-2">
+              <Users className="size-5 text-brand" aria-hidden="true" />
+              <h2 className="text-lg font-bold">Cuentas registradas</h2>
+            </div>
+
             <form
-              className="row g-2 mb-3 align-items-end"
+              className="grid gap-3 md:grid-cols-[1.6fr_auto]"
               onSubmit={(event) => {
                 event.preventDefault()
                 setQ(qInput)
               }}
             >
-              <div className="col-md-8">
-                <label htmlFor="buscar-usuario" className="form-label">
-                  Buscar usuario
-                </label>
-                <input
+              <div>
+                <Label htmlFor="buscar-usuario">Buscar usuario</Label>
+                <Input
                   id="buscar-usuario"
                   type="search"
-                  className="form-control"
                   placeholder="Nombre, correo o RUT"
                   value={qInput}
                   onChange={(event) => setQInput(event.target.value)}
                 />
               </div>
-              <div className="col-md-4 d-flex gap-2">
-                <button type="submit" className="btn btn-marca rounded-pill flex-grow-1">
+              <div className="flex items-end gap-2">
+                <Button type="submit" className="flex-1">
+                  <Search className="size-4" aria-hidden="true" />
                   Buscar
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn btn-marca-outline rounded-pill"
+                  variant="outline"
                   onClick={() => {
                     setQInput('')
                     setQ('')
                   }}
                 >
                   Limpiar
-                </button>
+                </Button>
               </div>
             </form>
 
@@ -200,221 +229,215 @@ export function AdminUsuariosPage() {
                 descripcion="Prueba con otro término de búsqueda."
               />
             ) : (
-              <div className="table-responsive">
-                <table className="table table-hover align-middle tabla-marca tabla-admin mb-0">
-                  <thead>
-                    <tr>
-                      <th scope="col">Usuario</th>
-                      <th scope="col">Correo</th>
-                      <th scope="col">RUT</th>
-                      <th scope="col">Rol</th>
-                      <th scope="col">Estado</th>
-                      <th scope="col">Registro</th>
-                      <th scope="col">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <div className="table-wrap">
+                <Table className="min-w-[960px]">
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead>Usuario</TableHead>
+                      <TableHead>Correo</TableHead>
+                      <TableHead>RUT</TableHead>
+                      <TableHead>Rol</TableHead>
+                      <TableHead>Estado</TableHead>
+                      <TableHead>Registro</TableHead>
+                      <TableHead>Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {usuarios.map((usuario) => {
                       const iniciales = `${usuario.nombre.charAt(0)}${usuario.apellido.charAt(0)}`.toUpperCase()
                       const propia = usuario.id === usuarioActual?.id
                       return (
-                        <tr key={usuario.id} className={propia ? 'fila-actual' : undefined}>
-                          <td>
-                            <div className="d-flex align-items-center gap-2">
-                              <span className="avatar-usuario">{iniciales}</span>
+                        <TableRow key={usuario.id} className={cn(propia && 'bg-brand/5')}>
+                          <TableCell className="whitespace-normal">
+                            <div className="flex items-center gap-3">
+                              <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand/10 font-display text-sm font-bold text-brand">
+                                {iniciales}
+                              </span>
                               <div>
-                                <span className="fw-bold d-block">
+                                <span className="block font-bold">
                                   {usuario.nombre} {usuario.apellido}
                                 </span>
-                                {propia && <span className="badge text-bg-warning">Tu cuenta</span>}
+                                {propia && (
+                                  <Badge variant="warning" className="mt-1">
+                                    Tu cuenta
+                                  </Badge>
+                                )}
                               </div>
                             </div>
-                          </td>
-                          <td className="small">{usuario.correo}</td>
-                          <td className="small">{usuario.rut}</td>
-                          <td>
-                            <span
-                              className={`badge rounded-pill ${
-                                usuario.rol === 'administrador' ? 'text-bg-dark' : 'text-bg-light border'
-                              }`}
+                          </TableCell>
+                          <TableCell className="text-xs">{usuario.correo}</TableCell>
+                          <TableCell className="text-xs">{usuario.rut}</TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={usuario.rol === 'administrador' ? 'default' : 'outline'}
                             >
                               {usuario.rol === 'administrador' ? 'Administrador' : 'Cliente'}
-                            </span>
-                          </td>
-                          <td>
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
                             <UsuarioBadge estado={usuario.estado} />
-                          </td>
-                          <td className="small">{formatDate(usuario.fechaRegistro)}</td>
-                          <td>
-                            <div className="d-flex flex-wrap gap-2">
-                              <button
+                          </TableCell>
+                          <TableCell className="text-xs">{formatDate(usuario.fechaRegistro)}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-2">
+                              <Button
                                 type="button"
-                                className="btn btn-sm btn-marca-outline rounded-pill"
+                                size="sm"
+                                variant="outline"
                                 onClick={() => abrirEditar(usuario)}
                               >
                                 Editar
-                              </button>
-                              <button
+                              </Button>
+                              <Button
                                 type="button"
-                                className={`btn btn-sm rounded-pill ${
-                                  usuario.estado === 'Activo' ? 'btn-outline-danger' : 'btn-marca'
-                                }`}
+                                size="sm"
+                                variant={usuario.estado === 'Activo' ? 'destructive' : 'default'}
                                 onClick={() => setUsuarioEstado(usuario)}
                                 disabled={propia}
-                                title={propia ? 'No puedes cambiar el estado de tu propia cuenta' : undefined}
+                                title={
+                                  propia
+                                    ? 'No puedes cambiar el estado de tu propia cuenta'
+                                    : undefined
+                                }
                               >
                                 {usuario.estado === 'Activo' ? 'Desactivar' : 'Activar'}
-                              </button>
+                              </Button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       )
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             )}
-          </div>
+          </Card>
         </div>
       </section>
 
-      {usuarioEditando && (
-        <>
-          <div className="modal fade show d-block" tabIndex={-1} role="dialog" aria-modal="true">
-            <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-              <form className="modal-content" onSubmit={guardar}>
-                <div className="modal-header">
-                  <h2 className="modal-title h5">Editar usuario</h2>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    aria-label="Cerrar"
-                    onClick={() => setUsuarioEditando(null)}
-                  />
-                </div>
-                <div className="modal-body">
-                  {Boolean(errorModal) && (
-                    <ErrorAlert error={errorModal} onClose={() => setErrorModal(null)} />
-                  )}
-                  {esPropiaCuenta && (
-                    <div className="aviso-sesion mb-3">
-                      Estás editando tu propia cuenta. Por seguridad, el correo y el rol no se pueden
-                      cambiar desde este panel.
-                    </div>
-                  )}
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <label htmlFor="nombre-usuario" className="form-label">
-                        Nombre *
-                      </label>
-                      <input
-                        id="nombre-usuario"
-                        name="nombre"
-                        className={campoClase('nombre')}
-                        value={formulario.nombre}
-                        onChange={actualizar}
-                        maxLength={80}
-                        required
-                      />
-                      {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="apellido-usuario" className="form-label">
-                        Apellido *
-                      </label>
-                      <input
-                        id="apellido-usuario"
-                        name="apellido"
-                        className={campoClase('apellido')}
-                        value={formulario.apellido}
-                        onChange={actualizar}
-                        maxLength={80}
-                        required
-                      />
-                      {errores.apellido && <div className="invalid-feedback">{errores.apellido}</div>}
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="rut-usuario" className="form-label">
-                        RUT *
-                      </label>
-                      <input
-                        id="rut-usuario"
-                        name="rut"
-                        className={campoClase('rut')}
-                        value={formulario.rut}
-                        onChange={actualizar}
-                        maxLength={20}
-                        required
-                      />
-                      {errores.rut && <div className="invalid-feedback">{errores.rut}</div>}
-                    </div>
-                    <div className="col-md-6">
-                      <label htmlFor="telefono-usuario" className="form-label">
-                        Teléfono
-                      </label>
-                      <input
-                        id="telefono-usuario"
-                        name="telefono"
-                        type="tel"
-                        className="form-control"
-                        value={formulario.telefono}
-                        onChange={actualizar}
-                        maxLength={25}
-                      />
-                    </div>
-                    <div className="col-md-8">
-                      <label htmlFor="correo-usuario" className="form-label">
-                        Correo electrónico *
-                      </label>
-                      <input
-                        id="correo-usuario"
-                        name="correo"
-                        type="email"
-                        className={campoClase('correo')}
-                        value={formulario.correo}
-                        onChange={actualizar}
-                        maxLength={150}
-                        required
-                        disabled={esPropiaCuenta}
-                      />
-                      {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
-                    </div>
-                    <div className="col-md-4">
-                      <label htmlFor="rol-usuario" className="form-label">
-                        Rol
-                      </label>
-                      <select
-                        id="rol-usuario"
-                        name="rol"
-                        className="form-select"
-                        value={formulario.rol}
-                        onChange={actualizar}
-                        disabled={esPropiaCuenta}
-                      >
-                        <option value="cliente">Cliente</option>
-                        <option value="administrador">Administrador</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary rounded-pill"
-                    onClick={() => setUsuarioEditando(null)}
-                  >
-                    Cancelar
-                  </button>
-                  <button type="submit" className="btn btn-marca rounded-pill" disabled={guardando}>
-                    {guardando ? 'Guardando...' : 'Guardar cambios'}
-                  </button>
-                </div>
-              </form>
+      <Dialog open={Boolean(usuarioEditando)} onOpenChange={(abierto) => {
+        if (!abierto) setUsuarioEditando(null)
+      }}>
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Editar usuario</DialogTitle>
+            <DialogDescription>
+              Actualiza los datos de contacto y el rol de la cuenta.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form className="space-y-4" onSubmit={guardar}>
+            {Boolean(errorModal) && (
+              <ErrorAlert error={errorModal} onClose={() => setErrorModal(null)} />
+            )}
+
+            {esPropiaCuenta && (
+              <Alert variant="brand">
+                <ShieldCheck className="text-brand" aria-hidden="true" />
+                <AlertDescription>
+                  Estás editando tu propia cuenta. Por seguridad, el correo y el rol no se pueden
+                  cambiar desde este panel.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="nombre-usuario">Nombre *</Label>
+                <Input
+                  id="nombre-usuario"
+                  name="nombre"
+                  value={formulario.nombre}
+                  onChange={actualizar}
+                  maxLength={80}
+                  aria-invalid={Boolean(errores.nombre)}
+                  required
+                />
+                {errores.nombre && <p className="field-error">{errores.nombre}</p>}
+              </div>
+              <div>
+                <Label htmlFor="apellido-usuario">Apellido *</Label>
+                <Input
+                  id="apellido-usuario"
+                  name="apellido"
+                  value={formulario.apellido}
+                  onChange={actualizar}
+                  maxLength={80}
+                  aria-invalid={Boolean(errores.apellido)}
+                  required
+                />
+                {errores.apellido && <p className="field-error">{errores.apellido}</p>}
+              </div>
+              <div>
+                <Label htmlFor="rut-usuario">RUT *</Label>
+                <Input
+                  id="rut-usuario"
+                  name="rut"
+                  value={formulario.rut}
+                  onChange={actualizar}
+                  maxLength={20}
+                  aria-invalid={Boolean(errores.rut)}
+                  required
+                />
+                {errores.rut && <p className="field-error">{errores.rut}</p>}
+              </div>
+              <div>
+                <Label htmlFor="telefono-usuario">Teléfono</Label>
+                <Input
+                  id="telefono-usuario"
+                  name="telefono"
+                  type="tel"
+                  value={formulario.telefono}
+                  onChange={actualizar}
+                  maxLength={25}
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="correo-usuario">Correo electrónico *</Label>
+                <Input
+                  id="correo-usuario"
+                  name="correo"
+                  type="email"
+                  value={formulario.correo}
+                  onChange={actualizar}
+                  maxLength={150}
+                  aria-invalid={Boolean(errores.correo)}
+                  required
+                  disabled={esPropiaCuenta}
+                />
+                {errores.correo && <p className="field-error">{errores.correo}</p>}
+              </div>
+              <div>
+                <Label htmlFor="rol-usuario">Rol</Label>
+                <select
+                  id="rol-usuario"
+                  name="rol"
+                  className={selectClase}
+                  value={formulario.rol}
+                  onChange={actualizar}
+                  disabled={esPropiaCuenta}
+                >
+                  <option value="cliente">Cliente</option>
+                  <option value="administrador">Administrador</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="modal-backdrop fade show" />
-        </>
-      )}
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setUsuarioEditando(null)}
+              >
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={guardando}>
+                {guardando ? 'Guardando...' : 'Guardar cambios'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <ConfirmModal
         abierto={Boolean(usuarioEstado)}

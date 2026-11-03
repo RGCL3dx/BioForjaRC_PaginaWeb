@@ -1,64 +1,67 @@
 import { Link, useSearchParams } from 'react-router-dom'
+import { Mail, Wrench } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
 
 export function PagoCotizacionPage() {
   const [searchParams] = useSearchParams()
   const ticket = searchParams.get('ticket')
 
   return (
-    <section className="py-5 seccion-clara">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-8">
-            <div className="card card-formulario p-4 p-md-5">
-              <h1 className="titulo-seccion">Pago de cotización</h1>
-              {ticket ? (
-                <p className="text-center texto-gris">
-                  Ticket de cotización: <strong className="font-monospace">{ticket}</strong>
-                </p>
-              ) : (
-                <p className="text-center texto-gris">
-                  No recibimos un ticket de cotización en el enlace.
-                </p>
-              )}
+    <section className="bg-white/40 py-14">
+      <div className="container-page max-w-3xl">
+        <Card className="gap-5 p-6 sm:p-8">
+          <h1 className="section-title mx-auto">Pago de cotización</h1>
+          {ticket ? (
+            <p className="text-center text-muted-foreground">
+              Ticket de cotización:{' '}
+              <strong className="font-mono text-foreground">{ticket}</strong>
+            </p>
+          ) : (
+            <p className="text-center text-muted-foreground">
+              No recibimos un ticket de cotización en el enlace.
+            </p>
+          )}
 
-              <div className="alert alert-warning">
-                <h2 className="h6 alert-heading">
-                  <i className="bi bi-tools me-2" aria-hidden="true" />
-                  Pago en línea en preparación
-                </h2>
-                <p className="mb-0">
-                  La pasarela de pago real aún no está integrada. Para coordinar el pago de tu
-                  cotización, escríbenos indicando el número de ticket y te enviaremos los datos de
-                  transferencia.
-                </p>
-              </div>
+          <Alert variant="warning">
+            <Wrench aria-hidden="true" />
+            <AlertTitle>Pago en línea en preparación</AlertTitle>
+            <AlertDescription>
+              La pasarela de pago real aún no está integrada. Para coordinar el pago de tu
+              cotización, escríbenos indicando el número de ticket y te enviaremos los datos de
+              transferencia.
+            </AlertDescription>
+          </Alert>
 
-              <h2 className="h5 fw-bold">¿Qué hago ahora?</h2>
-              <ol className="ps-3">
-                <li className="mb-2">Revisa el correo con tu presupuesto y verifica monto y plazo.</li>
-                <li className="mb-2">Escríbenos si tienes dudas o necesitas ajustar el proyecto.</li>
-                <li className="mb-2">
-                  Solicita los datos de transferencia indicando el ticket{' '}
-                  {ticket && <strong className="font-monospace">{ticket}</strong>}.
-                </li>
-                <li>Una vez confirmado el pago, coordinamos la producción y entrega.</li>
-              </ol>
-
-              <div className="d-flex flex-wrap gap-2 mt-4">
-                <a href="mailto:contacto@bioforjarc.cl" className="btn btn-marca rounded-pill px-4">
-                  <i className="bi bi-envelope me-1" aria-hidden="true" />
-                  Escribir a contacto@bioforjarc.cl
-                </a>
-                <Link to="/contacto" className="btn btn-marca-outline rounded-pill px-4">
-                  Ir al formulario de contacto
-                </Link>
-                <Link to="/" className="btn btn-outline-secondary rounded-pill px-4">
-                  Volver al inicio
-                </Link>
-              </div>
-            </div>
+          <div>
+            <h2 className="mb-2 text-lg font-bold">¿Qué hago ahora?</h2>
+            <ol className="list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
+              <li>Revisa el correo con tu presupuesto y verifica monto y plazo.</li>
+              <li>Escríbenos si tienes dudas o necesitas ajustar el proyecto.</li>
+              <li>
+                Solicita los datos de transferencia indicando el ticket{' '}
+                {ticket && <strong className="font-mono text-foreground">{ticket}</strong>}.
+              </li>
+              <li>Una vez confirmado el pago, coordinamos la producción y entrega.</li>
+            </ol>
           </div>
-        </div>
+
+          <div className="flex flex-wrap gap-2">
+            <Button asChild>
+              <a href="mailto:contacto@bioforjarc.cl">
+                <Mail className="size-4" aria-hidden="true" />
+                Escribir a contacto@bioforjarc.cl
+              </a>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/contacto">Ir al formulario de contacto</Link>
+            </Button>
+            <Button asChild variant="ghost">
+              <Link to="/">Volver al inicio</Link>
+            </Button>
+          </div>
+        </Card>
       </div>
     </section>
   )

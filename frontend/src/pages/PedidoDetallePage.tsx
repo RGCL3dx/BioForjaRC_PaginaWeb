@@ -1,8 +1,23 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
+import { CheckCircle2, CreditCard, FileDown, Info, MapPin, Truck } from 'lucide-react'
 import { ErrorAlert, mensajeDeError } from '../components/common/ErrorAlert'
 import { Loading } from '../components/common/Loading'
 import { PedidoBadge } from '../components/common/StatusBadge'
+import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert'
+import { Badge } from '../components/ui/badge'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import { Spinner } from '../components/ui/spinner'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table'
 import { useNotification } from '../context/NotificationContext'
 import { pedidoService } from '../services/pedidos'
 import type { PedidoDetalle } from '../types/api'
@@ -57,8 +72,8 @@ export function PedidoDetallePage() {
 
   if (cargando) {
     return (
-      <section className="py-5">
-        <div className="container">
+      <section className="py-12">
+        <div className="container-page">
           <Loading texto="Cargando pedido..." />
         </div>
       </section>
@@ -67,13 +82,13 @@ export function PedidoDetallePage() {
 
   if (error || !pedido) {
     return (
-      <section className="py-5">
-        <div className="container">
+      <section className="py-12">
+        <div className="container-page">
           <ErrorAlert error={error ?? new Error('No encontramos el pedido solicitado')} />
           <div className="text-center">
-            <Link to="/mi-cuenta" className="btn btn-marca rounded-pill">
-              Volver a mi cuenta
-            </Link>
+            <Button asChild>
+              <Link to="/mi-cuenta">Volver a mi cuenta</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -81,185 +96,184 @@ export function PedidoDetallePage() {
   }
 
   return (
-    <>
-      <section className="py-5">
-        <div className="container">
-          {esNuevo && (
-            <div className="alert alert-success d-flex gap-3 align-items-start mb-4" role="status">
-              <i className="bi bi-check-circle-fill fs-3" aria-hidden="true" />
-              <div>
-                <h2 className="h5 alert-heading mb-1">¡Gracias por tu compra!</h2>
-                <p className="mb-0">
-                  Tu pedido <strong>{pedido.numeroOrden}</strong> fue registrado correctamente. El
-                  pago es simulado en esta versión y el comprobante ya está disponible.
-                </p>
-              </div>
-            </div>
-          )}
+    <section className="py-8">
+      <div className="container-page">
+        {esNuevo && (
+          <Alert variant="success" className="mb-5">
+            <CheckCircle2 aria-hidden="true" />
+            <AlertTitle>¡Gracias por tu compra!</AlertTitle>
+            <AlertDescription>
+              Tu pedido <strong>{pedido.numeroOrden}</strong> fue registrado correctamente. El pago
+              es simulado en esta versión y el comprobante ya está disponible.
+            </AlertDescription>
+          </Alert>
+        )}
 
-          <div className="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
-            <div>
-              <h1 className="titulo-seccion text-start mb-2">Pedido {pedido.numeroOrden}</h1>
-              <p className="texto-gris mb-0">Realizado el {formatDateTime(pedido.fechaCreacion)}</p>
-            </div>
-            <div className="d-flex flex-wrap gap-2">
-              <PedidoBadge estado={pedido.estado} />
-              <span className="badge rounded-pill text-bg-light border">
-                Pago: {pedido.estadoPago}
-              </span>
-              <button
-                type="button"
-                className="btn btn-marca rounded-pill"
-                onClick={descargarComprobante}
-                disabled={descargando}
-              >
-                {descargando ? (
-                  <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
+        <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-extrabold text-brand-dark sm:text-3xl">
+              Pedido {pedido.numeroOrden}
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Realizado el {formatDateTime(pedido.fechaCreacion)}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <PedidoBadge estado={pedido.estado} />
+            <Badge variant="outline">Pago: {pedido.estadoPago}</Badge>
+            <Button type="button" onClick={descargarComprobante} disabled={descargando}>
+              {descargando ? (
+                <Spinner className="size-4" />
+              ) : (
+                <FileDown className="size-4" aria-hidden="true" />
+              )}
+              Descargar comprobante
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
+          <div className="space-y-4">
+            <Card className="gap-3 p-5">
+              <h2 className="text-lg font-bold">Productos</h2>
+              <div className="table-wrap">
+                <Table className="min-w-[560px]">
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead>Producto</TableHead>
+                      <TableHead>Precio</TableHead>
+                      <TableHead>Cantidad</TableHead>
+                      <TableHead className="text-right">Subtotal</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {pedido.items.map((item) => (
+                      <TableRow key={item.productoId}>
+                        <TableCell className="whitespace-normal">{item.nombreProducto}</TableCell>
+                        <TableCell>{formatCLP(item.precioUnitario)}</TableCell>
+                        <TableCell>{item.cantidad}</TableCell>
+                        <TableCell className="text-right font-bold">
+                          {formatCLP(item.subtotal)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                  <TableFooter>
+                    <TableRow className="hover:bg-transparent">
+                      <TableCell colSpan={3} className="text-right font-normal">
+                        Subtotal productos
+                      </TableCell>
+                      <TableCell className="text-right font-bold">
+                        {formatCLP(pedido.subtotal)}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow className="hover:bg-transparent">
+                      <TableCell colSpan={3} className="text-right font-normal">
+                        Costo de envío
+                      </TableCell>
+                      <TableCell className="text-right font-bold">
+                        {Number(pedido.costoEnvio) === 0
+                          ? 'Sin costo'
+                          : formatCLP(pedido.costoEnvio)}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow className="hover:bg-transparent">
+                      <TableCell colSpan={3} className="text-right font-bold">
+                        Total
+                      </TableCell>
+                      <TableCell className="text-right text-base font-extrabold text-primary">
+                        {formatCLP(pedido.total)}
+                      </TableCell>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </div>
+            </Card>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Card className="gap-2 p-5">
+                <h2 className="flex items-center gap-2 text-sm font-bold">
+                  <Truck className="size-4 text-primary" aria-hidden="true" />
+                  Despacho
+                </h2>
+                <p className="font-semibold">{pedido.metodoDespachoNombre}</p>
+                <p className="text-xs text-muted-foreground">
+                  {pedido.diasHabiles} día{pedido.diasHabiles === 1 ? '' : 's'} hábil
+                  {pedido.diasHabiles === 1 ? '' : 'es'}
+                </p>
+                {pedido.requiereDireccion ? (
+                  <p className="flex items-start gap-1.5 text-sm">
+                    <MapPin className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+                    <span>
+                      {pedido.direccion}
+                      <br />
+                      {pedido.comuna}
+                      {pedido.regionNombre ? `, ${pedido.regionNombre}` : ''}
+                    </span>
+                  </p>
                 ) : (
-                  <i className="bi bi-file-earmark-pdf me-1" aria-hidden="true" />
+                  <p className="text-sm text-muted-foreground">
+                    Retiro presencial en nuestras instalaciones. Te contactaremos para coordinar.
+                  </p>
                 )}
-                Descargar comprobante
-              </button>
+              </Card>
+              <Card className="gap-2 p-5">
+                <h2 className="flex items-center gap-2 text-sm font-bold">
+                  <CreditCard className="size-4 text-primary" aria-hidden="true" />
+                  Pago
+                </h2>
+                <p>{pedido.metodoPago}</p>
+                <p className="text-xs text-muted-foreground">Estado: {pedido.estadoPago}</p>
+                {pedido.referenciaPago && (
+                  <p className="text-sm">
+                    Referencia:{' '}
+                    <span className="font-mono text-xs">{pedido.referenciaPago}</span>
+                  </p>
+                )}
+                {pedido.pagoSimulado && (
+                  <p className="flex items-center gap-1.5 text-xs text-emerald-700">
+                    <Info className="size-3.5" aria-hidden="true" />
+                    Pago simulado para esta versión local.
+                  </p>
+                )}
+              </Card>
             </div>
           </div>
 
-          <div className="row g-4">
-            <div className="col-lg-8">
-              <div className="card card-formulario p-4 mb-4">
-                <h2 className="h5 fw-bold mb-3">Productos</h2>
-                <div className="table-responsive">
-                  <table className="table align-middle tabla-marca mb-0">
-                    <thead>
-                      <tr>
-                        <th scope="col">Producto</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col" className="text-end">
-                          Subtotal
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pedido.items.map((item) => (
-                        <tr key={item.productoId}>
-                          <td>{item.nombreProducto}</td>
-                          <td>{formatCLP(item.precioUnitario)}</td>
-                          <td>{item.cantidad}</td>
-                          <td className="text-end fw-bold">{formatCLP(item.subtotal)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th colSpan={3} className="text-end">
-                          Subtotal productos
-                        </th>
-                        <th className="text-end">{formatCLP(pedido.subtotal)}</th>
-                      </tr>
-                      <tr>
-                        <th colSpan={3} className="text-end">
-                          Costo de envío
-                        </th>
-                        <th className="text-end">
-                          {Number(pedido.costoEnvio) === 0 ? 'Sin costo' : formatCLP(pedido.costoEnvio)}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th colSpan={3} className="text-end">
-                          Total
-                        </th>
-                        <th className="text-end fs-5">{formatCLP(pedido.total)}</th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </div>
+          <div className="space-y-4">
+            <Card className="gap-2 p-5">
+              <h2 className="text-sm font-bold">Datos del comprador</h2>
+              <p>
+                {pedido.nombre} {pedido.apellido}
+              </p>
+              <p className="text-xs text-muted-foreground">{pedido.correo}</p>
+              {pedido.telefono && <p className="text-xs text-muted-foreground">{pedido.telefono}</p>}
+              {pedido.rut && <p className="text-xs text-muted-foreground">RUT: {pedido.rut}</p>}
+            </Card>
 
-              <div className="row g-4">
-                <div className="col-md-6">
-                  <div className="card card-formulario p-4 h-100">
-                    <h2 className="h6 fw-bold">
-                      <i className="bi bi-truck me-2 texto-marca" aria-hidden="true" />
-                      Despacho
-                    </h2>
-                    <p className="mb-1 fw-bold">{pedido.metodoDespachoNombre}</p>
-                    <p className="texto-gris small mb-2">
-                      {pedido.diasHabiles} día{pedido.diasHabiles === 1 ? '' : 's'} hábil
-                      {pedido.diasHabiles === 1 ? '' : 'es'}
-                    </p>
-                    {pedido.requiereDireccion ? (
-                      <p className="mb-0 small">
-                        {pedido.direccion}
-                        <br />
-                        {pedido.comuna}
-                        {pedido.regionNombre ? `, ${pedido.regionNombre}` : ''}
-                      </p>
-                    ) : (
-                      <p className="mb-0 small">
-                        Retiro presencial en nuestras instalaciones. Te contactaremos para coordinar.
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="card card-formulario p-4 h-100">
-                    <h2 className="h6 fw-bold">
-                      <i className="bi bi-credit-card me-2 texto-marca" aria-hidden="true" />
-                      Pago
-                    </h2>
-                    <p className="mb-1">{pedido.metodoPago}</p>
-                    <p className="texto-gris small mb-2">Estado: {pedido.estadoPago}</p>
-                    {pedido.referenciaPago && (
-                      <p className="small mb-2">
-                        Referencia: <span className="font-monospace">{pedido.referenciaPago}</span>
-                      </p>
-                    )}
-                    {pedido.pagoSimulado && (
-                      <p className="small text-success mb-0">
-                        <i className="bi bi-info-circle me-1" aria-hidden="true" />
-                        Pago simulado para esta versión local.
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Card className="gap-2 p-5">
+              <h2 className="text-sm font-bold">Documento</h2>
+              <p>{pedido.documentoTipo}</p>
+              {pedido.documentoTipo.toLowerCase() === 'factura' && (
+                <>
+                  <p className="text-xs text-muted-foreground">RUT: {pedido.rutFacturacion}</p>
+                  <p className="text-xs text-muted-foreground">{pedido.razonSocial}</p>
+                  <p className="text-xs text-muted-foreground">Giro: {pedido.giro}</p>
+                </>
+              )}
+            </Card>
 
-            <div className="col-lg-4">
-              <div className="card card-formulario p-4 mb-4">
-                <h2 className="h6 fw-bold">Datos del comprador</h2>
-                <p className="mb-1">
-                  {pedido.nombre} {pedido.apellido}
-                </p>
-                <p className="small texto-gris mb-1">{pedido.correo}</p>
-                {pedido.telefono && <p className="small texto-gris mb-1">{pedido.telefono}</p>}
-                {pedido.rut && <p className="small texto-gris mb-0">RUT: {pedido.rut}</p>}
-              </div>
-
-              <div className="card card-formulario p-4 mb-4">
-                <h2 className="h6 fw-bold">Documento</h2>
-                <p className="mb-1">{pedido.documentoTipo}</p>
-                {pedido.documentoTipo.toLowerCase() === 'factura' && (
-                  <>
-                    <p className="small texto-gris mb-1">RUT: {pedido.rutFacturacion}</p>
-                    <p className="small texto-gris mb-1">{pedido.razonSocial}</p>
-                    <p className="small texto-gris mb-0">Giro: {pedido.giro}</p>
-                  </>
-                )}
-              </div>
-
-              <div className="d-grid gap-2">
-                <Link to="/mi-cuenta" className="btn btn-marca-outline rounded-pill">
-                  Ver mis pedidos
-                </Link>
-                <Link to="/productos" className="btn btn-marca rounded-pill">
-                  Seguir comprando
-                </Link>
-              </div>
+            <div className="grid gap-2">
+              <Button asChild variant="outline">
+                <Link to="/mi-cuenta">Ver mis pedidos</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/productos">Seguir comprando</Link>
+              </Button>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   )
 }

@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { CheckCircle2, FileText, Info, Mail, Paperclip, Send, X } from 'lucide-react'
 import { ErrorAlert } from '../components/common/ErrorAlert'
+import { Alert, AlertDescription } from '../components/ui/alert'
+import { Button } from '../components/ui/button'
+import { Card } from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Spinner } from '../components/ui/spinner'
+import { Textarea } from '../components/ui/textarea'
 import { cotizacionService } from '../services/cotizaciones'
 import type { CotizacionDetalle } from '../types/api'
 
@@ -29,6 +37,8 @@ const formularioInicial: FormularioCotizacion = {
 
 const MAX_ARCHIVOS = 5
 const MAX_TAMANO = 50 * 1024 * 1024
+const selectClase =
+  'flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-sm shadow-xs outline-none transition-colors focus-visible:border-brand-light focus-visible:ring-2 focus-visible:ring-ring/30 aria-invalid:border-destructive'
 
 function tamanoLegible(bytes: number): string {
   if (bytes >= 1_048_576) return `${(bytes / 1_048_576).toFixed(1)} MB`
@@ -155,47 +165,40 @@ export function CotizacionPage() {
     }
   }
 
-  const campoClase = (campo: string) => `form-control${errores[campo] ? ' is-invalid' : ''}`
+  const mensajeCampo = (campo: string) =>
+    errores[campo] ? <p className="field-error">{errores[campo]}</p> : null
 
   if (resultado) {
     return (
-      <section className="py-5 seccion-clara">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="card card-formulario p-4 p-md-5 text-center">
-                <i className="bi bi-check-circle-fill text-success fs-1 mb-3" aria-hidden="true" />
-                <h1 className="h3">Solicitud recibida</h1>
-                <p className="texto-gris">
-                  Gracias, {resultado.nombre}. Tu solicitud de cotización fue registrada con el
-                  ticket:
-                </p>
-                <p className="fs-3 fw-bold texto-marca font-monospace">{resultado.numeroTicket}</p>
-                <p className="texto-gris">
-                  Te contactaremos a <strong>{resultado.correo}</strong> con el presupuesto y los
-                  próximos pasos. También puedes responder al correo de confirmación.
-                </p>
-                {resultado.archivos.length > 0 && (
-                  <p className="small texto-gris">
-                    Adjuntaste {resultado.archivos.length} archivo
-                    {resultado.archivos.length === 1 ? '' : 's'} 3D.
-                  </p>
-                )}
-                <div className="d-flex flex-wrap justify-content-center gap-2 mt-4">
-                  <button
-                    type="button"
-                    className="btn btn-marca rounded-pill px-4"
-                    onClick={() => setResultado(null)}
-                  >
-                    Enviar otra cotización
-                  </button>
-                  <Link to="/productos" className="btn btn-marca-outline rounded-pill px-4">
-                    Ver productos
-                  </Link>
-                </div>
-              </div>
+      <section className="bg-white/40 py-14">
+        <div className="container-page max-w-3xl">
+          <Card className="items-center gap-3 p-6 text-center sm:p-10">
+            <CheckCircle2 className="size-14 text-emerald-600" aria-hidden="true" />
+            <h1 className="text-2xl font-extrabold text-brand-dark">Solicitud recibida</h1>
+            <p className="text-muted-foreground">
+              Gracias, {resultado.nombre}. Tu solicitud de cotización fue registrada con el ticket:
+            </p>
+            <p className="font-mono text-2xl font-bold text-primary">{resultado.numeroTicket}</p>
+            <p className="max-w-xl text-muted-foreground">
+              Te contactaremos a <strong className="text-foreground">{resultado.correo}</strong> con
+              el presupuesto y los próximos pasos. También puedes responder al correo de
+              confirmación.
+            </p>
+            {resultado.archivos.length > 0 && (
+              <p className="text-xs text-muted-foreground">
+                Adjuntaste {resultado.archivos.length} archivo
+                {resultado.archivos.length === 1 ? '' : 's'} 3D.
+              </p>
+            )}
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <Button type="button" onClick={() => setResultado(null)}>
+                Enviar otra cotización
+              </Button>
+              <Button asChild variant="outline">
+                <Link to="/productos">Ver productos</Link>
+              </Button>
             </div>
-          </div>
+          </Card>
         </div>
       </section>
     )
@@ -203,105 +206,98 @@ export function CotizacionPage() {
 
   return (
     <>
-      <section className="py-5">
-        <div className="container">
-          <h1 className="titulo-seccion">Cotización personalizada</h1>
-          <p className="pagina-intro">
+      <section className="pt-10 pb-6">
+        <div className="container-page text-center">
+          <h1 className="section-title">Cotización personalizada</h1>
+          <p className="page-intro mb-0">
             Cuéntanos qué necesitas y te enviaremos una cotización a la medida de tu proyecto.
           </p>
         </div>
       </section>
 
-      <section className="py-4 seccion-clara">
-        <div className="container">
+      <section className="pb-16">
+        <div className="container-page">
           {producto && (
-            <div className="alert alert-info max-w-720 mx-auto">
-              <i className="bi bi-info-circle me-2" aria-hidden="true" />
-              Estás cotizando: <strong>{producto}</strong>. Puedes ajustar la descripción.
-            </div>
+            <Alert variant="info" className="mx-auto mb-5 max-w-3xl">
+              <Info aria-hidden="true" />
+              <AlertDescription>
+                Estás cotizando: <strong>{producto}</strong>. Puedes ajustar la descripción.
+              </AlertDescription>
+            </Alert>
           )}
-          <div className="row g-4 justify-content-center">
-            <div className="col-lg-8">
-              <form className="card card-formulario p-4 p-md-5" onSubmit={enviar} noValidate>
+          <div className="grid justify-center gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+            <form onSubmit={enviar} noValidate>
+              <Card className="gap-5 p-6 sm:p-8">
                 {Boolean(error) && <ErrorAlert error={error} onClose={() => setError(null)} />}
 
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <label htmlFor="nombre" className="form-label">
-                      Nombre *
-                    </label>
-                    <input
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="nombre">Nombre *</Label>
+                    <Input
                       id="nombre"
                       name="nombre"
-                      className={campoClase('nombre')}
                       value={formulario.nombre}
                       onChange={actualizar}
                       autoComplete="given-name"
                       maxLength={80}
                       required
+                      aria-invalid={errores.nombre ? true : undefined}
                     />
-                    {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
+                    {mensajeCampo('nombre')}
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="apellido" className="form-label">
-                      Apellido *
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="apellido">Apellido *</Label>
+                    <Input
                       id="apellido"
                       name="apellido"
-                      className={campoClase('apellido')}
                       value={formulario.apellido}
                       onChange={actualizar}
                       autoComplete="family-name"
                       maxLength={80}
                       required
+                      aria-invalid={errores.apellido ? true : undefined}
                     />
-                    {errores.apellido && <div className="invalid-feedback">{errores.apellido}</div>}
+                    {mensajeCampo('apellido')}
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="correo" className="form-label">
-                      Correo electrónico *
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="correo">Correo electrónico *</Label>
+                    <Input
                       id="correo"
                       name="correo"
                       type="email"
-                      className={campoClase('correo')}
                       value={formulario.correo}
                       onChange={actualizar}
                       autoComplete="email"
                       maxLength={150}
                       required
+                      aria-invalid={errores.correo ? true : undefined}
                     />
-                    {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
+                    {mensajeCampo('correo')}
                   </div>
-                  <div className="col-md-6">
-                    <label htmlFor="telefono" className="form-label">
-                      Teléfono
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="telefono">Teléfono</Label>
+                    <Input
                       id="telefono"
                       name="telefono"
                       type="tel"
-                      className={campoClase('telefono')}
                       value={formulario.telefono}
                       onChange={actualizar}
                       autoComplete="tel"
                       maxLength={30}
+                      aria-invalid={errores.telefono ? true : undefined}
                     />
-                    {errores.telefono && <div className="invalid-feedback">{errores.telefono}</div>}
+                    {mensajeCampo('telefono')}
                   </div>
-                  <div className="col-md-4">
-                    <label htmlFor="categoria" className="form-label">
-                      Categoría *
-                    </label>
+                  <div>
+                    <Label htmlFor="categoria">Categoría *</Label>
                     <select
                       id="categoria"
                       name="categoria"
-                      className={`form-select${errores.categoria ? ' is-invalid' : ''}`}
+                      className={selectClase}
                       value={formulario.categoria}
                       onChange={actualizar}
                       required
+                      aria-invalid={errores.categoria ? true : undefined}
                     >
                       <option value="">-- Selecciona --</option>
                       <option value="maceteros">Maceteros</option>
@@ -310,32 +306,28 @@ export function CotizacionPage() {
                       <option value="figuras">Figuras ecológicas</option>
                       <option value="otro">Otro</option>
                     </select>
-                    {errores.categoria && <div className="invalid-feedback">{errores.categoria}</div>}
+                    {mensajeCampo('categoria')}
                   </div>
-                  <div className="col-md-4">
-                    <label htmlFor="cantidad" className="form-label">
-                      Cantidad estimada
-                    </label>
-                    <input
+                  <div>
+                    <Label htmlFor="cantidad">Cantidad estimada</Label>
+                    <Input
                       id="cantidad"
                       name="cantidad"
                       type="number"
                       min={1}
-                      className={campoClase('cantidad')}
                       value={formulario.cantidad}
                       onChange={actualizar}
                       placeholder="Ej: 20"
+                      aria-invalid={errores.cantidad ? true : undefined}
                     />
-                    {errores.cantidad && <div className="invalid-feedback">{errores.cantidad}</div>}
+                    {mensajeCampo('cantidad')}
                   </div>
-                  <div className="col-md-4">
-                    <label htmlFor="plazo" className="form-label">
-                      Plazo deseado
-                    </label>
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="plazo">Plazo deseado</Label>
                     <select
                       id="plazo"
                       name="plazo"
-                      className="form-select"
+                      className={selectClase}
                       value={formulario.plazo}
                       onChange={actualizar}
                     >
@@ -345,65 +337,69 @@ export function CotizacionPage() {
                       <option value="3">Más de 2 semanas</option>
                     </select>
                   </div>
-                  <div className="col-12">
-                    <label htmlFor="descripcion" className="form-label">
-                      Descripción del proyecto *
-                    </label>
-                    <textarea
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="descripcion">Descripción del proyecto *</Label>
+                    <Textarea
                       id="descripcion"
                       name="descripcion"
                       rows={5}
-                      className={`form-control${errores.descripcion ? ' is-invalid' : ''}`}
                       value={formulario.descripcion}
                       onChange={actualizar}
                       maxLength={2000}
                       placeholder="Cuéntanos las medidas, colores, cantidad exacta y cualquier detalle especial (mínimo 10 caracteres)..."
                       required
+                      aria-invalid={errores.descripcion ? true : undefined}
                     />
                     {errores.descripcion ? (
-                      <div className="invalid-feedback">{errores.descripcion}</div>
+                      mensajeCampo('descripcion')
                     ) : (
-                      <div className="form-text">{formulario.descripcion.length}/2000 caracteres</div>
+                      <p className="mt-1.5 text-xs text-muted-foreground">
+                        {formulario.descripcion.length}/2000 caracteres
+                      </p>
                     )}
                   </div>
-                  <div className="col-12">
-                    <label htmlFor="archivos" className="form-label">
-                      Archivos 3D (opcional)
-                    </label>
+                  <div className="sm:col-span-2">
+                    <Label htmlFor="archivos">Archivos 3D (opcional)</Label>
                     <input
                       ref={archivoInputRef}
                       id="archivos"
                       name="archivos"
                       type="file"
-                      className={`form-control${errorArchivos ? ' is-invalid' : ''}`}
+                      className="flex w-full cursor-pointer rounded-lg border border-input bg-white text-sm file:mr-4 file:cursor-pointer file:rounded-l-lg file:border-0 file:bg-secondary file:px-4 file:py-2.5 file:font-semibold file:text-secondary-foreground hover:file:bg-brand/10"
                       accept=".stl,.STL,.obj,.OBJ"
                       multiple
                       onChange={agregarArchivos}
+                      aria-invalid={errorArchivos ? true : undefined}
                     />
-                    <div className="form-text">
+                    <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Paperclip className="size-3.5" aria-hidden="true" />
                       Hasta {MAX_ARCHIVOS} archivos .STL o .OBJ, máximo 50 MB por archivo.
-                    </div>
-                    {Boolean(errorArchivos) && <div className="invalid-feedback d-block">{errorArchivos}</div>}
+                    </p>
+                    {Boolean(errorArchivos) && <p className="field-error">{errorArchivos}</p>}
                     {archivos.length > 0 && (
-                      <ul className="list-group mt-3">
+                      <ul className="mt-3 space-y-1.5">
                         {archivos.map((archivo, indice) => (
                           <li
                             key={`${archivo.name}-${archivo.size}-${indice}`}
-                            className="list-group-item d-flex justify-content-between align-items-center"
+                            className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm"
                           >
-                            <span>
-                              <i className="bi bi-file-earmark me-2 texto-marca" aria-hidden="true" />
-                              {archivo.name}{' '}
-                              <span className="small texto-gris">({tamanoLegible(archivo.size)})</span>
+                            <span className="flex items-center gap-2 truncate">
+                              <FileText className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                              <span className="truncate">{archivo.name}</span>
+                              <span className="shrink-0 text-xs text-muted-foreground">
+                                ({tamanoLegible(archivo.size)})
+                              </span>
                             </span>
-                            <button
+                            <Button
                               type="button"
-                              className="btn btn-sm btn-outline-danger rounded-circle"
+                              size="icon"
+                              variant="ghost"
+                              className="size-7 shrink-0 rounded-full text-destructive hover:bg-destructive hover:text-white"
                               aria-label={`Quitar ${archivo.name}`}
                               onClick={() => quitarArchivo(indice)}
                             >
-                              <i className="bi bi-x-lg" aria-hidden="true" />
-                            </button>
+                              <X className="size-3.5" aria-hidden="true" />
+                            </Button>
                           </li>
                         ))}
                       </ul>
@@ -411,20 +407,24 @@ export function CotizacionPage() {
                   </div>
                 </div>
 
-                <div className="d-flex flex-wrap gap-3 mt-4">
-                  <button type="submit" className="btn btn-acento btn-lg rounded-pill px-4" disabled={enviando}>
+                <div className="flex flex-wrap gap-3">
+                  <Button type="submit" size="lg" variant="accent" disabled={enviando}>
                     {enviando ? (
                       <>
-                        <span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />
+                        <Spinner className="size-4" />
                         Enviando...
                       </>
                     ) : (
-                      'Solicitar cotización'
+                      <>
+                        <Send className="size-4" aria-hidden="true" />
+                        Solicitar cotización
+                      </>
                     )}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="reset"
-                    className="btn btn-marca-outline btn-lg rounded-pill px-4"
+                    size="lg"
+                    variant="outline"
                     onClick={() => {
                       setFormulario(formularioInicial)
                       setArchivos([])
@@ -434,31 +434,32 @@ export function CotizacionPage() {
                     }}
                   >
                     Limpiar formulario
-                  </button>
+                  </Button>
                 </div>
-              </form>
-            </div>
-            <div className="col-lg-4">
-              <div className="card card-formulario p-4 h-100">
-                <h2 className="h5 fw-bold">¿Cómo funciona?</h2>
-                <ol className="ps-3 small">
-                  <li className="mb-2">Completas el formulario con los detalles de tu idea.</li>
-                  <li className="mb-2">Revisamos medidas, materiales y cantidad.</li>
-                  <li className="mb-2">Recibes un presupuesto con monto y plazo de entrega.</li>
+              </Card>
+            </form>
+
+            <aside>
+              <Card className="h-full gap-4 p-6">
+                <h2 className="text-lg font-bold">¿Cómo funciona?</h2>
+                <ol className="list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
+                  <li>Completas el formulario con los detalles de tu idea.</li>
+                  <li>Revisamos medidas, materiales y cantidad.</li>
+                  <li>Recibes un presupuesto con monto y plazo de entrega.</li>
                   <li>Confirmas y coordinamos la producción.</li>
                 </ol>
-                <hr />
-                <h2 className="h6 fw-bold">Archivos 3D</h2>
-                <p className="small texto-gris mb-2">
+                <hr className="border-border" />
+                <h2 className="font-display text-sm font-bold">Archivos 3D</h2>
+                <p className="text-sm text-muted-foreground">
                   Si tienes un modelo, adjúntalo en formato <strong>.STL</strong> o{' '}
                   <strong>.OBJ</strong>. También podemos diseñar desde cero.
                 </p>
-                <p className="small texto-gris mb-0">
-                  <i className="bi bi-envelope me-1" aria-hidden="true" />
+                <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <Mail className="size-4" aria-hidden="true" />
                   contacto@bioforjarc.cl
                 </p>
-              </div>
-            </div>
+              </Card>
+            </aside>
           </div>
         </div>
       </section>

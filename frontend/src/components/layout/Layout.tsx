@@ -1,4 +1,5 @@
 import { Link, Outlet } from 'react-router-dom'
+import { Mail, MapPin, Phone, Recycle, Settings, ShoppingCart, UserRound } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { Navbar } from './Navbar'
 import { ScrollToTop } from './ScrollToTop'
@@ -7,55 +8,127 @@ export function Layout() {
   const { esAdmin } = useAuth()
 
   return (
-    <div className="d-flex min-vh-100 flex-column">
+    <div className="flex min-h-screen flex-col">
       <ScrollToTop />
       <Navbar />
 
-      <main className="flex-grow-1">
+      <main className="flex-1">
         <Outlet />
       </main>
 
-      <footer className="bg-marca text-light pt-5 pb-3 pie-pagina mt-auto">
-        <div className="container">
-          <div className="row g-4">
-            <div className="col-md-4">
-              <Link to="/" className="d-flex align-items-center gap-2 text-white text-decoration-none mb-3">
-                <img src="/assets/imagenes/LOGO.jpg" alt="Logo de BioForjaRC" width="42" height="42" className="rounded-circle" />
-                <span className="fw-bold fs-5">BioForja<strong className="texto-acento">RC</strong></span>
+      <footer className="footer-brand mt-auto pt-12 pb-6">
+        <div className="container-page">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1fr]">
+            <div>
+              <Link to="/" className="mb-3 flex items-center gap-2 text-white">
+                <img
+                  src="/assets/imagenes/LOGO.jpg"
+                  alt="Logo de BioForjaRC"
+                  width={42}
+                  height={42}
+                  className="size-11 rounded-full object-cover ring-2 ring-white/30"
+                />
+                <span className="font-display text-lg font-bold">
+                  BioForja<span className="text-amber-brand">RC</span>
+                </span>
               </Link>
-              <p className="text-white-50 small mb-0">
+              <p className="max-w-xs text-sm text-white/60">
                 Productos sostenibles impresos en 3D a partir de plástico reciclado.
               </p>
+              <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/80">
+                <Recycle className="size-3.5" aria-hidden="true" />
+                Economía circular
+              </p>
             </div>
-            <div className="col-6 col-md-2">
-              <h2 className="h6 text-uppercase fw-bold mb-3">Explorar</h2>
-              <ul className="list-unstyled mb-0">
-                <li className="mb-2"><Link to="/" className="text-white-50 text-decoration-none">Inicio</Link></li>
-                <li className="mb-2"><Link to="/productos" className="text-white-50 text-decoration-none">Productos</Link></li>
-                <li className="mb-2"><Link to="/nosotros" className="text-white-50 text-decoration-none">Nosotros</Link></li>
-                <li className="mb-2"><Link to="/cotizacion" className="text-white-50 text-decoration-none">Cotización</Link></li>
-                <li className="mb-2"><Link to="/contacto" className="text-white-50 text-decoration-none">Contacto</Link></li>
+
+            <div>
+              <h2 className="mb-3 font-display text-sm font-bold tracking-wide text-white uppercase">
+                Explorar
+              </h2>
+              <ul className="space-y-2 text-sm">
+                {[
+                  { to: '/', label: 'Inicio' },
+                  { to: '/productos', label: 'Productos' },
+                  { to: '/nosotros', label: 'Nosotros' },
+                  { to: '/cotizacion', label: 'Cotización' },
+                  { to: '/contacto', label: 'Contacto' },
+                ].map((enlace) => (
+                  <li key={enlace.to}>
+                    <Link to={enlace.to} className="text-white/60 transition-colors hover:text-white">
+                      {enlace.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="col-6 col-md-3">
-              <h2 className="h6 text-uppercase fw-bold mb-3">Contacto</h2>
-              <p className="mb-2"><i className="bi bi-telephone-fill me-2 pie-icono" aria-hidden="true" /><a href="tel:+56912345678" className="text-white-50 text-decoration-none">+56 9 1234 5678</a></p>
-              <p className="mb-3"><i className="bi bi-envelope-fill me-2 pie-icono" aria-hidden="true" /><a href="mailto:contacto@bioforjarc.cl" className="text-white-50 text-decoration-none">contacto@bioforjarc.cl</a></p>
-              <p className="mb-0 small text-white-50"><i className="bi bi-geo-alt-fill me-2 pie-icono" aria-hidden="true" />Santiago, Chile</p>
+
+            <div>
+              <h2 className="mb-3 font-display text-sm font-bold tracking-wide text-white uppercase">
+                Contacto
+              </h2>
+              <ul className="space-y-2.5 text-sm text-white/60">
+                <li className="flex items-center gap-2">
+                  <Phone className="size-4 text-amber-brand" aria-hidden="true" />
+                  <a href="tel:+56912345678" className="transition-colors hover:text-white">
+                    +56 9 1234 5678
+                  </a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="size-4 text-amber-brand" aria-hidden="true" />
+                  <a
+                    href="mailto:contacto@bioforjarc.cl"
+                    className="transition-colors hover:text-white"
+                  >
+                    contacto@bioforjarc.cl
+                  </a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="size-4 text-amber-brand" aria-hidden="true" />
+                  Santiago, Chile
+                </li>
+              </ul>
             </div>
-            <div className="col-md-3">
-              <h2 className="h6 text-uppercase fw-bold mb-3">Cuenta</h2>
-              <ul className="list-unstyled mb-0">
-                <li className="mb-2"><Link to="/mi-cuenta" className="text-white-50 text-decoration-none"><i className="bi bi-person me-2" aria-hidden="true" />Mi cuenta</Link></li>
-                <li className="mb-2"><Link to="/carrito" className="text-white-50 text-decoration-none"><i className="bi bi-cart3 me-2" aria-hidden="true" />Carrito</Link></li>
+
+            <div>
+              <h2 className="mb-3 font-display text-sm font-bold tracking-wide text-white uppercase">
+                Cuenta
+              </h2>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link
+                    to="/mi-cuenta"
+                    className="inline-flex items-center gap-2 text-white/60 transition-colors hover:text-white"
+                  >
+                    <UserRound className="size-4" aria-hidden="true" />
+                    Mi cuenta
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/carrito"
+                    className="inline-flex items-center gap-2 text-white/60 transition-colors hover:text-white"
+                  >
+                    <ShoppingCart className="size-4" aria-hidden="true" />
+                    Carrito
+                  </Link>
+                </li>
                 {esAdmin && (
-                  <li className="mb-2"><Link to="/admin" className="text-white-50 text-decoration-none"><i className="bi bi-person-gear me-2" aria-hidden="true" />Panel de administración</Link></li>
+                  <li>
+                    <Link
+                      to="/admin"
+                      className="inline-flex items-center gap-2 text-white/60 transition-colors hover:text-white"
+                    >
+                      <Settings className="size-4" aria-hidden="true" />
+                      Panel de administración
+                    </Link>
+                  </li>
                 )}
               </ul>
             </div>
           </div>
-          <hr className="border-light opacity-25 my-4" />
-          <div className="d-flex flex-column flex-md-row justify-content-between gap-2 small text-white-50">
+
+          <hr className="my-6 border-white/15" />
+          <div className="flex flex-col justify-between gap-2 text-xs text-white/50 sm:flex-row">
             <span>© {new Date().getFullYear()} BioForjaRC. Todos los derechos reservados.</span>
             <span>Reciclaje + impresión 3D = economía circular.</span>
           </div>
