@@ -130,14 +130,7 @@ Estado de esta entrega:
 - Flujo E2E con servicios activos: no verificado; los puertos 8090–8096 estaban libres durante la revisión.
 - Revisión en dispositivos móviles reales: pendiente.
 
-No se presentan resultados históricos de Vitest como validación actual. Ver
-[`../docs/Mapa_API.md`](../docs/Mapa_API.md) y [`../docs/Retiro_Pruebas_Unitarias.md`](../docs/Retiro_Pruebas_Unitarias.md).
+No se presentan resultados históricos de pruebas como validación actual. Los contratos
+HTTP están en `src/services/` y las rutas en `src/App.tsx`.
 
-## Pendientes conocidos
 
-- Pasarela de pago real: el pago es simulado.
-- Envío real de correos: los mensajes se registran en el log.
-- Descuento automático de stock al crear un pedido: el backend valida stock, pero no lo descuenta.
-- Página transaccional real para pagar cotizaciones: el enlace actual informa cómo coordinar el pago.
-- Pruebas unitarias y cobertura: aplazadas para una fase posterior.
-- Validación docente de Tailwind/shadcn/ui como equivalencia de Bootstrap.
