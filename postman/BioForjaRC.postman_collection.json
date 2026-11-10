@@ -8,12 +8,213 @@
     { "key": "baseUrl", "value": "http://localhost:8090" },
     { "key": "tokenAdmin", "value": "" },
     { "key": "tokenCliente", "value": "" },
+    { "key": "tokenPrueba", "value": "" },
+    { "key": "usuarioPruebaId", "value": "" },
+    { "key": "productoPruebaId", "value": "19" },
     { "key": "usuarioId", "value": "2" },
     { "key": "productoId", "value": "1" },
     { "key": "pedidoId", "value": "1" },
     { "key": "cotizacionId", "value": "1" }
   ],
   "item": [
+    {
+      "name": "00 - Datos de prueba (crear todo)",
+      "description": "Ejecuta esta carpeta de arriba hacia abajo. Crea un usuario, su direccion, un producto, un pedido, una cotizacion y una consulta de prueba. Cada request guarda el id en una variable de la coleccion para los siguientes.",
+      "item": [
+        {
+          "name": "1. Crear usuario de prueba",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Usuario creado (409 = ya existia, sigue con el login)', () => pm.expect([200,201,409]).to.include(pm.response.code));",
+                  "if ([200,201].includes(pm.response.code)) {",
+                  "    const d = pm.response.json();",
+                  "    if (d.id) pm.collectionVariables.set('usuarioPruebaId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Prueba\",\n  \"apellido\": \"Uno\",\n  \"rut\": \"20.111.222-3\",\n  \"correo\": \"prueba1@correo.cl\",\n  \"telefono\": \"+56 9 2222 3333\",\n  \"clave\": \"Prueba1234\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/registro", "host": ["{{baseUrl}}"], "path": ["api", "auth", "registro"] }
+          }
+        },
+        {
+          "name": "2. Login usuario de prueba",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login OK', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json();",
+                  "pm.collectionVariables.set('tokenPrueba', d.token);",
+                  "if (d.usuario && d.usuario.id) pm.collectionVariables.set('usuarioPruebaId', d.usuario.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"prueba1@correo.cl\",\n  \"clave\": \"Prueba1234\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "3. Crear direccion del usuario prueba",
+          "event": [
+            { "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Direccion creada', () => pm.expect([200,201]).to.include(pm.response.code));"] } }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenPrueba}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"region\": \"Region Metropolitana\",\n  \"comuna\": \"Santiago\",\n  \"calle\": \"Calle Prueba\",\n  \"numero\": \"123\",\n  \"departamento\": \"Depto 4\",\n  \"referencia\": \"Casa con reja verde\",\n  \"principal\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/usuarios/{{usuarioPruebaId}}/direcciones", "host": ["{{baseUrl}}"], "path": ["api", "usuarios", "{{usuarioPruebaId}}", "direcciones"] }
+          }
+        },
+        {
+          "name": "4. Crear producto de prueba (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Producto creado', () => pm.expect([200,201]).to.include(pm.response.code));",
+                  "if ([200,201].includes(pm.response.code)) {",
+                  "    const d = pm.response.json();",
+                  "    if (d.id) pm.collectionVariables.set('productoPruebaId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenAdmin}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Producto Prueba 1\",\n  \"descripcion\": \"Producto de prueba creado desde Postman para validar el catalogo y el carrito.\",\n  \"precio\": 5990,\n  \"stock\": 10,\n  \"categoriaSlug\": \"maceteros\",\n  \"material\": \"Plastico PET reciclado\",\n  \"dimensiones\": \"10 x 10 x 12 cm\",\n  \"imagen\": \"producto-prueba-1.webp\",\n  \"imagenes\": [\"producto-prueba-1.webp\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/productos", "host": ["{{baseUrl}}"], "path": ["api", "productos"] }
+          }
+        },
+        {
+          "name": "5. Ver producto de prueba",
+          "event": [
+            { "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Producto existe', () => pm.response.to.have.status(200));"] } }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/productos/{{productoPruebaId}}", "host": ["{{baseUrl}}"], "path": ["api", "productos", "{{productoPruebaId}}"] }
+          }
+        },
+        {
+          "name": "6. Crear pedido del usuario prueba",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Pedido creado', () => pm.expect([200,201]).to.include(pm.response.code));",
+                  "if ([200,201].includes(pm.response.code)) {",
+                  "    const d = pm.response.json();",
+                  "    if (d.id) pm.collectionVariables.set('pedidoId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenPrueba}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Prueba\",\n  \"apellido\": \"Uno\",\n  \"telefono\": \"+56 9 2222 3333\",\n  \"rut\": \"20.111.222-3\",\n  \"documentoTipo\": \"BOLETA\",\n  \"direccion\": \"Calle Prueba 123\",\n  \"comuna\": \"Santiago\",\n  \"regionCodigo\": \"metropolitana\",\n  \"metodoDespacho\": \"estandar\",\n  \"metodoPago\": \"TARJETA\",\n  \"items\": [\n    { \"productoId\": {{productoPruebaId}}, \"cantidad\": 1 }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/pedidos", "host": ["{{baseUrl}}"], "path": ["api", "pedidos"] }
+          }
+        },
+        {
+          "name": "7. Crear cotizacion de prueba (con archivo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Cotizacion creada', () => pm.expect([200,201]).to.include(pm.response.code));",
+                  "if ([200,201].includes(pm.response.code)) {",
+                  "    const d = pm.response.json();",
+                  "    if (d.id) pm.collectionVariables.set('cotizacionId', d.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "nombre", "value": "Prueba", "type": "text" },
+                { "key": "apellido", "value": "Uno", "type": "text" },
+                { "key": "correo", "value": "prueba1@correo.cl", "type": "text" },
+                { "key": "telefono", "value": "+56 9 2222 3333", "type": "text" },
+                { "key": "categoria", "value": "Maceteros", "type": "text" },
+                { "key": "cantidad", "value": "2", "type": "text" },
+                { "key": "plazo", "value": "10 dias", "type": "text" },
+                { "key": "descripcion", "value": "Cotizacion de prueba creada desde Postman para validar la carga de archivos 3D.", "type": "text" },
+                { "key": "archivos", "type": "file", "src": [] }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/api/cotizaciones", "host": ["{{baseUrl}}"], "path": ["api", "cotizaciones"] }
+          }
+        },
+        {
+          "name": "8. Crear consulta de prueba",
+          "event": [
+            { "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('Consulta creada', () => pm.expect([200,201]).to.include(pm.response.code));"] } }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Prueba Uno\",\n  \"correo\": \"prueba1@correo.cl\",\n  \"telefono\": \"+56 9 2222 3333\",\n  \"asunto\": \"Consulta de prueba\",\n  \"mensaje\": \"Esta es una consulta de prueba creada desde Postman para validar el formulario de contacto.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/consultas", "host": ["{{baseUrl}}"], "path": ["api", "consultas"] }
+          }
+        }
+      ]
+    },
     {
       "name": "01 - Usuarios (ms-usuarios)",
       "item": [
