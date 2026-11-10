@@ -10,7 +10,7 @@ en Spring Boot y el sitio estático original de la marca.
 |---|---|
 | Frontend | React 19, TypeScript, Vite, Tailwind CSS v4, componentes estilo shadcn/ui |
 | Backend | Java 25, Spring Boot, Spring Cloud Gateway, Spring Data JPA |
-| Base de datos | PostgreSQL 18 (una base por microservicio) |
+| Base de datos | MySQL / MariaDB de XAMPP (una base por microservicio) |
 | Estilos | Tailwind CSS con tokens de marca BioForjaRC |
 | Pruebas | Sin pruebas unitarias en esta versión |
 
@@ -36,7 +36,7 @@ BioForjaRC_PaginaWeb/
 ## Requisitos
 
 - JDK 25
-- PostgreSQL 18
+- XAMPP con MySQL/MariaDB y phpMyAdmin
 - Node.js 20 o superior
 - Maven Wrapper incluido en cada servicio (no requiere Maven instalado)
 
@@ -47,8 +47,8 @@ Las credenciales se leen desde variables de entorno. Los valores por defecto son
 | Variable | Valor por defecto |
 |---|---|
 | `BIOFORJA_DB_HOST` | `localhost` |
-| `BIOFORJA_DB_PORT` | `5432` |
-| `BIOFORJA_DB_USERNAME` | `bioforja` |
+| `BIOFORJA_DB_PORT` | `3306` |
+| `BIOFORJA_DB_USERNAME` | `root` |
 | `BIOFORJA_DB_PASSWORD` | *(vacío)* |
 | `BIOFORJA_JWT_SECRET` | *(obligatorio, mínimo 32 caracteres)* |
 
@@ -63,12 +63,14 @@ El mismo `BIOFORJA_JWT_SECRET` debe usarse en `ms-usuarios`, `ms-pedidos` y `ms-
 
 ### Bases de datos
 
-Crea las seis bases si aún no existen:
+Inicia **MySQL** desde el panel de XAMPP y crea las seis bases (por ejemplo desde
+phpMyAdmin en `http://localhost/phpmyadmin`), o por consola:
 
 ```powershell
-$psql = "C:\Program Files\PostgreSQL\18\bin\psql.exe"
+$mysql = "C:\xampp\mysql\bin\mysql.exe"
 "bioforja_usuarios","bioforja_catalogo","bioforja_envios","bioforja_pedidos","bioforja_cotizaciones","bioforja_consultas" |
-  ForEach-Object { & $psql -U postgres -h localhost -c "CREATE DATABASE $_;" }
+  ForEach-Object { "CREATE DATABASE IF NOT EXISTS $_ CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" } |
+  ForEach-Object { & $mysql -u root -h 127.0.0.1 -e $_ }
 ```
 
 Las tablas se crean automáticamente al iniciar cada servicio (`ddl-auto: update`).

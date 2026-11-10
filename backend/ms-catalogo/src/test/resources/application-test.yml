@@ -5,8 +5,8 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:5432}/${BIOFORJA_CATALOGO_TEST_DB_NAME:bioforja_catalogo_test}
-    username: ${BIOFORJA_DB_USERNAME:bioforja}
+    url: jdbc:mysql://${BIOFORJA_DB_HOST:localhost}:${BIOFORJA_DB_PORT:3306}/${BIOFORJA_CATALOGO_TEST_DB_NAME:bioforja_catalogo_test}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago&characterEncoding=UTF-8
+    username: ${BIOFORJA_DB_USERNAME:root}
     password: ${BIOFORJA_DB_PASSWORD:}
   jpa:
     hibernate:
