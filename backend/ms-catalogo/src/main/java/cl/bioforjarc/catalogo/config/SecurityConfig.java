@@ -42,6 +42,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(autorizacion -> autorizacion
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        // El endpoint de stock valida un token interno propio en el controlador.
+                        .requestMatchers(HttpMethod.PATCH, "/api/productos/*/stock").permitAll()
                         // Inventario completo: solo administrador.
                         .requestMatchers(HttpMethod.GET, "/api/productos/inventario/**")
                         .hasRole("ADMINISTRADOR")

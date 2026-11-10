@@ -1,5 +1,6 @@
 package cl.bioforjarc.catalogo.controller;
 
+import cl.bioforjarc.catalogo.dto.AjusteStockRequest;
 import cl.bioforjarc.catalogo.dto.EstadoProductoRequest;
 import cl.bioforjarc.catalogo.dto.PaginaResponse;
 import cl.bioforjarc.catalogo.dto.ProductoDetalleResponse;
@@ -11,6 +12,7 @@ import cl.bioforjarc.catalogo.service.ProductoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +21,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -32,9 +38,12 @@ import java.util.List;
 public class ProductoController {
 
     private final ProductoService productoService;
+    private final String tokenInterno;
 
-    public ProductoController(ProductoService productoService) {
+    public ProductoController(ProductoService productoService,
+                              @Value("${bioforja.jwt.secret:}") String tokenInterno) {
         this.productoService = productoService;
+        this.tokenInterno = tokenInterno;
     }
 
     /** HU-01.1, HU-01.2 y HU-01.3: catálogo público paginado y filtrable. */
@@ -62,6 +71,19 @@ public class ProductoController {
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "La cantidad mínima es 1")
             @Max(value = 999, message = "La cantidad máxima es 999") int cantidad) {
         return productoService.validar(id, cantidad);
+    }
+
+    /** Ajuste interno de inventario: solo ms-pedidos puede descontar o reponer stock. */
+    @PatchMapping("/{id}/stock")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ajustarStock(@PathVariable Long id,
+                             @Valid @RequestBody AjusteStockRequest solicitud,
+                             @RequestHeader("X-Internal-Token") String token) {
+        if (!tokenValido(token)) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "Acceso interno no autorizado");
+        }
+        productoService.ajustarStock(id, solicitud.cantidad());
     }
 
     /** HU-08.1: inventario completo, incluidos productos desactivados. */
@@ -105,5 +127,18 @@ public class ProductoController {
     public ProductoDetalleResponse cambiarEstado(@PathVariable Long id,
                                                  @Valid @RequestBody EstadoProductoRequest solicitud) {
         return productoService.cambiarEstado(id, solicitud.activo());
+    }
+
+    private boolean tokenValido(String token) {
+        if (tokenInterno == null || tokenInterno.isBlank() || token == null) {
+            return false;
+        }
+        try {
+            return MessageDigest.isEqual(
+                    tokenInterno.getBytes(StandardCharsets.UTF_8),
+                    token.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

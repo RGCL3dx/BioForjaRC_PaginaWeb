@@ -22,6 +22,8 @@ import cl.bioforjarc.pedidos.model.TipoDocumento;
 import cl.bioforjarc.pedidos.repository.PedidoRepository;
 import cl.bioforjarc.pedidos.service.PedidoService;
 import jakarta.persistence.criteria.Predicate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +51,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     private static final String METODO_RETIRO = "retiro";
     private static final int MAX_INTENTOS_NUMERO = 20;
+    private static final Logger log = LoggerFactory.getLogger(PedidoServiceImpl.class);
 
     private final PedidoRepository pedidoRepository;
     private final UsuarioClient usuarioClient;
@@ -149,8 +152,14 @@ public class PedidoServiceImpl implements PedidoService {
             pedido.agregarItem(item);
         }
 
-        Pedido guardado = pedidoRepository.save(pedido);
-        return PedidoDetalleResponse.desde(guardado);
+        descontarStock(lineas);
+        try {
+            Pedido guardado = pedidoRepository.saveAndFlush(pedido);
+            return PedidoDetalleResponse.desde(guardado);
+        } catch (RuntimeException ex) {
+            reponerStock(lineas, ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -209,6 +218,32 @@ public class PedidoServiceImpl implements PedidoService {
                     "No tiene permisos para consultar este pedido");
         }
         return pedido;
+    }
+
+    private void descontarStock(List<LineaCalculada> lineas) {
+        List<LineaCalculada> descontadas = new ArrayList<>();
+        try {
+            for (LineaCalculada linea : lineas) {
+                catalogoClient.ajustarStock(linea.productoId(), -linea.cantidad());
+                descontadas.add(linea);
+            }
+        } catch (RuntimeException ex) {
+            reponerStock(descontadas, ex);
+            throw ex;
+        }
+    }
+
+    private void reponerStock(List<LineaCalculada> lineas, RuntimeException causa) {
+        for (int i = lineas.size() - 1; i >= 0; i--) {
+            LineaCalculada linea = lineas.get(i);
+            try {
+                catalogoClient.ajustarStock(linea.productoId(), linea.cantidad());
+            } catch (RuntimeException errorReposicion) {
+                causa.addSuppressed(errorReposicion);
+                log.error("No se pudo reponer el stock del producto {} después de un error",
+                        linea.productoId(), errorReposicion);
+            }
+        }
     }
 
     private List<LineaCalculada> calcularLineas(List<ItemPedidoRequest> items) {

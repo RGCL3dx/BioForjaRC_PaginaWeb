@@ -30,6 +30,8 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
@@ -106,6 +108,7 @@ class PedidoControllerIntegrationTest {
         assertEquals(13500.00, pedido.get("total").asDouble());
         assertTrue(pedido.get("pagoSimulado").asBoolean());
         assertEquals("Santiago", pedido.get("comuna").asText());
+        verify(catalogoClient).ajustarStock(10L, -2);
     }
 
     @Test
@@ -182,6 +185,7 @@ class PedidoControllerIntegrationTest {
                         .content(cuerpoEstandar()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.mensaje").value(containsString("Stock insuficiente")));
+        verify(catalogoClient, never()).ajustarStock(10L, -2);
     }
 
     @Test

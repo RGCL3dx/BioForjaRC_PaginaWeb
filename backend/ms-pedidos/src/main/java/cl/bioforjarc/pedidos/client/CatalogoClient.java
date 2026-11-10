@@ -10,10 +10,13 @@ import org.springframework.web.client.RestClientException;
 public class CatalogoClient {
 
     private final RestClient restClient;
+    private final String tokenInterno;
 
     public CatalogoClient(RestClient.Builder builder,
-                          @Value("${bioforja.clientes.catalogo-url}") String baseUrl) {
+                          @Value("${bioforja.clientes.catalogo-url}") String baseUrl,
+                          @Value("${bioforja.jwt.secret:}") String tokenInterno) {
         this.restClient = builder.baseUrl(baseUrl).build();
+        this.tokenInterno = tokenInterno;
     }
 
     public ProductoValidado validar(Long productoId, int cantidad) {
@@ -30,6 +33,19 @@ public class CatalogoClient {
                         "El servicio de catálogo no entregó una respuesta válida");
             }
             return respuesta;
+        } catch (RestClientException ex) {
+            throw ClienteHttpSoporte.traducir(ex, "catálogo");
+        }
+    }
+
+    public void ajustarStock(Long productoId, int cantidad) {
+        try {
+            restClient.patch()
+                    .uri("/api/productos/{id}/stock", productoId)
+                    .header("X-Internal-Token", tokenInterno)
+                    .body(new AjusteStockRequest(cantidad))
+                    .retrieve()
+                    .toBodilessEntity();
         } catch (RestClientException ex) {
             throw ClienteHttpSoporte.traducir(ex, "catálogo");
         }

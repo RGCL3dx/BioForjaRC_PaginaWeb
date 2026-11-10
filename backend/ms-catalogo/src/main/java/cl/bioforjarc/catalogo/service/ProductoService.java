@@ -30,4 +30,6 @@ public interface ProductoService {
     ProductoDetalleResponse cambiarEstado(Long id, boolean activo);
 
     ValidacionProductoResponse validar(Long id, int cantidad);
+
+    void ajustarStock(Long id, int cantidad);
 }

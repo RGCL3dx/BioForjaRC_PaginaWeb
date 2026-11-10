@@ -127,6 +127,28 @@ public class ProductoServiceImpl implements ProductoService {
                 .orElseGet(() -> ValidacionProductoResponse.inexistente(id, cantidad));
     }
 
+    @Override
+    public void ajustarStock(Long id, int cantidad) {
+        if (cantidad == 0 || cantidad < -999 || cantidad > 999) {
+            throw new SolicitudInvalidaException(
+                    "El ajuste de stock debe estar entre -999 y 999 y no puede ser cero");
+        }
+
+        if (productoRepository.ajustarStock(id, cantidad) == 0) {
+            Producto producto = productoRepository.findById(id)
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "No existe un producto con id " + id));
+
+            if (cantidad < 0 && !producto.isActivo()) {
+                throw new SolicitudInvalidaException(
+                        "No se puede descontar stock de un producto inactivo");
+            }
+            throw new SolicitudInvalidaException(
+                    "Stock insuficiente para " + producto.getNombre()
+                            + ". Disponible: " + producto.getStock());
+        }
+    }
+
     private Producto buscarProducto(Long id) {
         return productoRepository.findDetallePorId(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException(
