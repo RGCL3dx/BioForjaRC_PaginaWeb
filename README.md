@@ -12,7 +12,7 @@ en Spring Boot y el sitio estático original de la marca.
 | Backend | Java 25, Spring Boot, Spring Cloud Gateway, Spring Data JPA |
 | Base de datos | MySQL / MariaDB de XAMPP (una base por microservicio) |
 | Estilos | Tailwind CSS con tokens de marca BioForjaRC |
-| Pruebas | Sin pruebas unitarias en esta versión |
+| Pruebas | Vitest + React Testing Library (frontend), JUnit 5 + MockMvc (backend) |
 
 ## Estructura
 
@@ -110,6 +110,27 @@ Disponible en `http://localhost:5173`. La URL del Gateway se configura con `VITE
 | `npm run build` | Verificación TypeScript y build de producción |
 | `npm run preview` | Vista previa del build |
 | `npm run lint` | Análisis estático con Oxlint |
+| `npm test` | Pruebas unitarias con Vitest |
+| `npm run test:coverage` | Pruebas y reporte de cobertura |
+
+### Pruebas
+
+El frontend incluye 53 pruebas unitarias en 10 archivos (Vitest + React Testing Library) para
+carrito, formularios, rutas protegidas, componentes, cliente HTTP y formato. La trazabilidad y la
+cobertura están documentadas en `docs/Matriz_Pruebas_Frontend.md`.
+
+```powershell
+cd frontend
+npm test
+npm run test:coverage
+```
+
+Cada microservicio incluye pruebas de integración con JUnit 5 y MockMvc. Para ejecutarlas:
+
+```powershell
+cd backend\ms-usuarios
+.\mvnw.cmd test
+```
 
 ## Rutas del frontend
 

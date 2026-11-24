@@ -47,9 +47,23 @@ No guardes credenciales, tokens ni secretos en `.env` ni en el repositorio.
 | `npm run build` | Verificación TypeScript y build de producción en `dist/` |
 | `npm run preview` | Vista previa del build de producción |
 | `npm run lint` | Análisis estático con Oxlint |
+| `npm test` | Ejecuta las 53 pruebas unitarias con Vitest |
+| `npm run test:watch` | Vitest en modo interactivo |
+| `npm run test:coverage` | Pruebas + reporte de cobertura en `coverage/` |
 
-Los scripts `npm test` y `npm run test:watch` fueron retirados junto con las pruebas unitarias por
-solicitud del usuario. No hay framework de pruebas unitarias instalado.
+## Pruebas unitarias
+
+La suite usa **Vitest 5**, **React Testing Library** y **jsdom**. Cubre carrito, formularios de
+login y registro, cotización con archivos 3D, rutas protegidas, tarjetas de producto, cliente HTTP
+y utilidades de formato. La configuración vive en `vite.config.ts` y `src/test/setup.ts`.
+
+```powershell
+npm test
+npm run test:coverage
+```
+
+El detalle de trazabilidad, casos negativos y resultados de cobertura está en
+[`docs/Matriz_Pruebas_Frontend.md`](../docs/Matriz_Pruebas_Frontend.md).
 
 ## Rutas principales
 
@@ -122,8 +136,9 @@ Estado de esta entrega:
 
 - `npm run build`: correcto (TypeScript estricto + Vite).
 - `npm run lint`: sin errores.
-- Pruebas unitarias: retiradas por solicitud; no ejecutadas.
-- Cobertura: no generada.
+- `npm test`: 53 pruebas en 10 archivos, todas en verde.
+- `npm run test:coverage`: reporte generado; lógica crítica entre 65 % y 100 % de líneas.
+- Cobertura global: 22,4 % (las páginas de administración y checkout aún no tienen pruebas).
 - Rutas públicas revisadas en navegador integrado (Chromium): inicio, productos, cotización,
   contacto, nosotros, login y carrito renderizan. `/admin` redirige a `/login` sin sesión.
 - Navegación responsiva básica a 800 px: el botón de menú abre el panel lateral con los enlaces.
