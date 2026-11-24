@@ -63,9 +63,6 @@ npm test
 npm run test:coverage
 ```
 
-El detalle de trazabilidad, casos negativos y resultados de cobertura está en
-[`docs/Matriz_Pruebas_Frontend.md`](../docs/Matriz_Pruebas_Frontend.md).
-
 ## Rutas principales
 
 ### Públicas

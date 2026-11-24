@@ -136,8 +136,7 @@ Disponible en `http://localhost:5173`. La URL del Gateway se configura con `VITE
 ### Pruebas
 
 El frontend incluye 65 pruebas unitarias en 12 archivos (Vitest + React Testing Library) para
-carrito, formularios, rutas protegidas, componentes, cliente HTTP, formato y sesión JWT. La
-trazabilidad y la cobertura están documentadas en `docs/Matriz_Pruebas_Frontend.md`.
+carrito, formularios, rutas protegidas, componentes, cliente HTTP, formato y sesión JWT.
 
 ```powershell
 cd frontend
@@ -199,9 +198,6 @@ junto al usuario, lo envía como `Authorization: Bearer <token>` y restaura la s
 Los servicios `ms-catalogo`, `ms-pedidos` y `ms-cotizaciones` validan firma, emisor y expiración;
 las rutas administrativas exigen `ROLE_ADMINISTRADOR`. Si el token vence o el backend responde
 `401`, la sesión se elimina y el usuario vuelve a `/login`.
-
-El detalle de claims, reglas por endpoint, archivos involucrados y pruebas está en
-[`docs/JWT.md`](docs/JWT.md).
 
 ## Repositorio
 
