@@ -42,6 +42,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(autorizacion -> autorizacion
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        // Documentacion OpenAPI y Swagger UI.
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/webjars/**").permitAll()
                         // El endpoint de stock valida un token interno propio en el controlador.
                         .requestMatchers(HttpMethod.PATCH, "/api/productos/*/stock").permitAll()
                         // Inventario completo: solo administrador.

@@ -42,6 +42,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(autorizacion -> autorizacion
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        // Documentacion OpenAPI y Swagger UI.
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/webjars/**").permitAll()
                         // HU-04.1: el formulario de cotizacion es publico.
                         .requestMatchers(HttpMethod.POST, "/api/cotizaciones").permitAll()
                         // HU-04.2 y HU-04.3: listado, detalle, descarga y presupuesto.

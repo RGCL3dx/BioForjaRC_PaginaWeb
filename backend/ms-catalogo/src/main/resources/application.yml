@@ -51,6 +51,17 @@ bioforja:
   semilla:
     habilitada: ${BIOFORJA_SEMILLA_HABILITADA:true}
 
+# OpenAPI 3 + Swagger UI (http://localhost:8092/swagger-ui.html)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    persist-authorization: true
+    try-it-out-enabled: true
+
 logging:
   level:
     cl.bioforjarc.catalogo: INFO

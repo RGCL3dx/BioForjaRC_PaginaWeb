@@ -42,6 +42,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(autorizacion -> autorizacion
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        // Documentacion OpenAPI y Swagger UI.
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/webjars/**").permitAll()
                         // Historial propio del cliente autenticado.
                         .requestMatchers(HttpMethod.GET, "/api/pedidos/mios").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/pedidos/*/comprobante").authenticated()

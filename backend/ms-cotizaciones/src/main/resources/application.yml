@@ -68,6 +68,17 @@ bioforja:
     # Enlace directo de pago que se envia al cliente al presupuestar.
     url-base: ${BIOFORJA_PAGO_URL_BASE:http://localhost:5173/pago-cotizacion}
 
+# OpenAPI 3 + Swagger UI (http://localhost:8095/swagger-ui.html)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    persist-authorization: true
+    try-it-out-enabled: true
+
 logging:
   level:
     cl.bioforjarc.cotizaciones: INFO

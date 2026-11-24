@@ -61,6 +61,17 @@ bioforja:
     remitente: ${BIOFORJA_CORREO_REMITENTE:no-reply@bioforjarc.cl}
     url-base: ${BIOFORJA_URL_BASE:http://localhost:8090}
 
+# OpenAPI 3 + Swagger UI (http://localhost:8091/swagger-ui.html)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    persist-authorization: true
+    try-it-out-enabled: true
+
 logging:
   level:
     cl.bioforjarc.usuarios: INFO

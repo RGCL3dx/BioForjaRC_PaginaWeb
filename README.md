@@ -11,6 +11,7 @@ en Spring Boot y el sitio estático original de la marca.
 | Frontend | React 19, TypeScript, Vite, Tailwind CSS v4, componentes estilo shadcn/ui |
 | Backend | Java 25, Spring Boot, Spring Cloud Gateway, Spring Data JPA |
 | Seguridad | Spring Security + JWT (HMAC-SHA256) |
+| Documentación API | OpenAPI 3 + Swagger UI (springdoc) |
 | Base de datos | MySQL / MariaDB de XAMPP (una base por microservicio) |
 | Estilos | Tailwind CSS con tokens de marca BioForjaRC |
 | Pruebas | Vitest + React Testing Library (frontend), JUnit 5 + MockMvc (backend) |
@@ -92,6 +93,24 @@ y `api-gateway`. El frontend consume únicamente el Gateway en `http://localhost
 
 En Linux o macOS usa `./mvnw` en lugar de `.\mvnw.cmd`.
 
+### Documentación de la API (Swagger)
+
+Cada microservicio expone su contrato OpenAPI y una interfaz Swagger UI:
+
+| Servicio | Swagger UI | Contrato JSON |
+|---|---|---|
+| `ms-usuarios` | `http://localhost:8091/swagger-ui.html` | `http://localhost:8091/v3/api-docs` |
+| `ms-catalogo` | `http://localhost:8092/swagger-ui.html` | `http://localhost:8092/v3/api-docs` |
+| `ms-envios` | `http://localhost:8093/swagger-ui.html` | `http://localhost:8093/v3/api-docs` |
+| `ms-pedidos` | `http://localhost:8094/swagger-ui.html` | `http://localhost:8094/v3/api-docs` |
+| `ms-cotizaciones` | `http://localhost:8095/swagger-ui.html` | `http://localhost:8095/v3/api-docs` |
+| `ms-consultas` | `http://localhost:8096/swagger-ui.html` | `http://localhost:8096/v3/api-docs` |
+
+En los servicios protegidos, usa el botón **Authorize** y pega el token devuelto por
+`POST /api/auth/login`. Las rutas públicas del catálogo, envíos, consultas y cotización pueden
+probarse sin token. Swagger UI se consulta directo en el puerto de cada servicio; el Gateway sigue
+siendo el único punto de entrada del frontend para la aplicación.
+
 ### Frontend
 
 ```powershell
@@ -116,9 +135,9 @@ Disponible en `http://localhost:5173`. La URL del Gateway se configura con `VITE
 
 ### Pruebas
 
-El frontend incluye 53 pruebas unitarias en 10 archivos (Vitest + React Testing Library) para
-carrito, formularios, rutas protegidas, componentes, cliente HTTP y formato. La trazabilidad y la
-cobertura están documentadas en `docs/Matriz_Pruebas_Frontend.md`.
+El frontend incluye 65 pruebas unitarias en 12 archivos (Vitest + React Testing Library) para
+carrito, formularios, rutas protegidas, componentes, cliente HTTP, formato y sesión JWT. La
+trazabilidad y la cobertura están documentadas en `docs/Matriz_Pruebas_Frontend.md`.
 
 ```powershell
 cd frontend

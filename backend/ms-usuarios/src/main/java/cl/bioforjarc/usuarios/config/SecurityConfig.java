@@ -49,6 +49,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(autorizacion -> autorizacion
                         // Rutas públicas: registro, login, confirmación y health.
                         .requestMatchers("/api/auth/**", "/actuator/health", "/actuator/info").permitAll()
+                        // Documentacion OpenAPI y Swagger UI.
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/webjars/**").permitAll()
                         // Endpoint interno para que ms-pedidos valide al cliente.
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/validar").permitAll()
                         // Solo el administrador lista cuentas y cambia estados.

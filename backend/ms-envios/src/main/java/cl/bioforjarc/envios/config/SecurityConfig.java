@@ -45,6 +45,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(autorizacion -> autorizacion
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        // Documentacion OpenAPI y Swagger UI.
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/webjars/**").permitAll()
                         .requestMatchers("/api/envios/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(manejo -> manejo
