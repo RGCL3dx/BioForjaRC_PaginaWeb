@@ -23,6 +23,12 @@ function respuesta(
   } as Response
 }
 
+function tokenConExpiracion(exp: number): string {
+  const codificar = (valor: unknown) =>
+    btoa(JSON.stringify(valor)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+  return `${codificar({ alg: 'HS256', typ: 'JWT' })}.${codificar({ sub: 'ana@correo.cl', exp })}.firma`
+}
+
 const fetchMock = vi.fn()
 
 beforeEach(() => {
@@ -131,6 +137,23 @@ describe('request', () => {
       name: 'ApiError',
       status: 0,
     })
+  })
+
+  it('rechaza la solicitud sin llamar al gateway cuando el token ya expiró', async () => {
+    setToken(tokenConExpiracion(Math.floor(Date.now() / 1000) - 60))
+    const alExpirar = vi.fn()
+    window.addEventListener('bioforja:session-expired', alExpirar)
+
+    await expect(request('/api/usuarios/1')).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 401,
+      message: expect.stringContaining('expirado'),
+    })
+
+    expect(fetchMock).not.toHaveBeenCalled()
+    expect(getToken()).toBeNull()
+    expect(alExpirar).toHaveBeenCalledTimes(1)
+    window.removeEventListener('bioforja:session-expired', alExpirar)
   })
 
   it('limpia la sesión y notifica cuando el token expira (401)', async () => {

@@ -47,15 +47,16 @@ No guardes credenciales, tokens ni secretos en `.env` ni en el repositorio.
 | `npm run build` | Verificación TypeScript y build de producción en `dist/` |
 | `npm run preview` | Vista previa del build de producción |
 | `npm run lint` | Análisis estático con Oxlint |
-| `npm test` | Ejecuta las 53 pruebas unitarias con Vitest |
+| `npm test` | Ejecuta las 65 pruebas unitarias con Vitest |
 | `npm run test:watch` | Vitest en modo interactivo |
 | `npm run test:coverage` | Pruebas + reporte de cobertura en `coverage/` |
 
 ## Pruebas unitarias
 
 La suite usa **Vitest 5**, **React Testing Library** y **jsdom**. Cubre carrito, formularios de
-login y registro, cotización con archivos 3D, rutas protegidas, tarjetas de producto, cliente HTTP
-y utilidades de formato. La configuración vive en `vite.config.ts` y `src/test/setup.ts`.
+login y registro, cotización con archivos 3D, rutas protegidas, tarjetas de producto, cliente HTTP,
+utilidades de formato y sesión JWT (expiración, persistencia y logout). La configuración vive en
+`vite.config.ts` y `src/test/setup.ts`.
 
 ```powershell
 npm test
@@ -111,7 +112,9 @@ src/
 └── styles/base/     Tokens Tailwind y estilos globales
 ```
 
-- `src/services/http.ts`: URL base, JWT, manejo de errores, sesión expirada y descargas.
+- `src/services/http.ts`: URL base, JWT, rechazo de tokens vencidos, manejo de errores, sesión
+  expirada y descargas.
+- `src/utils/jwt.ts`: decodificación del payload y verificación local de `exp`.
 - `src/services/`: un cliente por dominio del backend.
 - `src/context/`: autenticación, carrito y notificaciones.
 - `src/components/ui/`: base visual; la lógica de negocio permanece en componentes y páginas.
@@ -136,9 +139,9 @@ Estado de esta entrega:
 
 - `npm run build`: correcto (TypeScript estricto + Vite).
 - `npm run lint`: sin errores.
-- `npm test`: 53 pruebas en 10 archivos, todas en verde.
+- `npm test`: 65 pruebas en 12 archivos, todas en verde.
 - `npm run test:coverage`: reporte generado; lógica crítica entre 65 % y 100 % de líneas.
-- Cobertura global: 22,4 % (las páginas de administración y checkout aún no tienen pruebas).
+- Cobertura global: 24,8 % (las páginas de administración y checkout aún no tienen pruebas).
 - Rutas públicas revisadas en navegador integrado (Chromium): inicio, productos, cotización,
   contacto, nosotros, login y carrito renderizan. `/admin` redirige a `/login` sin sesión.
 - Navegación responsiva básica a 800 px: el botón de menú abre el panel lateral con los enlaces.

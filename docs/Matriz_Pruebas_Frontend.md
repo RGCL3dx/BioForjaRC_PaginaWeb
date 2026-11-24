@@ -8,7 +8,7 @@ Trazabilidad entre historias de usuario, criterios de aceptación y pruebas ejec
 
 ```powershell
 cd frontend
-npm test                 # 53 pruebas en 10 archivos
+npm test                 # 65 pruebas en 12 archivos
 npm run test:watch       # modo interactivo
 npm run test:coverage    # reporte de cobertura en frontend/coverage/
 npm run lint
@@ -27,7 +27,8 @@ npm run build
 | HU-07.3 | Botón de eliminar por producto y confirmación previa | `src/pages/CarritoPage.test.tsx` | Cancelar la eliminación, confirmar y vaciar el carrito |
 | HU-12.1 | Rutas privadas y panel administrativo restringidos por rol | `src/components/layout/Guards.test.tsx` | Anónimo redirigido al login, cliente bloqueado y administrador autorizado |
 | Componentes | Props tipadas, composición y reutilización | `src/components/catalog/ProductCard.test.tsx`, `src/components/catalog/ProductList.test.tsx` | Datos del producto, stock, agregar, enlaces y composición de la lista |
-| Cliente HTTP | Token JWT, consultas tipadas y manejo de errores | `src/services/http.test.ts` | Query strings, `Bearer`, JSON, `204`, texto plano, `ApiError`, red caída y `401` |
+| Cliente HTTP | Token JWT, consultas tipadas y manejo de errores | `src/services/http.test.ts` | Query strings, `Bearer`, JSON, `204`, texto plano, `ApiError`, red caída, `401` y token vencido |
+| Sesión JWT | Persistencia, expiración, roles y logout | `src/context/AuthContext.test.tsx`, `src/utils/jwt.test.ts` | Claims, token vencido, restauración, login administrador y logout |
 | Formato | Moneda, fechas y rutas de imágenes | `src/utils/format.test.ts` | CLP, números, fechas locales, valores inválidos y recursos |
 
 ## Casos negativos incluidos
@@ -51,15 +52,17 @@ npm run build
 | `src/components/catalog/ProductCard.tsx` | 100 % | 100 % | 100 % |
 | `src/components/catalog/ProductList.tsx` | 100 % | 66,7 % | 100 % |
 | `src/components/layout/Guards.tsx` | 85,7 % | 71,4 % | 100 % |
+| `src/context/AuthContext.tsx` | 83,3 % | 44,4 % | 77,8 % |
 | `src/context/CartContext.tsx` | 100 % | 75 % | 100 % |
 | `src/pages/CarritoPage.tsx` | 73,9 % | 70 % | 63,6 % |
 | `src/pages/CotizacionPage.tsx` | 67,4 % | 57,6 % | 47,4 % |
 | `src/pages/LoginPage.tsx` | 96,6 % | 77,3 % | 87,5 % |
 | `src/pages/RegistroPage.tsx` | 95,8 % | 92,5 % | 87,5 % |
-| `src/services/http.ts` | 65,7 % | 69,6 % | 81,8 % |
+| `src/services/http.ts` | 64,9 % | 66,7 % | 83,3 % |
 | `src/utils/format.ts` | 96 % | 91,7 % | 100 % |
+| `src/utils/jwt.ts` | 100 % | 100 % | 100 % |
 
-La cobertura global es **22,4 %** porque las páginas de administración, checkout y detalle aún no
+La cobertura global es **24,8 %** porque las páginas de administración, checkout y detalle aún no
 tienen pruebas. Las pruebas se concentran en la lógica crítica del sprint 9 y 10: carrito,
 formularios, rutas protegidas, componentes reutilizables y cliente HTTP. El reporte HTML completo
 se genera en `frontend/coverage/index.html` (carpeta ignorada por Git).

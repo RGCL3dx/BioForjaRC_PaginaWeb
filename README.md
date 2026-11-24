@@ -10,6 +10,7 @@ en Spring Boot y el sitio estático original de la marca.
 |---|---|
 | Frontend | React 19, TypeScript, Vite, Tailwind CSS v4, componentes estilo shadcn/ui |
 | Backend | Java 25, Spring Boot, Spring Cloud Gateway, Spring Data JPA |
+| Seguridad | Spring Security + JWT (HMAC-SHA256) |
 | Base de datos | MySQL / MariaDB de XAMPP (una base por microservicio) |
 | Estilos | Tailwind CSS con tokens de marca BioForjaRC |
 | Pruebas | Vitest + React Testing Library (frontend), JUnit 5 + MockMvc (backend) |
@@ -171,6 +172,17 @@ $env:BIOFORJA_SEMILLA_CLIENTE_CLAVE = "ClaveCliente123!"
 
 - Administrador: `admin@bioforjarc.cl`
 - Cliente: `hermenegildo.gonzalez@correo.cl`
+
+## Autenticación con JWT
+
+El login de `ms-usuarios` devuelve un JWT firmado con `BIOFORJA_JWT_SECRET`. El frontend lo guarda
+junto al usuario, lo envía como `Authorization: Bearer <token>` y restaura la sesión al recargar.
+Los servicios `ms-catalogo`, `ms-pedidos` y `ms-cotizaciones` validan firma, emisor y expiración;
+las rutas administrativas exigen `ROLE_ADMINISTRADOR`. Si el token vence o el backend responde
+`401`, la sesión se elimina y el usuario vuelve a `/login`.
+
+El detalle de claims, reglas por endpoint, archivos involucrados y pruebas está en
+[`docs/JWT.md`](docs/JWT.md).
 
 ## Repositorio
 

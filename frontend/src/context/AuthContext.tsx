@@ -11,6 +11,7 @@ import {
   getToken,
   setToken,
 } from '../services/http'
+import { decodeJwt, isTokenExpired } from '../utils/jwt'
 
 interface AuthContextValue {
   usuario: Usuario | null
@@ -35,9 +36,19 @@ function leerUsuarioGuardado(): Usuario | null {
   }
 }
 
+function leerSesionInicial(): { usuario: Usuario | null; token: string | null } {
+  const token = getToken()
+  if (!token || isTokenExpired(token)) {
+    clearSessionStorage()
+    return { usuario: null, token: null }
+  }
+  return { usuario: leerUsuarioGuardado(), token }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [usuario, setUsuario] = useState<Usuario | null>(() => leerUsuarioGuardado())
-  const [token, setTokenState] = useState<string | null>(() => getToken())
+  const [sesionInicial] = useState(leerSesionInicial)
+  const [usuario, setUsuario] = useState<Usuario | null>(sesionInicial.usuario)
+  const [token, setTokenState] = useState<string | null>(sesionInicial.token)
   const [cargando, setCargando] = useState(false)
 
   const guardarUsuario = useCallback((nuevo: Usuario) => {
@@ -78,10 +89,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 
   const refrescarUsuario = useCallback(async () => {
-    if (!token || !usuario) return
+    if (!token) return
+    const id = usuario?.id ?? decodeJwt(token)?.id
+    if (!id) return
     setCargando(true)
     try {
-      const actualizado = await usuarioService.obtener(usuario.id)
+      const actualizado = await usuarioService.obtener(id)
       guardarUsuario(actualizado)
     } catch (error) {
       if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
@@ -99,10 +112,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [logout])
 
   useEffect(() => {
-    if (!getToken() && !token) return
-    if (token && usuario) {
-      void refrescarUsuario()
+    if (!token) return
+    if (isTokenExpired(token)) {
+      logout()
+      return
     }
+    void refrescarUsuario()
     // Solo al iniciar la aplicación.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

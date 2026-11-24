@@ -1,4 +1,5 @@
 import type { ErrorResponse } from '../types/api'
+import { isTokenExpired } from '../utils/jwt'
 
 export const API_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8090').replace(/\/$/, '')
 export const TOKEN_KEY = 'bioforja_token'
@@ -27,6 +28,11 @@ export function setToken(token: string): void {
 export function clearSessionStorage(): void {
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem(USER_KEY)
+}
+
+function expirarSesion(): void {
+  clearSessionStorage()
+  window.dispatchEvent(new Event('bioforja:session-expired'))
 }
 
 export function buildQuery(params: Record<string, string | number | boolean | undefined | null | string[]>): string {
@@ -61,6 +67,10 @@ type RequestOptions = Omit<RequestInit, 'body'> & { body?: unknown }
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const headers = new Headers(options.headers)
   const token = getToken()
+  if (token && isTokenExpired(token)) {
+    expirarSesion()
+    throw new ApiError(401, 'Tu sesión ha expirado. Inicia sesión nuevamente.')
+  }
   if (token) headers.set('Authorization', `Bearer ${token}`)
 
   let body = options.body
@@ -83,8 +93,7 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   if (!response.ok) {
     const error = await parseError(response)
     if (response.status === 401 && token && !path.startsWith('/api/auth/login')) {
-      clearSessionStorage()
-      window.dispatchEvent(new Event('bioforja:session-expired'))
+      expirarSesion()
     }
     throw error
   }
@@ -106,6 +115,10 @@ function filenameFromDisposition(disposition: string | null, fallback: string): 
 export async function download(path: string, fallbackName: string): Promise<void> {
   const headers = new Headers()
   const token = getToken()
+  if (token && isTokenExpired(token)) {
+    expirarSesion()
+    throw new ApiError(401, 'Tu sesión ha expirado. Inicia sesión nuevamente.')
+  }
   if (token) headers.set('Authorization', `Bearer ${token}`)
 
   let response: Response
